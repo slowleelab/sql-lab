@@ -1,0 +1,10 @@
+title: TiDB 统计信息管理
+category: tidb
+difficulty: 3
+versions: ["tidb"]
+tags: ["统计信息", "ANALYZE", "stale stats", "健康度", "优化器", "直方图"]
+description: |
+  TiDB 依赖统计信息选择执行计划。当统计信息过期（stale）时，
+  优化器可能低估或高估行数，导致选错索引甚至全表扫描。
+  本案例演示统计信息对执行计划的影响、ANALYZE 更新策略、
+  以及 stats:pseudo 伪统计的危害。

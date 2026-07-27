@@ -1,0 +1,10 @@
+title: TiDB 事务模型对比
+category: tidb
+difficulty: 3
+versions: ["tidb"]
+tags: ["事务", "乐观事务", "悲观事务", "tidb_txn_mode", "TSO", "重试"]
+description: |
+  TiDB 支持乐观（Optimistic）和悲观（Pessimistic）两种事务模型。
+  乐观事务在提交时才检测冲突（Write Conflict），适合低冲突场景；
+  悲观事务在写入时加锁（与 MySQL 类似），适合高冲突场景。
+  本案例演示两种模式的差异及选择策略。

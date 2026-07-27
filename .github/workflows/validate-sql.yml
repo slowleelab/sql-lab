@@ -2,43 +2,68 @@ name: 验证 SQL 案例
 on:
   push:
     branches: [main, master]
-    paths: ['sql/**', 'scripts/**']
+    paths: ['sql/**', 'scripts/**', 'docker-compose.yml']
   pull_request:
-    paths: ['sql/**', 'scripts/**']
+    paths: ['sql/**', 'scripts/**', 'docker-compose.yml']
 
 jobs:
   validate:
     runs-on: ubuntu-latest
     strategy:
+      fail-fast: false
       matrix:
-        mysql-version: ['5.7', '8.0']
+        mysql-version: ['5.7', '8.0', 'tidb']
     steps:
       - uses: actions/checkout@v4
 
-      - name: 启动 MySQL ${{ matrix.mysql-version }}
+      - name: 启动 ${{ matrix.mysql-version == 'tidb' && 'TiDB 集群' || format('MySQL {0}', matrix.mysql-version) }}
         run: |
           if [[ "${{ matrix.mysql-version }}" == "5.7" ]]; then
             docker compose up -d mysql57
             PORT=3307
-          else
+            for i in $(seq 1 60); do
+              docker exec sql-treasure-mysql57 mysqladmin ping -h localhost -proot &>/dev/null && break
+              sleep 2
+            done
+          elif [[ "${{ matrix.mysql-version }}" == "8.0" ]]; then
             docker compose up -d mysql80
             PORT=3308
+            for i in $(seq 1 60); do
+              docker exec sql-treasure-mysql80 mysqladmin ping -h localhost -proot &>/dev/null && break
+              sleep 2
+            done
+          else
+            # TiDB: 启动整个集群（pd → tikv → tidb）
+            docker compose up -d pd tikv tidb
+            # 等待 TiDB SQL 层就绪（从宿主机通过 4000 端口连接）
+            echo "等待 TiDB 集群就绪..."
+            for i in $(seq 1 120); do
+              if mysql -h 127.0.0.1 -P 4000 -uroot -e "SELECT 1" &>/dev/null; then
+                echo "TiDB 已就绪"
+                break
+              fi
+              [[ $i -eq 120 ]] && { echo "::error::TiDB 启动超时"; docker compose logs tidb; exit 1; }
+              sleep 2
+            done
           fi
-          # 等待就绪
-          for i in $(seq 1 60); do
-            docker exec sql-treasure-mysql$(echo ${{ matrix.mysql-version }} | tr -d '.') mysqladmin ping -h localhost -proot &>/dev/null && break
-            sleep 2
-          done
 
       - name: 验证所有案例的 SQL 语法
         run: |
-          PORT=$( [[ "${{ matrix.mysql-version }}" == "5.7" ]] && echo 3307 || echo 3308 )
           FAIL=0
           for case_dir in sql/cases/*/; do
             case_name=$(basename "$case_dir")
-            echo "::group::验证案例: $case_name (MySQL ${{ matrix.mysql-version }})"
+
+            # TiDB 只验证专属案例（编号 81+）
+            if [[ "${{ matrix.mysql-version }}" == "tidb" ]]; then
+              case_num=$(echo "$case_name" | grep -o '^[0-9]*')
+              if [[ -z "$case_num" || "$case_num" -lt 81 ]]; then
+                continue
+              fi
+            fi
+
+            echo "::group::验证案例: $case_name (${{ matrix.mysql-version }})"
             if ! ./scripts/run-case.sh "$case_name" --ver ${{ matrix.mysql-version }}; then
-              echo "::error::案例 $case_name 在 MySQL ${{ matrix.mysql-version }} 上运行失败"
+              echo "::error::案例 $case_name 在 ${{ matrix.mysql-version }} 上运行失败"
               FAIL=1
             fi
             echo "::endgroup::"

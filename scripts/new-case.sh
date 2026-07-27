@@ -3,7 +3,7 @@
 # new-case.sh - 快速创建新案例骨架
 # 用法: ./scripts/new-case.sh <编号-英文短名> <分类目录>
 # 示例: ./scripts/new-case.sh 56-my-case indexing
-# 分类: indexing / query-rewrite / join / ddl / architecture / transaction / optimizer
+# 分类: indexing / query-rewrite / join / ddl / architecture / transaction / optimizer / tidb
 # ============================================================
 set -euo pipefail
 
@@ -26,7 +26,7 @@ CASE_DIR="sql/cases/${CASE_NAME}"
 DOC_DIR="docs/cases/${CATEGORY}"
 
 # 验证分类
-VALID_CATEGORIES="indexing query-rewrite join ddl architecture transaction optimizer"
+VALID_CATEGORIES="indexing query-rewrite join ddl architecture transaction optimizer tidb"
 if ! echo "$VALID_CATEGORIES" | grep -qw "$CATEGORY"; then
   echo -e "${RED}错误: 无效分类 '$CATEGORY'${NC}"
   echo -e "有效分类: $VALID_CATEGORIES"

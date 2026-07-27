@@ -1,13 +1,14 @@
 # SQL Lab
 
-> 🐳 一套**能跑、能量化对比**的 MySQL 优化实战案例集  
+> 🐳 一套**能跑、能量化对比**的 MySQL + TiDB 优化实战案例集  
 > 每个案例都带真实数据，Docker 一键复现，bad/good EXPLAIN 量化对比
 
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
 [![MySQL](https://img.shields.io/badge/MySQL-5.7%20%7C%208.0-blue.svg)](https://www.mysql.com/)
+[![TiDB](https://img.shields.io/badge/TiDB-v7.5.1-purple.svg)](https://pingcap.com/)
 [![CI](https://github.com/slowleelab/sql-lab/actions/workflows/validate-sql.yml/badge.svg)](https://github.com/slowleelab/sql-lab/actions)
 [![PRs Welcome](https://img.shields.io/badge/PRs-welcome-brightgreen.svg)](CONTRIBUTING.md)
-[![Cases](https://img.shields.io/badge/cases-80-orange.svg)](docs/cases/)
+[![Cases](https://img.shields.io/badge/cases-86-orange.svg)](docs/cases/)
 
 📖 **在线文档**：[https://slowleelab.github.io/sql-lab/](https://slowleelab.github.io/sql-lab/)  
 🤖 **AI 对话**：接入 DeepWiki，可直接与仓库对话提问
@@ -27,7 +28,7 @@
 | 能否复现 | ❌ 只能看 | ✅ Docker 一键跑 |
 | 数据量 | ❌ 假数据/无数据 | ✅ 百万级真实数据 |
 | 效果验证 | ❌ 口头说快 | ✅ EXPLAIN 量化对比 |
-| 版本覆盖 | ❌ 不区分版本 | ✅ 5.7 + 8.0 双版本 |
+| 版本覆盖 | ❌ 不区分版本 | ✅ 5.7 + 8.0 + TiDB |
 | 场景贴近 | ❌ 教科书式 | ✅ 生产场景命名 |
 
 ## 🚀 快速开始
@@ -60,7 +61,7 @@ type: ref    rows: 12    Extra: Using index
 
 ## 📚 案例总览
 
-共 **80 个精选案例**，覆盖 MySQL 优化的七大核心场景：
+共 **86 个精选案例**，覆盖 MySQL + TiDB 优化的八大核心场景：
 
 ### 一、索引设计与失效（18 个）
 | # | 案例 | 难度 | 版本 |
@@ -169,6 +170,17 @@ type: ref    rows: 12    Extra: Using index
 | 78 | [派生条件下推优化](docs/cases/optimizer/78-derived-condition-pushdown.md) | ⭐⭐⭐ | 5.7 & 8.0 |
 | 79 | [大批量 UPDATE 分批优化](docs/cases/optimizer/79-batch-update.md) | ⭐⭐ | 5.7 & 8.0 |
 | 80 | [慢查询排查方法论](docs/cases/optimizer/80-slow-query-diagnosis.md) | ⭐⭐⭐ | 5.7 & 8.0 |
+
+### 八、TiDB 分布式优化（6 个）
+| # | 案例 | 难度 | 版本 |
+|---|------|------|------|
+| 81 | [TiDB EXPLAIN 算子树解读](docs/cases/tidb/81-tidb-explain-tree.md) | ⭐⭐ | TiDB |
+| 82 | [协处理器下推优化](docs/cases/tidb/82-coprocessor-pushdown.md) | ⭐⭐⭐ | TiDB |
+| 83 | [AUTO_RANDOM 避免写热点](docs/cases/tidb/83-auto-random.md) | ⭐⭐ | TiDB |
+| 84 | [TiDB 统计信息管理](docs/cases/tidb/84-tidb-statistics.md) | ⭐⭐⭐ | TiDB |
+| 85 | [TiDB 事务模型对比](docs/cases/tidb/85-tidb-transaction.md) | ⭐⭐⭐ | TiDB |
+| 86 | [IndexLookUp 回表与覆盖索引](docs/cases/tidb/86-index-lookup.md) | ⭐⭐ | TiDB |
+
 ## 🛠️ 项目结构
 
 ```
@@ -176,10 +188,10 @@ sql-lab/
 ├── docs/                  # VitePress 文档站
 │   ├── .vitepress/        # 配置 + 自定义组件
 │   ├── guide/             # 使用指南
-│   └── cases/             # 80 篇案例文档
+│   └── cases/             # 86 篇案例文档
 ├── sql/cases/             # 可运行 SQL（schema + seed + bad + good）
 ├── scripts/run-case.sh    # 一键运行案例
-├── docker-compose.yml     # MySQL 5.7 + 8.0
+├── docker-compose.yml     # MySQL 5.7 + 8.0 + TiDB
 ├── .github/workflows/     # CI: SQL 校验 + 文档部署
 └── CONTRIBUTING.md        # 贡献指南
 ```

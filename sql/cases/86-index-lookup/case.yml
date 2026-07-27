@@ -1,0 +1,9 @@
+title: IndexLookUp 回表与覆盖索引
+category: tidb
+difficulty: 2
+versions: ["tidb"]
+tags: ["IndexLookUp", "回表", "覆盖索引", "IndexReader", "Cluster Index", "Build/Probe"]
+description: |
+  TiDB EXPLAIN 中用 IndexLookUp 算子显式展示回表操作（Build→Probe 两阶段），
+  而 IndexReader 表示覆盖索引（无需回表）。本案例演示回表对性能的影响，
+  以及如何通过覆盖索引、Cluster Index 消除 IndexLookUp。

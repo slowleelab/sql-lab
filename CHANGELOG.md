@@ -1,5 +1,28 @@
 # 更新日志
 
+## v1.7.0 (2026-07-28)
+
+### 新增
+
+- **加入 TiDB 全面支持**，案例总数从 80 增至 86
+- **新增分类「八、TiDB 分布式优化」**（6 个案例）：
+  - 81 · TiDB EXPLAIN 算子树解读 — 从 MySQL EXPLAIN 到 TiDB 树形算子的过渡指南
+  - 82 · 协处理器下推优化 — cop[tikv] vs root task 的执行位置差异
+  - 83 · AUTO_RANDOM 避免写热点 — 分布式 ID 替代 AUTO_INCREMENT 消除单 Region 写入瓶颈
+  - 84 · TiDB 统计信息管理 — ANALYZE、健康度、stale stats 导致选错索引
+  - 85 · TiDB 事务模型对比 — 乐观事务 vs 悲观事务、TSO、AS OF TIMESTAMP
+  - 86 · IndexLookUp 回表与覆盖索引 — Build→Probe 两阶段 vs IndexReader 覆盖索引
+- **基础设施**：
+  - docker-compose.yml 新增 TiDB 集群（PD + TiKV + TiDB 三容器，端口 4000）
+  - run-case.sh 新增 `--ver tidb` 支持
+  - CI 矩阵新增 TiDB 验证
+
+### 变更
+
+- README 新增 TiDB 徽章和案例表格
+- 首页统计更新：7→8 场景，80→86 案例
+- sidebar、cases/index.md、introduction 同步更新
+
 ## v1.6.0 (2026-07-28)
 
 ### 重构

@@ -1,0 +1,9 @@
+title: TiDB EXPLAIN 算子树解读
+category: tidb
+difficulty: 2
+versions: ["tidb"]
+tags: ["EXPLAIN", "算子树", "operator", "TiDB", "执行计划"]
+description: |
+  TiDB EXPLAIN 输出与 MySQL 完全不同：MySQL 用 type/key/rows/Extra 扁平列，
+  TiDB 用 estRows/task/access object/operator info 树形算子。
+  本案例演示如何阅读 TiDB 的执行计划树，并对比 MySQL EXPLAIN 的差异。

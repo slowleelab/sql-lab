@@ -1,6 +1,6 @@
 # 案例总览
 
-共 **80 个精选案例**，覆盖 MySQL 优化的七大核心场景。每个案例都带真实数据，可一键复现。
+共 **86 个精选案例**，覆盖 MySQL + TiDB 优化的八大核心场景。每个案例都带真实数据，可一键复现。
 
 ## 一、索引设计与失效（18 个）
 
@@ -116,6 +116,17 @@
 | 78 | [派生条件下推优化](./optimizer/78-derived-condition-pushdown) | ⭐⭐⭐ | 5.7 & 8.0 |
 | 79 | [大批量 UPDATE 分批优化](./optimizer/79-batch-update) | ⭐⭐ | 5.7 & 8.0 |
 | 80 | [慢查询排查方法论](./optimizer/80-slow-query-diagnosis) | ⭐⭐⭐ | 5.7 & 8.0 |
+## 八、TiDB 分布式优化（6 个）
+
+| # | 案例 | 难度 | 版本 |
+|---|------|:----:|:----:|
+| 81 | [TiDB EXPLAIN 算子树解读](./tidb/81-tidb-explain-tree) | ⭐⭐ | TiDB |
+| 82 | [协处理器下推优化](./tidb/82-coprocessor-pushdown) | ⭐⭐⭐ | TiDB |
+| 83 | [AUTO_RANDOM 避免写热点](./tidb/83-auto-random) | ⭐⭐ | TiDB |
+| 84 | [TiDB 统计信息管理](./tidb/84-tidb-statistics) | ⭐⭐⭐ | TiDB |
+| 85 | [TiDB 事务模型对比](./tidb/85-tidb-transaction) | ⭐⭐⭐ | TiDB |
+| 86 | [IndexLookUp 回表与覆盖索引](./tidb/86-index-lookup) | ⭐⭐ | TiDB |
+
 ---
 
 ::: tip 难度说明

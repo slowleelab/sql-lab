@@ -5,6 +5,7 @@
 # 用法:
 #   ./scripts/run-case.sh <case-dir>              # 默认 MySQL 8.0
 #   ./scripts/run-case.sh <case-dir> --ver 5.7    # 指定 MySQL 5.7
+#   ./scripts/run-case.sh <case-dir> --ver tidb   # 指定 TiDB
 #   ./scripts/run-case.sh <case-dir> --no-seed    # 跳过造数据（数据已存在）
 #
 # 示例:
@@ -41,7 +42,7 @@ done
 
 if [[ -z "$CASE_DIR" ]]; then
   echo -e "${RED}错误: 请指定案例目录名${NC}"
-  echo "用法: $0 <case-dir> [--ver 5.7|8.0] [--no-seed]"
+  echo "用法: $0 <case-dir> [--ver 5.7|8.0|tidb] [--no-seed]"
   echo "可用案例:"
   ls -1 "$(dirname "$0")/../sql/cases/" | sed 's/^/  - /'
   exit 1
@@ -63,7 +64,8 @@ fi
 case "$MYSQL_VER" in
   5.7) PORT=3307; CONTAINER="sql-treasure-mysql57" ;;
   8.0) PORT=3308; CONTAINER="sql-treasure-mysql80" ;;
-  *) echo -e "${RED}错误: 不支持的版本 $MYSQL_VER，请用 5.7 或 8.0${NC}"; exit 1 ;;
+  tidb) PORT=4000; CONTAINER="sql-treasure-tidb" ;;
+  *) echo -e "${RED}错误: 不支持的版本 $MYSQL_VER，请用 5.7、8.0 或 tidb${NC}"; exit 1 ;;
 esac
 
 MYSQL_CMD="mysql -h 127.0.0.1 -P $PORT -uroot -proot sql_treasure"
@@ -73,13 +75,21 @@ echo -e "${CYAN}═════════════════════�
 echo -e "${BOLD}  SQL Lab · 案例运行器${NC}"
 echo -e "${CYAN}═══════════════════════════════════════════════════════════${NC}"
 echo -e "  案例:   ${BOLD}$CASE_DIR${NC}"
-echo -e "  版本:   MySQL $MYSQL_VER  (端口 $PORT)"
+if [[ "$MYSQL_VER" == "tidb" ]]; then
+  echo -e "  版本:   TiDB (端口 $PORT)"
+else
+  echo -e "  版本:   MySQL $MYSQL_VER  (端口 $PORT)"
+fi
 echo -e "  容器:   $CONTAINER"
 echo ""
 
 if ! docker ps --format '{{.Names}}' | grep -q "^${CONTAINER}$"; then
   echo -e "${YELLOW}⚠ 容器 $CONTAINER 未运行，正在启动...${NC}"
-  docker compose -f "$PROJECT_ROOT/docker-compose.yml" up -d "mysql${MYSQL_VER/./}"
+  if [[ "$MYSQL_VER" == "tidb" ]]; then
+    docker compose -f "$PROJECT_ROOT/docker-compose.yml" up -d pd tikv tidb
+  else
+    docker compose -f "$PROJECT_ROOT/docker-compose.yml" up -d "mysql${MYSQL_VER/./}"
+  fi
   echo -e "${YELLOW}  等待 MySQL 就绪...${NC}"
   for i in $(seq 1 60); do
     if $MYSQL_CMD -e "SELECT 1" &>/dev/null; then

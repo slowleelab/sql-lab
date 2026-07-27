@@ -1,0 +1,10 @@
+title: 协处理器下推优化
+category: tidb
+difficulty: 3
+versions: ["tidb"]
+tags: ["coprocessor", "下推", "cop[tikv]", "root", "TiKV", "数据传输"]
+description: |
+  TiDB 的 WHERE 条件能否下推到 TiKV 协处理器执行，决定数据传输量。
+  下推成功（cop[tikv]）时数据在 TiKV 本地过滤后只返回结果；
+  下推失败（root）时全量数据拉到 TiDB Server 再过滤。
+  本案例演示下推成功与失败的性能差异及优化策略。

@@ -142,13 +142,25 @@ const sidebar = {
         { text: '80 · 慢查询排查方法论', link: '/cases/optimizer/80-slow-query-diagnosis' },
       ],
     },
+    {
+      text: '八、TiDB 分布式优化',
+      collapsed: false,
+      items: [
+        { text: '81 · TiDB EXPLAIN 算子树解读', link: '/cases/tidb/81-tidb-explain-tree' },
+        { text: '82 · 协处理器下推优化', link: '/cases/tidb/82-coprocessor-pushdown' },
+        { text: '83 · AUTO_RANDOM 避免写热点', link: '/cases/tidb/83-auto-random' },
+        { text: '84 · TiDB 统计信息管理', link: '/cases/tidb/84-tidb-statistics' },
+        { text: '85 · TiDB 事务模型对比', link: '/cases/tidb/85-tidb-transaction' },
+        { text: '86 · IndexLookUp 回表与覆盖索引', link: '/cases/tidb/86-index-lookup' },
+      ],
+    },
   ],
 }
 
 // ────────────────────────────── 站点配置 ──────────────────────────────
 export default defineConfig({
   title: 'SQL Lab',
-  description: '一套能跑、能量化对比的 MySQL 优化实战案例集',
+  description: '一套能跑、能量化对比的 MySQL + TiDB 优化实战案例集',
   lang: 'zh-CN',
   lastUpdated: true,
   cleanUrls: true,
@@ -166,19 +178,19 @@ export default defineConfig({
     ['link', { rel: 'icon', href: '/sql-lab/favicon.svg' }],
 
     // SEO: 关键词
-    ['meta', { name: 'keywords', content: 'MySQL优化,SQL优化,EXPLAIN,索引优化,MySQL 8.0,数据库性能,Docker,慢查询,事务锁,查询改写' }],
+    ['meta', { name: 'keywords', content: 'MySQL优化,SQL优化,EXPLAIN,索引优化,MySQL 8.0,数据库性能,Docker,慢查询,事务锁,查询改写,TiDB,分布式数据库,NewSQL,TiKV,coprocessor' }],
 
     // Open Graph（社交分享卡片）
     ['meta', { property: 'og:site_name', content: 'SQL Lab' }],
     ['meta', { property: 'og:type', content: 'website' }],
-    ['meta', { property: 'og:title', content: 'SQL Lab · 80 个能跑的 MySQL 优化实战案例' }],
-    ['meta', { property: 'og:description', content: '一套能跑、能量化对比的 MySQL 优化实战案例集。80 个精选案例，7 大场景，Docker 一键复现，bad/good EXPLAIN 量化对比。' }],
+    ['meta', { property: 'og:title', content: 'SQL Lab · 86 个能跑的 MySQL/TiDB 优化实战案例' }],
+    ['meta', { property: 'og:description', content: '一套能跑、能量化对比的 MySQL 优化实战案例集。86 个精选案例，8 大场景，覆盖 MySQL 5.7/8.0 和 TiDB，Docker 一键复现，bad/good EXPLAIN 量化对比。' }],
     ['meta', { property: 'og:url', content: 'https://slowleelab.github.io/sql-lab/' }],
     ['meta', { property: 'og:image', content: 'https://slowleelab.github.io/sql-lab/og-image.svg' }],
 
     // Twitter Card
     ['meta', { name: 'twitter:card', content: 'summary_large_image' }],
-    ['meta', { name: 'twitter:title', content: 'SQL Lab · 80 个能跑的 MySQL 优化实战案例' }],
+    ['meta', { name: 'twitter:title', content: 'SQL Lab · 86 个能跑的 MySQL/TiDB 优化实战案例' }],
     ['meta', { name: 'twitter:description', content: '一套能跑、能量化对比的 MySQL 优化实战案例集。Docker 一键复现，bad/good EXPLAIN 量化对比。' }],
     ['meta', { name: 'twitter:image', content: 'https://slowleelab.github.io/sql-lab/og-image.svg' }],
   ],

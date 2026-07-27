@@ -1,0 +1,10 @@
+title: AUTO_RANDOM 避免写热点
+category: tidb
+difficulty: 2
+versions: ["tidb"]
+tags: ["AUTO_RANDOM", "AUTO_INCREMENT", "写热点", "Region", "SHARD_ROW_ID_BITS", "分布式ID"]
+description: |
+  TiDB 中 AUTO_INCREMENT 会将连续递增的 ID 路由到同一个 Region，
+  导致写入热点——所有 INSERT 集中在单个 TiKV 节点。
+  使用 AUTO_RANDOM 或 SHARD_ROW_ID_BITS 将 ID 打散到多个 Region，
+  写入吞吐可提升 3-10 倍。本案例演示热点原理及解决方案。
