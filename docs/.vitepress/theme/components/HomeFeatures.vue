@@ -6,7 +6,7 @@
 import { withBase } from 'vitepress'
 
 const stats = [
-  { number: '94', label: '精选案例' },
+  { number: '102', label: '精选案例' },
   { number: '8', label: '场景分类' },
   { number: '3', label: '数据库引擎' },
   { number: '100%', label: '可复现' },
@@ -20,7 +20,7 @@ const categories = [
   { icon: '🏗️', name: '架构级优化', count: '11 个案例', link: withBase('/cases/architecture/52-dynamic-filter') },
   { icon: '🔒', name: '事务与锁', count: '9 个案例', link: withBase('/cases/transaction/63-deadlock-analysis') },
   { icon: '⚡', name: '优化器与 8.0', count: '9 个案例', link: withBase('/cases/optimizer/72-descending-index') },
-  { icon: '🔮', name: 'TiDB 分布式优化', count: '14 个案例', link: withBase('/cases/tidb/81-tidb-explain-tree') },
+  { icon: '🔮', name: 'TiDB 分布式优化', count: '22 个案例', link: withBase('/cases/tidb/81-tidb-explain-tree') },
   { icon: '🚀', name: '全部案例', count: '查看总览', link: withBase('/cases/') },
 ]
 </script>
@@ -36,7 +36,7 @@ const categories = [
 
   <!-- 分类导航 -->
   <div class="home-categories">
-    <h2 class="home-categories-title">八大场景 · 94 个案例</h2>
+    <h2 class="home-categories-title">八大场景 · 102 个案例</h2>
     <p class="home-categories-subtitle">从索引失效到事务锁、从查询改写到 8.0 新特性，覆盖 MySQL + TiDB 优化全链路</p>
     <div class="home-category-grid">
       <a

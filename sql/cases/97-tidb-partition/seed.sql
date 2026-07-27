@@ -1,0 +1,47 @@
+-- ============================================================
+-- 造数据: 50 万行订单数据
+-- order_date 在 3 年内分布（2024-01-01 ~ 2026-12-31）
+-- user_id 1-50000 均匀分布
+-- ============================================================
+
+-- 向 t_order_range 插入 50 万行
+INSERT INTO t_order_range (user_id, amount, order_date)
+SELECT
+    FLOOR(1 + RAND() * 50000) AS user_id,
+    ROUND(1 + RAND() * 9999, 2) AS amount,
+    DATE_ADD('2024-01-01', INTERVAL FLOOR(RAND() * 1096) DAY) AS order_date
+FROM
+    (SELECT 1 UNION SELECT 2 UNION SELECT 3 UNION SELECT 4 UNION SELECT 5
+     UNION SELECT 6 UNION SELECT 7 UNION SELECT 8 UNION SELECT 9 UNION SELECT 10) t1
+CROSS JOIN
+    (SELECT 1 UNION SELECT 2 UNION SELECT 3 UNION SELECT 4 UNION SELECT 5
+     UNION SELECT 6 UNION SELECT 7 UNION SELECT 8 UNION SELECT 9 UNION SELECT 10) t2
+CROSS JOIN
+    (SELECT 1 UNION SELECT 2 UNION SELECT 3 UNION SELECT 4 UNION SELECT 5
+     UNION SELECT 6 UNION SELECT 7 UNION SELECT 8 UNION SELECT 9 UNION SELECT 10) t3
+CROSS JOIN
+    (SELECT 1 UNION SELECT 2 UNION SELECT 3 UNION SELECT 4 UNION SELECT 5) t4
+CROSS JOIN
+    (SELECT 1 UNION SELECT 2 UNION SELECT 3 UNION SELECT 4 UNION SELECT 5
+     UNION SELECT 6 UNION SELECT 7 UNION SELECT 8 UNION SELECT 9 UNION SELECT 10) t5
+CROSS JOIN
+    (SELECT 1 UNION SELECT 2) t6
+LIMIT 500000;
+
+-- 向 t_order_hash 插入同样 50 万行数据
+INSERT INTO t_order_hash (user_id, amount, order_date)
+SELECT
+    user_id,
+    amount,
+    order_date
+FROM t_order_range;
+
+-- 确认数据量
+SELECT COUNT(*) AS total_range FROM t_order_range;
+SELECT COUNT(*) AS total_hash FROM t_order_hash;
+
+-- 查看各分区数据分布
+SELECT PARTITION_NAME, TABLE_ROWS
+FROM information_schema.PARTITIONS
+WHERE TABLE_SCHEMA = DATABASE() AND TABLE_NAME IN ('t_order_range', 't_order_hash')
+ORDER BY TABLE_NAME, PARTITION_NAME;

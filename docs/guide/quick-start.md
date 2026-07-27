@@ -172,7 +172,7 @@ type: ref    rows: 12    Extra: Using index
   - 08-covering-index
   - 09-index-condition-pushdown
   - 15-subquery-to-join
-  ...（共 94 个）
+  ...（共 102 个）
 ```
 
 ### 运行其他案例
@@ -321,5 +321,5 @@ docker compose ps   # 确认 STATUS 为 healthy
 ## 下一步
 
 - [如何阅读案例](./how-to-read) — 了解每个案例的标准结构
-- [案例总览](../cases/) — 浏览全部 94 个案例
+- [案例总览](../cases/) — 浏览全部 102 个案例
 - [深度分页案例](../cases/indexing/01-deep-pagination) — 从第一个案例开始深入

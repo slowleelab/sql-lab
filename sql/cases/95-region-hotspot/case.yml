@@ -1,0 +1,9 @@
+title: Region 热点调度与 Split 策略
+category: tidb
+difficulty: 3
+versions: ["tidb"]
+tags: ["Region", "热点调度", "Split", "PD调度", "Hot Region", "Scatter"]
+description: |
+  Region 是 TiDB 数据分布的最小单元，写入倾斜会导致 Hot Region。
+  通过 SHOW TABLE REGIONS 诊断 Region 分布，结合 tidb_scatter_region、
+  手动 SPLIT TABLE 和 PD hotspot 调度解决热点问题。

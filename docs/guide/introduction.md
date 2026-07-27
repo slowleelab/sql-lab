@@ -28,7 +28,7 @@
 
 ## 案例一览
 
-共 **94 个精选案例**，覆盖八大场景：
+共 **102 个精选案例**，覆盖八大场景：
 
 | 分类 | 案例数 | 典型场景 |
 |------|--------|----------|
@@ -39,7 +39,7 @@
 | 架构级优化 | 11 | 动态筛选、汇总表、冷热分离、秒杀、读写分离、JSON、软删除、分布式 ID、连接池 |
 | 事务与锁 | 9 | 死锁、间隙锁、FOR UPDATE、乐观/悲观锁、幻读、长事务、隔离级别 |
 | 优化器与 8.0 新特性 | 9 | 降序索引、函数索引、直方图、CTE 递归、窗口函数、Hint、慢查询排查 |
-| TiDB 分布式优化 | 14 | EXPLAIN 算子树、协处理器下推、AUTO_RANDOM、统计信息、事务模型、IndexLookUp、TiFlash MPP、GC 机制、Follower Read、OOM 防护、Join 算法、在线 DDL、Plan Cache、Stale Read |
+| TiDB 分布式优化 | 22 | EXPLAIN 算子树、协处理器下推、AUTO_RANDOM、统计信息、事务模型、IndexLookUp、TiFlash MPP、GC 机制、Follower Read、OOM 防护、Join 算法、在线 DDL、Plan Cache、Stale Read |
 
 详见左侧侧边栏，或直接 [快速开始](./quick-start)。
 

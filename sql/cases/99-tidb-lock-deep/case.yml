@@ -1,0 +1,9 @@
+title: TiDB 锁机制深度解析
+category: tidb
+difficulty: 3
+versions: ["tidb"]
+tags: ["锁", "FOR UPDATE", "NOWAIT", "SKIP LOCKED", "LOCK VIEW", "悲观锁"]
+description: |
+  TiDB 悲观模式提供 FOR UPDATE NOWAIT 和 SKIP LOCKED 语法，
+  避免锁等待阻塞。通过 LOCK VIEW 和 DATA_LOCK_WAITS 排查锁等待链。
+  本案例演示三种 FOR UPDATE 变体的行为差异和锁排查方法。

@@ -1,0 +1,9 @@
+title: SQL Binding 执行计划锁定 (SPM)
+category: tidb
+difficulty: 3
+versions: ["tidb"]
+tags: ["SPM", "SQL Binding", "执行计划", "Baseline", "Plan Management"]
+description: |
+  TiDB SQL Plan Management (SPM) 通过 CREATE BINDING 将 SQL 语句与特定执行计划绑定。
+  当优化器因统计信息偏差、版本升级等选错计划时，Binding 强制使用指定计划，
+  避免执行计划突变导致的生产事故。

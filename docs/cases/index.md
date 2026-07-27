@@ -1,6 +1,6 @@
 # 案例总览
 
-共 **94 个精选案例**，覆盖 MySQL + TiDB 优化的八大核心场景。每个案例都带真实数据，可一键复现。
+共 **102 个精选案例**，覆盖 MySQL + TiDB 优化的八大核心场景。每个案例都带真实数据，可一键复现。
 
 ## 一、索引设计与失效（18 个）
 
@@ -116,7 +116,7 @@
 | 78 | [派生条件下推优化](./optimizer/78-derived-condition-pushdown) | ⭐⭐⭐ | 5.7 & 8.0 |
 | 79 | [大批量 UPDATE 分批优化](./optimizer/79-batch-update) | ⭐⭐ | 5.7 & 8.0 |
 | 80 | [慢查询排查方法论](./optimizer/80-slow-query-diagnosis) | ⭐⭐⭐ | 5.7 & 8.0 |
-## 八、TiDB 分布式优化（14 个）
+## 八、TiDB 分布式优化（22 个）
 
 | # | 案例 | 难度 | 版本 |
 |---|------|:----:|:----:|
@@ -134,6 +134,14 @@
 | 92 | [TiDB 在线 DDL 机制](./tidb/92-tidb-online-ddl) | ⭐⭐ | TiDB |
 | 93 | [TiDB Plan Cache 执行计划缓存](./tidb/93-tidb-plan-cache) | ⭐⭐ | TiDB |
 | 94 | [TiDB Stale Read 历史读优化](./tidb/94-tidb-stale-read) | ⭐⭐ | TiDB |
+| 95 | [Region 热点调度与 Split 策略](./tidb/95-region-hotspot) | ⭐⭐⭐ | TiDB |
+| 96 | [SQL Binding 执行计划锁定 (SPM)](./tidb/96-sql-binding) | ⭐⭐⭐ | TiDB |
+| 97 | [TiDB 分区表优化](./tidb/97-tidb-partition) | ⭐⭐ | TiDB |
+| 98 | [TiDB Dashboard 诊断实战](./tidb/98-tidb-dashboard) | ⭐⭐ | TiDB |
+| 99 | [TiDB 锁机制深度解析](./tidb/99-tidb-lock-deep) | ⭐⭐⭐ | TiDB |
+| 100 | [分布式 Sequence 自增方案](./tidb/100-tidb-sequence) | ⭐⭐ | TiDB |
+| 101 | [TiDB CTE 与临时表优化](./tidb/101-tidb-cte) | ⭐⭐ | TiDB |
+| 102 | [TiDB Cost Model 与优化器 Hint 进阶](./tidb/102-tidb-cost-hint) | ⭐⭐⭐ | TiDB |
 
 ---
 

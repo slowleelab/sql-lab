@@ -1,0 +1,9 @@
+title: 分布式 Sequence 自增方案
+category: tidb
+difficulty: 2
+versions: ["tidb"]
+tags: ["Sequence", "分布式ID", "AUTO_INCREMENT", "AUTO_RANDOM", "自增", "TSO"]
+description: |
+  TiDB CREATE SEQUENCE 提供全局递增数列，CACHE 参数控制预分配批量减少 TSO 开销。
+  本案例演示 Sequence 的创建、CACHE/NO CACHE 行为差异，
+  以及 AUTO_INCREMENT / AUTO_RANDOM / Sequence 三种分布式 ID 方案的全面对比。

@@ -1,0 +1,8 @@
+title: TiDB 分区表优化
+category: tidb
+difficulty: 2
+versions: ["tidb"]
+tags: ["分区表", "Partition", "Pruning", "RANGE", "HASH", "LIST", "分区裁剪"]
+description: |
+  TiDB RANGE/HASH/LIST 分区与 MySQL 高度兼容，但 Partition Pruning 与 Region 分布
+  的结合是 TiDB 独有的优化维度。Dynamic Pruning 模式通过分区裁剪大幅减少扫描量。

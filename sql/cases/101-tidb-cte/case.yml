@@ -1,0 +1,8 @@
+title: TiDB CTE 与临时表优化
+category: tidb
+difficulty: 2
+versions: ["tidb"]
+tags: ["CTE", "WITH RECURSIVE", "临时表", "Materialize", "递归查询"]
+description: |
+  TiDB 支持 WITH 和 WITH RECURSIVE 语法，CTE 在多次引用时默认会物化为临时结果，
+  避免重复计算。与 MySQL 8.0 CTE 的主要差异在于物化策略和递归深度限制。

@@ -8,7 +8,7 @@
 [![TiDB](https://img.shields.io/badge/TiDB-v7.5.1-purple.svg)](https://pingcap.com/)
 [![CI](https://github.com/slowleelab/sql-lab/actions/workflows/validate-sql.yml/badge.svg)](https://github.com/slowleelab/sql-lab/actions)
 [![PRs Welcome](https://img.shields.io/badge/PRs-welcome-brightgreen.svg)](CONTRIBUTING.md)
-[![Cases](https://img.shields.io/badge/cases-94-orange.svg)](docs/cases/)
+[![Cases](https://img.shields.io/badge/cases-102-orange.svg)](docs/cases/)
 
 📖 **在线文档**：[https://slowleelab.github.io/sql-lab/](https://slowleelab.github.io/sql-lab/)  
 🤖 **AI 对话**：接入 DeepWiki，可直接与仓库对话提问
@@ -61,7 +61,7 @@ type: ref    rows: 12    Extra: Using index
 
 ## 📚 案例总览
 
-共 **94 个精选案例**，覆盖 MySQL + TiDB 优化的八大核心场景：
+共 **102 个精选案例**，覆盖 MySQL + TiDB 优化的八大核心场景：
 
 ### 一、索引设计与失效（18 个）
 | # | 案例 | 难度 | 版本 |
@@ -171,7 +171,7 @@ type: ref    rows: 12    Extra: Using index
 | 79 | [大批量 UPDATE 分批优化](docs/cases/optimizer/79-batch-update.md) | ⭐⭐ | 5.7 & 8.0 |
 | 80 | [慢查询排查方法论](docs/cases/optimizer/80-slow-query-diagnosis.md) | ⭐⭐⭐ | 5.7 & 8.0 |
 
-### 八、TiDB 分布式优化（14 个）
+### 八、TiDB 分布式优化（22 个）
 | # | 案例 | 难度 | 版本 |
 |---|------|------|------|
 | 81 | [TiDB EXPLAIN 算子树解读](docs/cases/tidb/81-tidb-explain-tree.md) | ⭐⭐ | TiDB |
@@ -188,6 +188,14 @@ type: ref    rows: 12    Extra: Using index
 | 92 | [TiDB 在线 DDL 机制](docs/cases/tidb/92-tidb-online-ddl.md) | ⭐⭐ | TiDB |
 | 93 | [TiDB Plan Cache 执行计划缓存](docs/cases/tidb/93-tidb-plan-cache.md) | ⭐⭐ | TiDB |
 | 94 | [TiDB Stale Read 历史读优化](docs/cases/tidb/94-tidb-stale-read.md) | ⭐⭐ | TiDB |
+| 95 | [Region 热点调度与 Split 策略](docs/cases/tidb/95-region-hotspot.md) | ⭐⭐⭐ | TiDB |
+| 96 | [SQL Binding 执行计划锁定 (SPM)](docs/cases/tidb/96-sql-binding.md) | ⭐⭐⭐ | TiDB |
+| 97 | [TiDB 分区表优化](docs/cases/tidb/97-tidb-partition.md) | ⭐⭐ | TiDB |
+| 98 | [TiDB Dashboard 诊断实战](docs/cases/tidb/98-tidb-dashboard.md) | ⭐⭐ | TiDB |
+| 99 | [TiDB 锁机制深度解析](docs/cases/tidb/99-tidb-lock-deep.md) | ⭐⭐⭐ | TiDB |
+| 100 | [分布式 Sequence 自增方案](docs/cases/tidb/100-tidb-sequence.md) | ⭐⭐ | TiDB |
+| 101 | [TiDB CTE 与临时表优化](docs/cases/tidb/101-tidb-cte.md) | ⭐⭐ | TiDB |
+| 102 | [TiDB Cost Model 与优化器 Hint 进阶](docs/cases/tidb/102-tidb-cost-hint.md) | ⭐⭐⭐ | TiDB |
 
 ## 🛠️ 项目结构
 
@@ -196,7 +204,7 @@ sql-lab/
 ├── docs/                  # VitePress 文档站
 │   ├── .vitepress/        # 配置 + 自定义组件
 │   ├── guide/             # 使用指南
-│   └── cases/             # 94 篇案例文档
+│   └── cases/             # 102 篇案例文档
 ├── sql/cases/             # 可运行 SQL（schema + seed + bad + good）
 ├── scripts/run-case.sh    # 一键运行案例
 ├── docker-compose.yml     # MySQL 5.7 + 8.0 + TiDB

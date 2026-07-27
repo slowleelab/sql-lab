@@ -1,0 +1,9 @@
+title: TiDB Cost Model 与优化器 Hint 进阶
+category: tidb
+difficulty: 3
+versions: ["tidb"]
+tags: ["Hint", "优化器", "Cost Model", "agg_push_down", "limit_push_down", "hint"]
+description: |
+  TiDB 提供 10+ 种 SQL Hint 控制执行计划，配合 tidb_opt_agg_push_down 等变量
+  精细调整优化器行为。本案例演示核心 Hint 用法、优化器开关效果、
+  以及 cost 公式各因子的影响。

@@ -1,0 +1,9 @@
+title: TiDB Dashboard 诊断实战
+category: tidb
+difficulty: 2
+versions: ["tidb"]
+tags: ["Dashboard", "TopSQL", "Key Visualizer", "慢查询", "诊断", "Statement Analysis"]
+description: |
+  TiDB Dashboard 提供了 TopSQL、Key Visualizer、Statement Analysis 等可视化诊断工具。
+  本案例演示如何利用 Dashboard 快速定位慢 SQL、写热点和 CPU 瓶颈，
+  对比 MySQL Performance Schema 的传统排查路径。
