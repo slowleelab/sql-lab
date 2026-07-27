@@ -1,0 +1,10 @@
+title: TiDB 在线 DDL 机制
+category: tidb
+difficulty: 2
+versions: ["tidb"]
+tags: ["DDL", "Online Schema Change", "Schema Change", "ingest", "backfill", "多阶段"]
+description: |
+  TiDB DDL 默认不阻塞读写操作，通过多阶段滑移（State Transition）协议实现。
+  与 MySQL 不同，TiDB 不需要 ALGORITHM=INPLACE/COPY 的选择，
+  且 6.x+ 引入 ingest 模式加速索引构建。
+  本案例演示 TiDB DDL 的最佳实践和与 MySQL 的差异对比。

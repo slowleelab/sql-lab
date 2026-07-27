@@ -8,7 +8,7 @@
 [![TiDB](https://img.shields.io/badge/TiDB-v7.5.1-purple.svg)](https://pingcap.com/)
 [![CI](https://github.com/slowleelab/sql-lab/actions/workflows/validate-sql.yml/badge.svg)](https://github.com/slowleelab/sql-lab/actions)
 [![PRs Welcome](https://img.shields.io/badge/PRs-welcome-brightgreen.svg)](CONTRIBUTING.md)
-[![Cases](https://img.shields.io/badge/cases-86-orange.svg)](docs/cases/)
+[![Cases](https://img.shields.io/badge/cases-94-orange.svg)](docs/cases/)
 
 📖 **在线文档**：[https://slowleelab.github.io/sql-lab/](https://slowleelab.github.io/sql-lab/)  
 🤖 **AI 对话**：接入 DeepWiki，可直接与仓库对话提问
@@ -61,7 +61,7 @@ type: ref    rows: 12    Extra: Using index
 
 ## 📚 案例总览
 
-共 **86 个精选案例**，覆盖 MySQL + TiDB 优化的八大核心场景：
+共 **94 个精选案例**，覆盖 MySQL + TiDB 优化的八大核心场景：
 
 ### 一、索引设计与失效（18 个）
 | # | 案例 | 难度 | 版本 |
@@ -171,7 +171,7 @@ type: ref    rows: 12    Extra: Using index
 | 79 | [大批量 UPDATE 分批优化](docs/cases/optimizer/79-batch-update.md) | ⭐⭐ | 5.7 & 8.0 |
 | 80 | [慢查询排查方法论](docs/cases/optimizer/80-slow-query-diagnosis.md) | ⭐⭐⭐ | 5.7 & 8.0 |
 
-### 八、TiDB 分布式优化（6 个）
+### 八、TiDB 分布式优化（14 个）
 | # | 案例 | 难度 | 版本 |
 |---|------|------|------|
 | 81 | [TiDB EXPLAIN 算子树解读](docs/cases/tidb/81-tidb-explain-tree.md) | ⭐⭐ | TiDB |
@@ -180,6 +180,14 @@ type: ref    rows: 12    Extra: Using index
 | 84 | [TiDB 统计信息管理](docs/cases/tidb/84-tidb-statistics.md) | ⭐⭐⭐ | TiDB |
 | 85 | [TiDB 事务模型对比](docs/cases/tidb/85-tidb-transaction.md) | ⭐⭐⭐ | TiDB |
 | 86 | [IndexLookUp 回表与覆盖索引](docs/cases/tidb/86-index-lookup.md) | ⭐⭐ | TiDB |
+| 87 | [TiFlash 列存与 MPP 分析加速](docs/cases/tidb/87-tiflash-mpp.md) | ⭐⭐⭐ | TiDB |
+| 88 | [TiDB GC 机制与长事务影响](docs/cases/tidb/88-tidb-gc.md) | ⭐⭐⭐ | TiDB |
+| 89 | [Follower Read 读写分离](docs/cases/tidb/89-follower-read.md) | ⭐⭐ | TiDB |
+| 90 | [TiDB 内存控制与 OOM 防护](docs/cases/tidb/90-tidb-memory-oom.md) | ⭐⭐⭐ | TiDB |
+| 91 | [TiDB Join 算法选择](docs/cases/tidb/91-tidb-join-algorithms.md) | ⭐⭐⭐ | TiDB |
+| 92 | [TiDB 在线 DDL 机制](docs/cases/tidb/92-tidb-online-ddl.md) | ⭐⭐ | TiDB |
+| 93 | [TiDB Plan Cache 执行计划缓存](docs/cases/tidb/93-tidb-plan-cache.md) | ⭐⭐ | TiDB |
+| 94 | [TiDB Stale Read 历史读优化](docs/cases/tidb/94-tidb-stale-read.md) | ⭐⭐ | TiDB |
 
 ## 🛠️ 项目结构
 
@@ -188,7 +196,7 @@ sql-lab/
 ├── docs/                  # VitePress 文档站
 │   ├── .vitepress/        # 配置 + 自定义组件
 │   ├── guide/             # 使用指南
-│   └── cases/             # 86 篇案例文档
+│   └── cases/             # 94 篇案例文档
 ├── sql/cases/             # 可运行 SQL（schema + seed + bad + good）
 ├── scripts/run-case.sh    # 一键运行案例
 ├── docker-compose.yml     # MySQL 5.7 + 8.0 + TiDB

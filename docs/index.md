@@ -4,7 +4,7 @@ layout: home
 hero:
   name: "SQL Lab"
   text: "能跑、能量化对比的 MySQL 优化实战集"
-  tagline: 86 个精选案例 · 百万级真实数据 · Docker 一键复现 · bad/good EXPLAIN 量化对比
+  tagline: 94 个精选案例 · 百万级真实数据 · Docker 一键复现 · bad/good EXPLAIN 量化对比
   actions:
     - theme: brand
       text: 快速开始

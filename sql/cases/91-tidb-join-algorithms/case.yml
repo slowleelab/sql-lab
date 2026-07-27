@@ -1,0 +1,10 @@
+title: TiDB Join 算法选择
+category: tidb
+difficulty: 3
+versions: ["tidb"]
+tags: ["Join", "Hash Join", "Index Join", "Merge Join", "IndexLookUpJoin", "Broadcast Join"]
+description: |
+  TiDB 支持多种 Join 算法：Hash Join（哈希连接）、Index Join/INLJ（索引嵌套循环连接）、
+  Merge Join（排序合并连接）。优化器根据表大小、索引可用性、是否等值连接等条件选择算法，
+  错误的算法选择可能导致查询性能下降 10-100 倍。
+  本案例演示各 Join 算法的 EXPLAIN 特征和优化策略。

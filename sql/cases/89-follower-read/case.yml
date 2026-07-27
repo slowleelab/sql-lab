@@ -1,0 +1,10 @@
+title: Follower Read 读写分离
+category: tidb
+difficulty: 2
+versions: ["tidb"]
+tags: ["Follower Read", "读写分离", "Raft", "副本", "tidb_replica_read", "Stale Read"]
+description: |
+  TiDB 基于 Raft 协议的多副本机制允许从 Follower 节点读取数据，
+  通过 tidb_replica_read 参数和 SQL Hint 实现读写分离。
+  Follower Read 可大幅分担 Leader 读压力，但需注意 Follower 数据可能有亚秒级延迟。
+  本案例演示 Follower Read 的配置方法和效果验证。

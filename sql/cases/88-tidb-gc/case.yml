@@ -1,0 +1,10 @@
+title: TiDB GC 机制与长事务影响
+category: tidb
+difficulty: 3
+versions: ["tidb"]
+tags: ["GC", "MVCC", "垃圾回收", "长事务", "safe point", "Lock View"]
+description: |
+  TiDB 采用 MVCC 多版本并发控制，DELETE/UPDATE 不会立即释放空间，
+  由 GC 后台清理历史版本。当存在长事务时，GC safe point 无法推进，
+  导致 DELETE 空间无法回收、版本堆积、磁盘膨胀。
+  本案例演示 GC 机制、长事务对 GC 的影响及排查方法。

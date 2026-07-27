@@ -1,0 +1,9 @@
+title: TiDB Plan Cache 执行计划缓存
+category: tidb
+difficulty: 2
+versions: ["tidb"]
+tags: ["Plan Cache", "Prepared Statement", "执行计划缓存", "prepare", "参数化", "OLTP"]
+description: |
+  TiDB 支持对 Prepared Statement 的执行计划缓存，避免每次都重新解析和优化。
+  在高并发 OLTP 场景下，Plan Cache 可显著降低优化器 CPU 开销。
+  本案例演示 Plan Cache 的启用、命中监控、注意事项及与 MySQL Query Cache 的差异。

@@ -1,0 +1,9 @@
+title: TiFlash 列存与 MPP 分析加速
+category: tidb
+difficulty: 3
+versions: ["tidb"]
+tags: ["TiFlash", "MPP", "列存", "HTAP", "OLAP", "列式存储"]
+description: |
+  TiDB 支持通过 TiFlash 列式存储副本将 OLAP 查询从行存（TiKV）切换到列存。
+  配合 MPP 引擎可将聚合算子分布式执行，大表 GROUP BY 查询加速 10-50 倍。
+  本案例演示 TiFlash 的创建、MPP 模式的对比及性能差异。

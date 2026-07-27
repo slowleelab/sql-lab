@@ -1,0 +1,10 @@
+title: TiDB Stale Read 历史读优化
+category: tidb
+difficulty: 2
+versions: ["tidb"]
+tags: ["Stale Read", "AS OF TIMESTAMP", "历史读", "MVCC", "有界延迟", "快照读"]
+description: |
+  TiDB 支持 AS OF TIMESTAMP 和 tidb_read_staleness 读取过去时间点的数据快照。
+  Stale Read 不阻塞写事务且不会被写事务阻塞，适合报表查询、批量导出、
+  审计查询等容忍亚秒级延迟的读操作。
+  本案例演示 Stale Read 的语法、使用场景和性能效果。

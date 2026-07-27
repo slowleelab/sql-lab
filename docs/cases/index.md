@@ -1,6 +1,6 @@
 # 案例总览
 
-共 **86 个精选案例**，覆盖 MySQL + TiDB 优化的八大核心场景。每个案例都带真实数据，可一键复现。
+共 **94 个精选案例**，覆盖 MySQL + TiDB 优化的八大核心场景。每个案例都带真实数据，可一键复现。
 
 ## 一、索引设计与失效（18 个）
 
@@ -116,7 +116,7 @@
 | 78 | [派生条件下推优化](./optimizer/78-derived-condition-pushdown) | ⭐⭐⭐ | 5.7 & 8.0 |
 | 79 | [大批量 UPDATE 分批优化](./optimizer/79-batch-update) | ⭐⭐ | 5.7 & 8.0 |
 | 80 | [慢查询排查方法论](./optimizer/80-slow-query-diagnosis) | ⭐⭐⭐ | 5.7 & 8.0 |
-## 八、TiDB 分布式优化（6 个）
+## 八、TiDB 分布式优化（14 个）
 
 | # | 案例 | 难度 | 版本 |
 |---|------|:----:|:----:|
@@ -126,6 +126,14 @@
 | 84 | [TiDB 统计信息管理](./tidb/84-tidb-statistics) | ⭐⭐⭐ | TiDB |
 | 85 | [TiDB 事务模型对比](./tidb/85-tidb-transaction) | ⭐⭐⭐ | TiDB |
 | 86 | [IndexLookUp 回表与覆盖索引](./tidb/86-index-lookup) | ⭐⭐ | TiDB |
+| 87 | [TiFlash 列存与 MPP 分析加速](./tidb/87-tiflash-mpp) | ⭐⭐⭐ | TiDB |
+| 88 | [TiDB GC 机制与长事务影响](./tidb/88-tidb-gc) | ⭐⭐⭐ | TiDB |
+| 89 | [Follower Read 读写分离](./tidb/89-follower-read) | ⭐⭐ | TiDB |
+| 90 | [TiDB 内存控制与 OOM 防护](./tidb/90-tidb-memory-oom) | ⭐⭐⭐ | TiDB |
+| 91 | [TiDB Join 算法选择](./tidb/91-tidb-join-algorithms) | ⭐⭐⭐ | TiDB |
+| 92 | [TiDB 在线 DDL 机制](./tidb/92-tidb-online-ddl) | ⭐⭐ | TiDB |
+| 93 | [TiDB Plan Cache 执行计划缓存](./tidb/93-tidb-plan-cache) | ⭐⭐ | TiDB |
+| 94 | [TiDB Stale Read 历史读优化](./tidb/94-tidb-stale-read) | ⭐⭐ | TiDB |
 
 ---
 

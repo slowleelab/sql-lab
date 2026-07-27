@@ -1,0 +1,10 @@
+title: TiDB 内存控制与 OOM 防护
+category: tidb
+difficulty: 3
+versions: ["tidb"]
+tags: ["OOM", "内存控制", "tidb_mem_quota_query", "溢出磁盘", "HashAgg", "内存监控"]
+description: |
+  TiDB 的 HashAgg/HashJoin/Sort 等算子需在内存中运算，
+  超出 tidb_mem_quota_query 限制会触发 OOM 或报错中断。
+  通过调整内存限额、启用临时磁盘溢出、监控内存使用，
+  可防止 OOM 并保障查询稳定性。本案例演示 OOM 排查与优化策略。
