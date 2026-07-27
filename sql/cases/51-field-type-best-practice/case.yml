@@ -1,0 +1,9 @@
+title: 字段类型与长度选择最佳实践
+category: ddl
+difficulty: 2
+versions: ["5.7", "8.0"]
+tags: ["字段类型", "VARCHAR", "CHAR", "TINYINT", "DECIMAL", "表设计"]
+description: |
+  表设计阶段字段类型选择不当导致存储浪费、索引膨胀、查询变慢。
+  本案例对比 bad 表（类型选择随意）和 good 表（类型精心选择），
+  量化存储空间、索引大小、查询性能的差异。

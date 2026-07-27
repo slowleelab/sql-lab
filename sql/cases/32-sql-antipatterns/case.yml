@@ -1,0 +1,8 @@
+title: SQL 反模式与正确写法量化对比
+category: query-rewrite
+difficulty: 2
+versions: ["5.7", "8.0"]
+tags: ["反模式", "SELECT *", "OR条件", "COUNT", "覆盖索引"]
+description: |
+  三种常见 SQL 反模式的量化对比：SELECT * 的回表代价、OR 条件的 index_merge 低效、
+  COUNT(col) 的语义错误。每种反模式都给出正确写法和量化性能提升。

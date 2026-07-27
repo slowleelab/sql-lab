@@ -1,0 +1,9 @@
+title: 时间格式使用错误与最佳实践
+category: query-rewrite
+difficulty: 2
+versions: ["5.7", "8.0"]
+tags: ["时间格式", "VARCHAR存时间", "DATE_FORMAT", "范围查询", "BETWEEN"]
+description: |
+  字符串存时间、DATE_FORMAT 做范围查询、BETWEEN 字符串日期边界陷阱。
+  本案例演示三种常见时间格式反模式的性能与正确性问题，
+  以及用原生时间类型 + 闭开区间范围查询的最佳实践。
