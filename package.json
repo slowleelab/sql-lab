@@ -6,9 +6,12 @@
   "scripts": {
     "docs:dev": "vitepress dev docs",
     "docs:build": "vitepress build docs",
-    "docs:preview": "vitepress preview docs"
+    "docs:preview": "vitepress preview docs",
+    "docs:pdf": "node scripts/generate-pdf.js"
   },
   "devDependencies": {
+    "pdf-lib": "^1.17.1",
+    "puppeteer": "^24.0.0",
     "vitepress": "^1.5.0",
     "vue": "^3.5.0"
   },
