@@ -12,6 +12,9 @@ hero:
     - theme: alt
       text: 浏览案例
       link: /cases/
+    - theme: alt
+      text: 📥 PDF 下载
+      link: /sql-lab-cases.pdf
 
 features:
   - title: 真能跑

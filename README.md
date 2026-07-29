@@ -11,6 +11,7 @@
 [![Cases](https://img.shields.io/badge/cases-102-orange.svg)](docs/cases/)
 
 📖 **在线文档**：[https://slowleelab.github.io/sql-lab/](https://slowleelab.github.io/sql-lab/)  
+📥 **PDF 下载**：[sql-lab-cases.pdf](https://slowleelab.github.io/sql-lab/sql-lab-cases.pdf) (88 MB, 173 页)  
 🤖 **AI 对话**：接入 DeepWiki，可直接与仓库对话提问
 
 > 如果这个项目对你有帮助，欢迎 ⭐ Star 支持！你的 Star 是持续更新的动力。

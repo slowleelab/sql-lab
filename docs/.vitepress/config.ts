@@ -4,6 +4,7 @@ import { defineConfig } from 'vitepress'
 const nav = [
   { text: '指南', link: '/guide/introduction' },
   { text: '案例', link: '/cases/' },
+  { text: '📥 PDF', link: '/sql-lab-cases.pdf' },
   { text: 'GitHub', link: 'https://github.com/slowleelab/sql-lab' },
 ]
 
