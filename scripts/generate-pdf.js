@@ -6,29 +6,61 @@
  *   第一轮 — 合并所有页（封面 + 目录 + 指南 + 案例）
  *   第二轮 — 重新加载，添加书签/大纲
  *
- * 关键：pdf-lib 在对象流压缩时丢弃自定义 Outline 对象，
- * 必须使用 useObjectStreams: false 保存。
+ * 关键：Outline 对象通过 PDFDict + ctx.assign() 正确注册到 PDF 上下文，
+ * 因此可以使用 useObjectStreams: true 让 pdf-lib 去重字体和资源（节省 ~40% 体积）。
  */
-import { writeFileSync, existsSync, mkdirSync, readdirSync, readFileSync, unlinkSync } from 'fs'
-import { resolve, dirname } from 'path'
+import { writeFileSync, existsSync, mkdirSync, unlinkSync, readdirSync, readFileSync, realpathSync } from 'fs'
+import { resolve, dirname, sep } from 'path'
 import { fileURLToPath } from 'url'
 import { createServer } from 'http'
 import { readFile } from 'fs/promises'
 import puppeteer from 'puppeteer'
-import { PDFDocument, PDFName, PDFString, PDFDict, PDFNumber, PDFRef } from 'pdf-lib'
+import { PDFDocument, PDFName, PDFString, PDFDict, PDFNumber } from 'pdf-lib'
 
-const RD = resolve(dirname(fileURLToPath(import.meta.url)), '..')
-const DIST = resolve(RD, 'docs/.vitepress/dist')
-const OUT = resolve(RD, 'docs/public/sql-lab-cases.pdf')
-const TMP = resolve(RD, 'docs/public/.sql-lab-cases-merged.pdf')
+const ROOT_DIR = resolve(dirname(fileURLToPath(import.meta.url)), '..')
+const DIST = resolve(ROOT_DIR, 'docs/.vitepress/dist')
+const OUT = resolve(ROOT_DIR, 'docs/public/sql-lab-cases.pdf')
+const TMP = resolve(ROOT_DIR, 'docs/public/.sql-lab-cases-merged.pdf')
 const AUTHOR = '李强'
 const PORT = 4175
+const BASE_PREFIX = '/sql-lab/' // VitePress base，必须与 docs/.vitepress/config.ts 一致
 
-// 将 JS 字符串编码为 PDF UTF-16 BE 字符串（含 BOM 0xFEFF）以正确显示中文
-// 关键：必须转义 PDF 字符串中的特殊字符 (\, (, ))
+// ─── 工具：MIME 类型 ─────────────────────────────────
+const MIME = {
+  '.html': 'text/html; charset=utf-8',
+  '.js': 'text/javascript; charset=utf-8',
+  '.mjs': 'text/javascript; charset=utf-8',
+  '.css': 'text/css; charset=utf-8',
+  '.json': 'application/json; charset=utf-8',
+  '.svg': 'image/svg+xml',
+  '.png': 'image/png',
+  '.jpg': 'image/jpeg',
+  '.jpeg': 'image/jpeg',
+  '.gif': 'image/gif',
+  '.webp': 'image/webp',
+  '.woff': 'font/woff',
+  '.woff2': 'font/woff2',
+  '.ttf': 'font/ttf',
+  '.otf': 'font/otf',
+  '.eot': 'application/vnd.ms-fontobject',
+  '.ico': 'image/x-icon',
+  '.txt': 'text/plain; charset=utf-8',
+}
+function mimeFor(fp) {
+  const i = fp.lastIndexOf('.')
+  return MIME[fp.slice(i)] || 'application/octet-stream'
+}
+
+// ─── 工具：HTML 转义 ─────────────────────────────────
+const HTML_ESC = { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }
+function escHtml(s) {
+  return String(s ?? '').replace(/[&<>"']/g, c => HTML_ESC[c])
+}
+
+// ─── 工具：PDF UTF-16 BE 字符串（含 BOM）─ 用于中文书签
+// PDF 字符串中的特殊字符 (\, (, ), 控制字符) 必须转义
 function pdfStr(s) {
-  if (s == null) return PDFString.of('')
-  // 直接 ASCII 字符可保持原样（但仍需转义 \ ( )）
+  if (s == null || s === '') return PDFString.of('')
   let raw
   if (/^[\x00-\x7F]*$/.test(s)) {
     raw = s
@@ -40,17 +72,25 @@ function pdfStr(s) {
       buf[2 + i * 2] = (c >> 8) & 0xFF
       buf[2 + i * 2 + 1] = c & 0xFF
     }
-    // 转为 binary string：每个字节 1 个 char (Latin-1)
     raw = buf.toString('binary')
   }
-  // 转义 PDF 字符串特殊字符
-  // 在 binary string 中，\ 是 0x5C, ( 是 0x28, ) 是 0x29
-  // asBytes() 会将 \\ 解释为单个 \，所以需要双重转义
+  // 转义 PDF 字符串中的特殊字符
   let escaped = ''
   for (let i = 0; i < raw.length; i++) {
     const c = raw[i]
+    const code = raw.charCodeAt(i)
     if (c === '\\' || c === '(' || c === ')') {
       escaped += '\\' + c
+    } else if (code === 0x0A) {
+      escaped += '\\n'
+    } else if (code === 0x0D) {
+      escaped += '\\r'
+    } else if (code === 0x09) {
+      escaped += '\\t'
+    } else if (code === 0x08) {
+      escaped += '\\b'
+    } else if (code === 0x0C) {
+      escaped += '\\f'
     } else {
       escaped += c
     }
@@ -59,40 +99,48 @@ function pdfStr(s) {
 }
 
 const CATEGORIES = [
-  { d: 'indexing', n: '一、索引设计与失效', s: 1, e: 18 },
-  { d: 'query-rewrite', n: '二、查询改写', s: 19, e: 32 },
-  { d: 'join', n: '三、JOIN 优化', s: 33, e: 41 },
-  { d: 'ddl', n: '四、DDL 与大表', s: 42, e: 51 },
-  { d: 'architecture', n: '五、架构级优化', s: 52, e: 62 },
-  { d: 'transaction', n: '六、事务与锁', s: 63, e: 71 },
-  { d: 'optimizer', n: '七、优化器与 8.0 新特性', s: 72, e: 80 },
-  { d: 'tidb', n: '八、TiDB 分布式优化', s: 81, e: 102 },
+  { dir: 'indexing',       name: '一、索引设计与失效',     start: 1,  end: 18  },
+  { dir: 'query-rewrite',  name: '二、查询改写',           start: 19, end: 32  },
+  { dir: 'join',           name: '三、JOIN 优化',          start: 33, end: 41  },
+  { dir: 'ddl',            name: '四、DDL 与大表',         start: 42, end: 51  },
+  { dir: 'architecture',   name: '五、架构级优化',         start: 52, end: 62  },
+  { dir: 'transaction',    name: '六、事务与锁',           start: 63, end: 71  },
+  { dir: 'optimizer',      name: '七、优化器与 8.0 新特性', start: 72, end: 80 },
+  { dir: 'tidb',           name: '八、TiDB 分布式优化',    start: 81, end: 102 },
 ]
 
 function collect() {
   const guides = [
-    { u: '/guide/introduction', t: '项目介绍' },
-    { u: '/guide/quick-start', t: '快速开始' },
-    { u: '/guide/how-to-read', t: '如何阅读案例' },
+    { url: '/guide/introduction', title: '项目介绍' },
+    { url: '/guide/quick-start',  title: '快速开始' },
+    { url: '/guide/how-to-read',  title: '如何阅读案例' },
   ]
+  const seenNums = new Set()
   const cases = []
-  for (const c of CATEGORIES) {
-    const dir = resolve(DIST, 'cases', c.d)
-    if (!existsSync(dir)) continue
-    for (const f of readdirSync(dir).filter(x => x.endsWith('.html'))) {
+  for (const cat of CATEGORIES) {
+    const dir = resolve(DIST, 'cases', cat.dir)
+    if (!existsSync(dir)) {
+      console.warn(`  ⚠️  分类目录不存在: ${cat.dir}`)
+      continue
+    }
+    for (const f of readdirSync(dir).filter(x => x.endsWith('.html')).sort()) {
       const slug = f.replace('.html', '')
       const m = slug.match(/^(\d+)/)
       if (!m) continue
       const num = parseInt(m[1], 10)
-      if (num >= c.s && num <= c.e) {
-        const fp = resolve(dir, f)
-        const content = readFileSync(fp, 'utf-8')
-        if (content.includes('http-equiv="refresh"')) continue
-        if (cases.find(x => x.num === num)) continue
-        const tm = content.match(/<title>([^<]+)<\/title>/)
-        const title = tm ? tm[1].replace(/\s*\|\s*SQL Lab$/, '').trim() : slug.replace(/^\d+-/, '').replace(/-/g, ' ')
-        cases.push({ u: `/cases/${c.d}/${slug}`, num, cat: c.n, slug, title })
+      if (num < cat.start || num > cat.end) continue
+      if (seenNums.has(num)) {
+        console.warn(`  ⚠️  重复的案例编号 #${num} (${slug})，已跳过`)
+        continue
       }
+      const fp = resolve(dir, f)
+      const content = readFileSync(fp, 'utf-8')
+      if (content.includes('http-equiv="refresh"')) continue // 跳过重定向占位
+      const tm = content.match(/<title>([^<]+)<\/title>/)
+      const rawTitle = tm ? tm[1].replace(/\s*\|\s*SQL Lab$/, '').trim() : ''
+      const title = rawTitle || slug.replace(/^\d+-/, '').replace(/-/g, ' ') || `案例 ${num}`
+      seenNums.add(num)
+      cases.push({ url: `/cases/${cat.dir}/${slug}`, num, cat: cat.name, slug, title })
     }
   }
   cases.sort((a, b) => a.num - b.num)
@@ -102,22 +150,42 @@ function collect() {
 function startServer() {
   return new Promise((ok, fail) => {
     const s = createServer(async (req, res) => {
-      let url = new URL(req.url, `http://localhost:${PORT}`).pathname
-      if (url.startsWith('/sql-lab/')) url = url.slice(9)
-      if (!url || url === '/') url = '/index.html'
-      if (!url.startsWith('/')) url = '/' + url
-      let fp = resolve(DIST, `.${url}`)
-      if (!existsSync(fp)) { fp += '.html'; if (!existsSync(fp)) fp = resolve(DIST, `.${url}/index.html`) }
       try {
+        let url = new URL(req.url, `http://localhost:${PORT}`).pathname
+        // 剥离 VitePress base 前缀（保留前导 /）
+        if (url.startsWith(BASE_PREFIX)) {
+          url = '/' + url.slice(BASE_PREFIX.length)
+        }
+        if (!url || url === '/') url = '/index.html'
+        if (!url.startsWith('/')) url = '/' + url
+
+        // 防路径穿越：解码后必须仍在 DIST 之内
+        const decoded = decodeURIComponent(url)
+        let fp = resolve(DIST, `.${decoded}`)
+        const realDist = realpathSync(DIST)
+        if (!fp.startsWith(realDist + sep) && fp !== realDist) {
+          res.writeHead(403); res.end('403'); return
+        }
+        if (!existsSync(fp)) {
+          fp += '.html'
+          if (!existsSync(fp)) fp = resolve(DIST, `.${decoded}/index.html`)
+          if (!existsSync(fp)) { res.writeHead(404); res.end('404'); return }
+        }
         const ct = await readFile(fp)
-        const ctType = fp.endsWith('.html') ? 'text/html' : fp.endsWith('.js') ? 'text/javascript' : fp.endsWith('.css') ? 'text/css' : 'text/plain'
-        res.writeHead(200, { 'Content-Type': ctType })
+        res.writeHead(200, { 'Content-Type': mimeFor(fp), 'Content-Length': ct.length })
         res.end(ct)
-      } catch { res.writeHead(404); res.end('404') }
+      } catch (err) {
+        if (!res.headersSent) res.writeHead(500); res.end('500')
+        console.error(`  [server] ${req.url} -> ${err.message}`)
+      }
     })
     s.listen(PORT, () => ok(s))
     s.on('error', fail)
   })
+}
+
+function closeServer(s) {
+  return new Promise(r => s.close(() => r()))
 }
 
 async function htmlPdf(browser, html) {
@@ -132,9 +200,9 @@ async function htmlPdf(browser, html) {
 async function pagePdf(browser, url, i, t) {
   const p = await browser.newPage()
   try {
-    const full = `http://localhost:${PORT}/sql-lab/${url.replace(/^\//, '')}`
+    const full = `http://localhost:${PORT}${BASE_PREFIX}${url.replace(/^\//, '')}`
     process.stdout.write(`  [${String(i).padStart(3)}/${t}] ${url.slice(0, 60).padEnd(62)}\r`)
-    await p.goto(full, { waitUntil: 'networkidle0', timeout: 30000 })
+    await p.goto(full, { waitUntil: 'networkidle0', timeout: 60000 })
     await p.evaluate(() => {
       for (const s of '.VPNav,.VPSidebar,.VPLocalNav,.VPFooter,.DocFooter,.edit-link,.prev-next,.VPDocAside,.VPNavScreen,.VPSkipLink'.split(',')) {
         document.querySelectorAll(s).forEach(e => e.remove())
@@ -158,7 +226,7 @@ async function pagePdf(browser, url, i, t) {
   } finally { await p.close() }
 }
 
-function coverHtml() {
+function coverHtml(casesTotal) {
   return `<!DOCTYPE html><html lang="zh-CN"><head><meta charset="utf-8"><style>
 *{margin:0;padding:0;box-sizing:border-box}
 body{font-family:"PingFang SC","Hiragino Sans GB","Microsoft YaHei",sans-serif;display:flex;align-items:center;justify-content:center;width:210mm;height:297mm;background:linear-gradient(150deg,#0a1f14 0%,#163a26 30%,#265a3a 60%,#3a7a4e 100%);color:#fff}
@@ -172,16 +240,16 @@ body{font-family:"PingFang SC","Hiragino Sans GB","Microsoft YaHei",sans-serif;d
 .c .info span{margin:0 6px;padding:3px 14px;border:1px solid rgba(255,255,255,.3);border-radius:14px;white-space:nowrap}
 .c .au{font-size:28px;font-weight:600;letter-spacing:8px;margin-top:32px;opacity:.95}
 .c .ft{position:absolute;bottom:36px;left:0;right:0;text-align:center;font-size:11px;opacity:.4;letter-spacing:2px}
-</style></head><body><div class="c"><div class="ic">🐳</div><h1>SQL Lab</h1><div class="sub">MySQL + TiDB</div><div class="st">优化实战案例集</div><div class="dv"></div><div class="info"><span>102 个案例</span><span>8 大场景</span><span>Docker 复现</span><br><span>MySQL 5.7 &amp; 8.0</span><span>TiDB v7.5</span></div><div class="au">${AUTHOR}</div><div class="ft">2026 · https://slowleelab.github.io/sql-lab/</div></div></body></html>`
+</style></head><body><div class="c"><div class="ic">🐳</div><h1>SQL Lab</h1><div class="sub">MySQL + TiDB</div><div class="st">优化实战案例集</div><div class="dv"></div><div class="info"><span>${casesTotal} 个案例</span><span>${CATEGORIES.length} 大场景</span><span>Docker 复现</span><br><span>MySQL 5.7 &amp; 8.0</span><span>TiDB v7.5</span></div><div class="au">${escHtml(AUTHOR)}</div><div class="ft">2026 · https://slowleelab.github.io/sql-lab/</div></div></body></html>`
 }
 
 function tocHtml(guides, cases) {
   let rows = ''
-  for (const g of guides) rows += `<tr class="gd"><td></td><td>${g.t}</td></tr>`
-  let lc = ''
+  for (const g of guides) rows += `<tr class="gd"><td></td><td>${escHtml(g.title)}</td></tr>`
+  let lastCat = ''
   for (const c of cases) {
-    if (c.cat !== lc) { rows += `<tr class="ct"><td colspan="2">${c.cat}</td></tr>`; lc = c.cat }
-    rows += `<tr><td class="nm">${String(c.num).padStart(2, '0')}</td><td>${c.title}</td></tr>`
+    if (c.cat !== lastCat) { rows += `<tr class="ct"><td colspan="2">${escHtml(c.cat)}</td></tr>`; lastCat = c.cat }
+    rows += `<tr><td class="nm">${String(c.num).padStart(2, '0')}</td><td>${escHtml(c.title)}</td></tr>`
   }
   return `<!DOCTYPE html><html lang="zh-CN"><head><meta charset="utf-8"><style>
 *{margin:0;padding:0;box-sizing:border-box}
@@ -197,9 +265,10 @@ td.nm{width:32px;text-align:right;color:#999;padding-right:10px;font-size:10.5px
 
 /**
  * 为合并后的 PDF 添加书签/大纲
- * 使用 PDFDict 对象 + ctx.assign(ref, dict) + useObjectStreams: false
+ * 使用 PDFDict + ctx.assign(ref, dict) 正确注册到 PDF 上下文，
+ * 这样第二轮保存时使用 useObjectStreams: true 也能保留所有 Outline 对象。
  *
- * 层级: 指南(3) | 分类(8) → 案例(102)
+ * 层级: 指南(3) | 分类(8) → 案例(N)
  * 页数映射: 由调用方传入 (pageMap.guideStart / pageMap.caseStart)
  */
 function addOutlines(doc, guides, cases, pageMap) {
@@ -212,28 +281,28 @@ function addOutlines(doc, guides, cases, pageMap) {
   // 预分配所有 ref
   const outlinesRef = ctx.nextRef()
   const guideRefs = guides.map(() => ctx.nextRef())
-  const catRefs = Object.fromEntries(CATEGORIES.map(c => [c.n, ctx.nextRef()]))
+  const catRefs = Object.fromEntries(CATEGORIES.map(c => [c.name, ctx.nextRef()]))
 
   // 按分类分组案例
   const casesByCat = {}
-  for (const c of CATEGORIES) casesByCat[c.n] = []
+  for (const c of CATEGORIES) casesByCat[c.name] = []
   for (const c of cases) casesByCat[c.cat].push(c)
 
   // 案例书签 refs
   const caseRefs = {}
   for (const c of CATEGORIES) {
-    caseRefs[c.n] = casesByCat[c.n].map(() => ctx.nextRef())
+    caseRefs[c.name] = casesByCat[c.name].map(() => ctx.nextRef())
   }
 
   // 所有顶层书签（指南 + 分类）
-  const allTopRefs = [...guideRefs, ...CATEGORIES.map(c => catRefs[c.n])]
+  const allTopRefs = [...guideRefs, ...CATEGORIES.map(c => catRefs[c.name])]
 
   // ── 创建指南书签 ──
   // guides 在合并后的全局起始页: pageMap.guideStart
   // 每个 guide 的首页: guideStart + 各 guide 的累计页数
   for (let i = 0; i < guides.length; i++) {
     const dict = PDFDict.withContext(ctx)
-    dict.set(PDFName.of('Title'), pdfStr(guides[i].t))
+    dict.set(PDFName.of('Title'), pdfStr(guides[i].title))
     dict.set(PDFName.of('Parent'), outlinesRef)
     // Prev: 上一个顶层项（指南或分类）
     if (i > 0) dict.set(PDFName.of('Prev'), guideRefs[i - 1])
@@ -241,7 +310,7 @@ function addOutlines(doc, guides, cases, pageMap) {
     if (i < guides.length - 1) {
       dict.set(PDFName.of('Next'), guideRefs[i + 1])
     } else if (CATEGORIES.length > 0) {
-      dict.set(PDFName.of('Next'), catRefs[CATEGORIES[0].n])
+      dict.set(PDFName.of('Next'), catRefs[CATEGORIES[0].name])
     }
     dict.set(PDFName.of('Dest'), ctx.obj([pageRef(pageMap.guideStart + pageMap.guidePageOffsets[i]), PDFName.of('XYZ'), PDFName.of('null'), PDFName.of('null'), PDFName.of('null')]))
     ctx.assign(guideRefs[i], dict)
@@ -253,9 +322,9 @@ function addOutlines(doc, guides, cases, pageMap) {
   let globalCaseIdx = 0
   for (let ci = 0; ci < CATEGORIES.length; ci++) {
     const c = CATEGORIES[ci]
-    const catCases = casesByCat[c.n]
-    const catRef = catRefs[c.n]
-    const childRefs = caseRefs[c.n]
+    const catCases = casesByCat[c.name]
+    const catRef = catRefs[c.name]
+    const childRefs = caseRefs[c.name]
 
     // 子案例书签
     for (let j = 0; j < catCases.length; j++) {
@@ -272,16 +341,16 @@ function addOutlines(doc, guides, cases, pageMap) {
 
     // 分类书签
     const catDict = PDFDict.withContext(ctx)
-    catDict.set(PDFName.of('Title'), pdfStr(c.n))
+    catDict.set(PDFName.of('Title'), pdfStr(c.name))
     catDict.set(PDFName.of('Parent'), outlinesRef)
     // Prev: 上一个分类；第一个分类 → 最后一个指南
     if (ci > 0) {
-      catDict.set(PDFName.of('Prev'), catRefs[CATEGORIES[ci - 1].n])
+      catDict.set(PDFName.of('Prev'), catRefs[CATEGORIES[ci - 1].name])
     } else if (guides.length > 0) {
       catDict.set(PDFName.of('Prev'), guideRefs[guides.length - 1])
     }
     // Next: 下一个分类
-    if (ci < CATEGORIES.length - 1) catDict.set(PDFName.of('Next'), catRefs[CATEGORIES[ci + 1].n])
+    if (ci < CATEGORIES.length - 1) catDict.set(PDFName.of('Next'), catRefs[CATEGORIES[ci + 1].name])
     if (catCases.length > 0) {
       catDict.set(PDFName.of('First'), childRefs[0])
       catDict.set(PDFName.of('Last'), childRefs[childRefs.length - 1])
@@ -307,63 +376,60 @@ async function main() {
   console.log('📖 SQL Lab PDF 电子书 — 两轮生成\n')
   if (!existsSync(resolve(DIST, 'index.html'))) { console.error('❌ 请先 npm run docs:build'); process.exit(1) }
   const { guides, cases } = collect()
-  console.log(`  📚 ${guides.length} 篇指南 + ${cases.length} 个案例`)
+  const casesTotal = cases.length
+  console.log(`  📚 ${guides.length} 篇指南 + ${casesTotal} 个案例`)
   console.log(`  📝 目录已提取中文标题`)
 
   // ── 第一轮：合并 ──
   const server = await startServer()
   console.log(`  📡 服务器 :${PORT}`)
-  const browser = await puppeteer.launch({ headless: true, executablePath: '/Applications/Google Chrome.app/Contents/MacOS/Google Chrome', args: ['--no-sandbox'] })
+  let browser
   try {
+    browser = await puppeteer.launch({ headless: true, executablePath: '/Applications/Google Chrome.app/Contents/MacOS/Google Chrome', args: ['--no-sandbox'] })
     console.log('\n  📄 封面 + 目录...')
-    const pdfs = [await htmlPdf(browser, coverHtml()), await htmlPdf(browser, tocHtml(guides, cases))]
-    const total = guides.length + cases.length
+    const pdfs = [await htmlPdf(browser, coverHtml(casesTotal)), await htmlPdf(browser, tocHtml(guides, cases))]
+    const total = guides.length + casesTotal
     console.log(`\n  📖 渲染 ${total} 页...\n`)
-    for (const g of guides) pdfs.push(await pagePdf(browser, g.u, pdfs.length - 1, total))
-    for (let i = 0; i < cases.length; i++) pdfs.push(await pagePdf(browser, cases[i].u, i + 1, cases.length))
+    for (const g of guides) pdfs.push(await pagePdf(browser, g.url, pdfs.length - 1, total))
+    for (let i = 0; i < cases.length; i++) pdfs.push(await pagePdf(browser, cases[i].url, i + 1, total))
 
     console.log('\n  🔗 合并...')
     const doc = await PDFDocument.create()
     doc.setTitle('SQL Lab · MySQL + TiDB 优化实战案例集')
     doc.setAuthor(AUTHOR)
-    doc.setSubject('102 个 MySQL + TiDB 优化实战案例 — Docker 一键复现，EXPLAIN 量化对比')
+    doc.setSubject(`${casesTotal} 个 MySQL + TiDB 优化实战案例 — Docker 一键复现，EXPLAIN 量化对比`)
     doc.setKeywords(['MySQL', 'TiDB', 'SQL优化', 'EXPLAIN', '索引', '事务', '分布式'])
     doc.setCreator(`SQL Lab (${AUTHOR})`)
     doc.setProducer('SQL Lab PDF Generator')
 
-    // 计算每个 PDF 在合并后的页数和偏移（用于书签定位）
+    // 计算每个 PDF 的页数（同时复制页面，合并两次为一次）
+    // 顺序: cover, TOC, guide0..N-1, case0..M-1
     const pdfPageCounts = []
     for (const buf of pdfs) {
       const s = await PDFDocument.load(buf)
       pdfPageCounts.push(s.getPageCount())
+      const pp = await doc.copyPages(s, s.getPageIndices())
+      for (const pg of pp) doc.addPage(pg)
     }
-    // 顺序: cover, TOC, guide0..N-1, case0..M-1
     // 累计页数偏移
     const pdfOffsets = [0]
     for (const c of pdfPageCounts) pdfOffsets.push(pdfOffsets[pdfOffsets.length - 1] + c)
 
     // guideStart = 2 (cover=1 + TOC=1 -> guides start at 2)
-    const guideStart = pdfOffsets[2] // = 2
-    // guidePageOffsets: 每个 guide 自身相对 guideStart 的偏移
-    let acc = 0
+    const guideStart = pdfOffsets[2]
     const guidePageOffsets = []
+    let acc = 0
     for (let i = 0; i < guides.length; i++) {
       guidePageOffsets.push(acc)
       acc += pdfPageCounts[2 + i]
     }
     // caseStart: 第一个 case 的全局页号
     const caseStart = pdfOffsets[2 + guides.length]
-    let acc2 = 0
     const casePageOffsets = []
+    let acc2 = 0
     for (let i = 0; i < cases.length; i++) {
       casePageOffsets.push(acc2)
       acc2 += pdfPageCounts[2 + guides.length + i]
-    }
-
-    for (const buf of pdfs) {
-      const s = await PDFDocument.load(buf)
-      const pp = await doc.copyPages(s, s.getPageIndices())
-      for (const pg of pp) doc.addPage(pg)
     }
 
     const merged = Buffer.from(await doc.save())
@@ -386,13 +452,16 @@ async function main() {
     // Outline 对象通过 PDFDict + ctx.assign 正确注册，pdf-lib 会保留它们
     const outData = Buffer.from(await doc2.save({ useObjectStreams: true }))
     writeFileSync(OUT, outData)
-    if (existsSync(TMP)) unlinkSync(TMP)
 
-    const bkCount = guides.length + CATEGORIES.length + cases.length
+    const bkCount = guides.length + CATEGORIES.length + casesTotal
     console.log(`\n  ✅ ${OUT}`)
     console.log(`  📦 ${(outData.length / 1024 / 1024).toFixed(1)} MB  |  👤 ${AUTHOR}`)
-    console.log(`  📑 ${bkCount} 个书签（${guides.length} 指南 + ${CATEGORIES.length} 分类 + ${cases.length} 案例）`)
+    console.log(`  📑 ${bkCount} 个书签（${guides.length} 指南 + ${CATEGORIES.length} 分类 + ${casesTotal} 案例）`)
     console.log(`  🌐 https://slowleelab.github.io/sql-lab/sql-lab-cases.pdf`)
-  } finally { await browser.close(); server.close() }
+  } finally {
+    if (browser) await browser.close().catch(() => {})
+    await closeServer(server)
+    if (existsSync(TMP)) unlinkSync(TMP)
+  }
 }
 main().catch(e => { console.error('❌', e.message, e.stack); process.exit(1) })
