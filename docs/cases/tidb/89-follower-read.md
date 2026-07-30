@@ -62,8 +62,8 @@ SELECT city, COUNT(*) AS cnt, AVG(score) AS avg_score
 FROM t_follower
 GROUP BY city;
 
--- 3. SQL Hint 方式：单条查询指定从 Follower 读
-SELECT /*+ READ_FROM_STORAGE(TIFLASH[t_follower]) */ city, AVG(score)
+-- 3. SQL Hint 方式：单条查询指定从 Follower 副本读（走 TIKV 行存）
+SELECT /*+ READ_FROM_STORAGE(TIKV[t_follower]) */ city, AVG(score)
 FROM t_follower GROUP BY city;
 
 -- 4. Stale Read：容忍 5 秒陈旧数据，进一步降低 Leader 压力

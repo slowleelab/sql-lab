@@ -165,13 +165,13 @@ LIMIT 20;
 | 读写分离方案 | ✅ 有效 | ✅ 有效 |
 | 并行复制（MTS） | ✅ 支持（基于库） | ✅ 增强（基于 WRITESET） |
 | WRITESET 并行复制 | ❌ 不支持 | ✅ 支持 |
-| 降序索引优化 | ❌ Using filesort | ✅ Backward index scan |
+| 降序索引优化 | ⚠️ Backward index scan（不支持建索引时写 DESC 关键字） | ✅ 真降序索引（可建 `INDEX (col DESC)`，混合 ASC/DESC 排序不需 filesort） |
 | 复制延迟 | 相对较高 | 更低（并行回放） |
 
 ::: tip 8.0 并行复制优势
 执行计划结构在两个版本上一致，读写分离方案都有效。核心价值在于架构层面的读写分离，与版本无关。
 
-8.0 在复制方面有显著增强：支持基于 WRITESET 的并行复制，从库回放 binlog 更快，复制延迟更低。5.7 的并行复制基于库级别（database-level），并行度受限。8.0 的 WRITESET 模式可以跨库并行回放，大幅降低延迟。此外，8.0 的 EXPLAIN 显示 `Backward index scan`（逆向索引扫描优化），而 5.7 显示 `Using filesort`（5.7 无降序索引优化）。
+8.0 在复制方面有显著增强：支持基于 WRITESET 的并行复制，从库回放 binlog 更快，复制延迟更低。5.7 的并行复制基于库级别（database-level），并行度受限。8.0 的 WRITESET 模式可以跨库并行回放，大幅降低延迟。此外在降序索引方面：5.7 仅支持对升序索引做 `Backward index scan`（反向扫描）来满足 `ORDER BY DESC`（建索引时写的 `DESC` 关键字会被忽略），而 8.0 才真正支持降序索引 `INDEX (col DESC)`，对混合 ASC/DESC 排序的覆盖更彻底。
 :::
 
 ## 本地复现

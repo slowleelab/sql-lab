@@ -51,13 +51,20 @@ SELECT * FROM t_user WHERE id = -1;
 
 ### good.sql
 
-```sql
--- 布隆过滤器原理：先查内存中的位数组，不存在直接返回
--- 第一步: 查布隆过滤器（内存操作，纳秒级）
-SELECT COUNT(*) AS may_exist FROM t_bloom_filter WHERE user_id_hash = -1;
--- 结果: 0 -> 布隆过滤器判定"不存在" -> 直接返回，不查 t_user
+> **本节为架构示意**：MySQL **没有原生布隆过滤器**，下文以应用层伪代码 + 缓存空值两层方案演示。真实布隆过滤器用 RedisBloom / Guava 实现（见末尾"实现方案"）。
 
--- 第二步: 仅当布隆过滤器命中时才查数据库
+```sql
+-- ── 第一层：应用层布隆过滤器（伪代码，示意拦截点）──
+-- 应用进程：检查 user_id 是否在布隆过滤器的位数组中
+-- IF NOT bloom_filter.may_contain(user_id):
+--     RETURN empty   -- 内存纳秒级判定"一定不存在"，不下沉到缓存/DB
+-- 
+-- ── 第二层：缓存空值兜底（MySQL 真实可执行的兜底 SQL）──
+-- 当应用层 BF 命中（"可能存在"）但实际查 DB 仍 miss 时：
+--   SET cache:user:99999999 "" EX 60    -- 缓存空结果 60 秒
+--   RETURN empty
+-- 
+-- 仅当布隆过滤器命中 + 缓存空值未命中时，才执行真正查询：
 SELECT * FROM t_user WHERE id = 12345;
 ```
 
@@ -70,6 +77,13 @@ SELECT * FROM t_user WHERE id = 12345;
    - **全为 1** -> 可能存在（有误判率，约 1%）-> 查数据库确认
    - **有 0** -> 一定不存在 -> 直接返回，不查数据库
 3. **效果**：99%+ 的无效请求在布隆过滤器层被拦截，数据库零压力
+
+::: warning 常见误区
+**MySQL 没有原生布隆过滤器**。如果你的"good.sql"是 `SELECT COUNT(*) FROM t_bloom_filter WHERE user_id_hash = -1`，那依然是普通 SQL 查表（最终下沉到磁盘 B+ 树），与"内存纳秒级判定"的承诺完全不符。本案例的关键是**拦截点在应用层 / 缓存层**，而不是 SQL 本身。真正可用的两种落地：
+
+- **RedisBloom**（`BF.ADD / BF.EXISTS`，Redis 模块）：跨实例共享，单命令 100ns 级
+- **Guava BloomFilter**（Java 进程内）：零网络开销，但每实例独立维护
+:::
 
 ### 对比
 

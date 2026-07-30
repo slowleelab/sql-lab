@@ -117,7 +117,7 @@ SELECT * FROM t_order_0 WHERE user_id = 100;
 | 分区表增强 | 基础分区 | ✅ 8.0 增强了原生分区功能，部分场景可替代分库分表 |
 
 ::: tip MySQL 原生分区 vs 分库分表
-如果只是单机性能瓶颈，优先考虑 MySQL 原生 PARTITION（见 [案例 34](../ddl/45-partition-range)）。只有单机无法承载时才需要分库分表。
+如果只是单机性能瓶颈，优先考虑 MySQL 原生 PARTITION（见 [案例 45](../ddl/45-partition-range)）。只有单机无法承载时才需要分库分表。
 :::
 
 ## 本地复现

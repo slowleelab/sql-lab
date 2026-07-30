@@ -179,7 +179,7 @@ ALTER TABLE t_document_soft
 | 特性 | 5.7 | 8.0 |
 |------|-----|-----|
 | 联合索引方案 | ✅ 有效 | ✅ 有效 |
-| 降序索引优化 | ❌ Using filesort | ✅ Backward index scan |
+| 降序索引优化 | ⚠️ Backward index scan（不支持建索引时写 DESC 关键字） | ✅ 真降序索引（可建 `INDEX (col DESC)`，混合 ASC/DESC 排序不需 filesort） |
 | filtered 过滤 | ✅ 支持 | ✅ 支持 |
 | 执行计划结构 | 一致 | 一致 |
 

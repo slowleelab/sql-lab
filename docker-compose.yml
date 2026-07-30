@@ -92,8 +92,37 @@ services:
     depends_on:
       - tikv
 
+  # TiFlash 列存节点（用于案例 87：TiFlash 列存与 MPP 分析加速）
+  # 启动后需在 TiDB 中执行：ALTER TABLE <t> SET TIFLASH REPLICA 1
+  tiflash:
+    image: pingcap/tiflash:v7.5.1
+    container_name: sql-treasure-tiflash
+    restart: on-failure
+    # TiFlash 容器 ulimit 需调高（官方推荐）
+    ulimits:
+      nofile:
+        soft: 200000
+        hard: 200000
+    ports:
+      - "3930:3930"   # 客户端端口
+    volumes:
+      - tiflash_data:/var/lib/tiflash
+    command:
+      - --tmp_path=/var/lib/tiflash/tmp
+      - --path=/var/lib/tiflash/data
+      - --listen_host=0.0.0.0
+      - --tcp_port=9000
+      - --http_port=3930
+      - --flash_proxy_addr=0.0.0.0:20170
+      - --flash_proxy_advertise_addr=tiflash:20170
+      - --status_addr=0.0.0.0:20292
+      - --pd_addr=pd:2379
+    depends_on:
+      - tikv
+
 volumes:
   mysql57_data:
   mysql80_data:
   pd_data:
   tikv_data:
+  tiflash_data:
