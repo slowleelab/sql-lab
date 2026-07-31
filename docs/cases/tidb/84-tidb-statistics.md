@@ -48,9 +48,9 @@ SHOW STATS_META WHERE db_name = 'sql_treasure' AND table_name = 't_stats';
 -- 2. 模拟"先查后改"：先执行查询建立基线
 EXPLAIN SELECT * FROM t_stats WHERE status = 1 AND city = 'Beijing';
 
--- 3. 插入 50000 行新数据（但不更新统计信息）
-INSERT INTO t_stats (user_id, status, city, amount, created_at)
-SELECT ... FROM t1, t2 LIMIT 50000;
+-- 3. 插入 50000 行新数据（状态全为 0，不更新统计信息）
+-- 使用笛卡尔积生成 50000 行：t1(200行) x t2(250行) = 50000
+-- 完整可执行 SQL 见 sql/cases/84-tidb-statistics/bad.sql
 
 -- 4. 统计过期后再次 EXPLAIN——优化器仍用旧统计估算
 EXPLAIN SELECT * FROM t_stats WHERE status = 1 AND city = 'Beijing';

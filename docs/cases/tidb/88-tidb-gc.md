@@ -142,14 +142,14 @@ SELECT * FROM mysql.tidb WHERE variable_name IN ('tikv_gc_safe_point', 'tikv_gc_
 
 -- 3. 设置事务超时，防止长事务
 SET SESSION tidb_idle_transaction_timeout = 300;
-SET SESSION max_execution_time = 10000;
+SET SESSION tidb_max_execution_time_ms = 10000;  -- 10 秒（TiDB 7.x；MySQL 变量 max_execution_time 在 TiDB 中不生效）
 
 -- 4. 查看 GC 历史
 SELECT * FROM mysql.tidb WHERE variable_name LIKE 'tikv_gc%';
 
 -- 5. 合理的事务设计：短事务 + 分批处理
--- 将大量 DELETE 拆分为小批次
-DELETE FROM t_gc_test WHERE status = 1 LIMIT 1000;
+-- 将大量 DELETE 拆分为小批次（与 bad.sql 同条件 status=0）
+DELETE FROM t_gc_test WHERE status = 0 LIMIT 1000;
 -- 每批次提交后 GC 可推进
 ```
 
@@ -162,7 +162,7 @@ DELETE FROM t_gc_test WHERE status = 1 LIMIT 1000;
 **方案二：事务超时防护**
 
 - `tidb_idle_transaction_timeout`：事务空闲超时。连接在事务中空闲超过指定秒数，自动回滚。防止 "BEGIN 后忘记 COMMIT" 导致的长事务。
-- `max_execution_time`：单条 SQL 最大执行时间。防止大 SQL 撑出长事务。
+- `tidb_max_execution_time_ms`（TiDB 7.x；MySQL 8.0 的 `max_execution_time` 在 TiDB 中不生效）：单条 SQL 最大执行时间（毫秒）。防止大 SQL 撑出长事务。
 
 **方案三：分批处理**
 
@@ -219,7 +219,7 @@ DELETE FROM t_gc_test WHERE status = 1 LIMIT 1000;
 | `tikv_gc_enable_compaction_filter` | `false` | `true`（v5.0+） | 写入密集型场景，利用 compaction 辅助回收 |
 | `tikv_gc_auto_concurrency` | `true` | `true` | 所有场景（让 TiDB 自动调整） |
 | `tidb_idle_transaction_timeout` | `0`（不限制） | `300` | 所有在线业务（防止忘记 COMMIT） |
-| `max_execution_time` | `0`（不限制） | `10000` | 在线 OLTP 业务（防止慢 SQL 撑出长事务） |
+| `tidb_max_execution_time_ms` | `0`（不限制） | `10000` | 在线 OLTP 业务（防止慢 SQL 撑出长事务，TiDB 7.x 变量名） |
 
 ---
 

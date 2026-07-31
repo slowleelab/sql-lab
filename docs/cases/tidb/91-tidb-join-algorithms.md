@@ -145,8 +145,12 @@ Build 阶段:
 
 Probe 阶段:
   对每行 a_val 值 → IndexRangeScan(t_join_c, idx_val) → 精确查找
-  每次查找: O(log 500) ≈ 9 次比较
-  总开销: 100000 × 9 ≈ 90 万次比较（远小于 10 万行全扫 + 构建哈希）
+  ⚠️ TiDB 分布式关键: 每次 IndexRangeScan 都是一次 TiDB → TiKV 的 RPC 调用
+  每次 RPC: ~0.5-1ms（含网络+TiKV coprocessor 调度）
+  总开销: 100,000 × 0.5ms ≈ 50 秒（远大于 Hash Join 的 ~100ms）
+
+  CPU 维度看: 100,000 × log₂(500) ≈ 90 万次比较，理论很快
+  但 TiDB 分布式维度: 10 万次 RPC 是真正瓶颈，Hash Join 远优
 ```
 
 ::: tip 核心认知

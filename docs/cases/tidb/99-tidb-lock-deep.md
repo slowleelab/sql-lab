@@ -75,7 +75,7 @@ TiDB (悲观模式):
 | 锁信息查询 | `performance_schema.data_locks` | `information_schema.data_lock_waits` |
 | 锁粒度 | Record Lock / Gap Lock / Next-Key Lock | 基于 Key 的分布式锁 |
 | 死锁检测 | InnoDB 自动回滚代价小的事务 | TiDB 自动检测并回滚一个事务 |
-| 锁超时 | `innodb_lock_wait_timeout`（默认 50s） | `innodb_lock_wait_timeout`（默认 50s） |
+| 锁超时 | `innodb_lock_wait_timeout`（默认 50s） | `innodb_lock_wait_timeout`（TiDB 7.x 默认 3s；v6.x 及以下默认 50s） |
 | FOR UPDATE NOWAIT | MySQL 8.0+ | 支持（兼容 MySQL 8.0） |
 | FOR UPDATE SKIP LOCKED | MySQL 8.0+ | 支持（兼容 MySQL 8.0） |
 | 分布式锁可见性 | 单节点，所有锁在同一实例 | 多 TiKV 节点，需聚合查询 |
