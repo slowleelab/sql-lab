@@ -106,7 +106,7 @@ LIMIT 1000;
 
 4. **避免使用 ORDER BY**。`UPDATE ... ORDER BY id LIMIT 1000` 虽然可以保证顺序，但 ORDER BY 会增加 filesort 开销。通常不需要排序。
 
-5. **大表 DELETE 同理**。参见 [案例 33](../ddl/44-batch-delete)，分批 DELETE 的原理和分批 UPDATE 完全一致。
+5. **大表 DELETE 同理**。参见 [案例 44](../ddl/44-batch-delete)，分批 DELETE 的原理和分批 UPDATE 完全一致。
 :::
 
 ## 5.7 vs 8.0 差异

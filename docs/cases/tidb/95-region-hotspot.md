@@ -1,6 +1,6 @@
 # Region 热点调度与 Split 策略
 
-<CaseMeta difficulty="⭐⭐⭐" category="TiDB 分布式优化" versions="TiDB" :tags="['Region', '热点调度', 'Split', 'PD调度', 'Hot Region', 'Scatter']" />
+<CaseMeta difficulty="⭐⭐⭐" category="TiDB 分布式优化" versions="TiDB ≥ 4.0" :tags="['Region', '热点调度', 'Split', 'PD调度', 'Hot Region', 'Scatter']" />
 
 ## 场景痛点
 
@@ -275,6 +275,8 @@ TiDB 的自动分裂是**反应式**机制：
 - SCATTER 后 LEADER_ID 分布明显趋于均匀
 
 ::: warning 本地复现注意
+
+> **版本要求**：本案例使用的 `SPLIT TABLE ... BETWEEN ...` 语法需 **TiDB ≥ 4.0**。如使用更早版本需改用 `SPLIT TABLE ... BY` 显式指定切分点。
 
 **单节点 TiDB 部署看不到真正的热点效果**。因为：
 

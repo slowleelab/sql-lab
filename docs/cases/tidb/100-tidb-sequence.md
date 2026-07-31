@@ -1,6 +1,6 @@
 # 分布式 Sequence 自增方案
 
-<CaseMeta difficulty="⭐⭐" category="TiDB 分布式优化" versions="TiDB" :tags="['Sequence', '分布式ID', 'AUTO_INCREMENT', 'AUTO_RANDOM', '自增', 'TSO']" />
+<CaseMeta difficulty="⭐⭐" category="TiDB 分布式优化" versions="TiDB ≥ 4.0（Sequence CACHE 需 ≥ 4.0）" :tags="['Sequence', '分布式ID', 'AUTO_INCREMENT', 'AUTO_RANDOM', '自增', 'TSO']" />
 
 ## 场景痛点
 

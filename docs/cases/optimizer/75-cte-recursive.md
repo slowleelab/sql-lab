@@ -155,8 +155,8 @@ ORDER BY level, id;
 |------|-----|-----|
 | `WITH RECURSIVE` 递归 CTE | ❌ 不支持 | ✅ 原生支持 |
 | 树形遍历方式 | 只能多次自连接或存储过程 | ✅ 递归 CTE 一条语句 |
-| 非递归 CTE（WITH） | ❌ 不支持 | ✅ 支持 |
-| `cte_max_recursion_depth` | ❌ 无此变量 | ✅ 可配置递归深度上限 |
+| 非递归 CTE（`WITH cte AS (SELECT ...)`） | ✅ 支持 | ✅ 支持 |
+| `cte_max_recursion_depth` | ❌ 无此变量（用不到） | ✅ 可配置递归深度上限 |
 
 ::: tip 8.0 递归 CTE
 8.0 的 `WITH RECURSIVE` 是树形/图遍历的正解。组织架构、菜单树、评论楼中楼、物料 BOM 展开、好友关系链等场景，一条递归 CTE 即可自适应任意深度，告别自连接的层数硬编码问题。

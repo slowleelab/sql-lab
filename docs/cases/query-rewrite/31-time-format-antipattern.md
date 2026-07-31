@@ -244,10 +244,10 @@ type=range, key=idx_created, key_len=5, rows~547, Extra=Using index condition
 
 :::
 
-::: tip 本案例与案例 04、案例 76 的区别
+::: tip 本案例与案例 04、案例 30 的区别
 三个案例都涉及时间字段，但角度不同，互补不重复：
 - **案例 04（函数操作致索引失效）**：`created_at` 是 `DATETIME`，查询用 `DATE()` / `DATE_FORMAT()` 包裹列导致索引失效。重点是"函数包裹字段"这一通用索引陷阱，治标是改写为范围查询。
-- **案例 76（时区与 TIMESTAMP vs DATETIME）**：`created_at` 用 `TIMESTAMP` 存 UTC，跨时区读出值随 session time_zone 变化，导致报表错位 8 小时。重点是"TIMESTAMP 的时区隐式转换"，治本是改用 DATETIME 存业务时间。
+- **案例 30（时区与 TIMESTAMP vs DATETIME）**：`created_at` 用 `TIMESTAMP` 存 UTC，跨时区读出值随 session time_zone 变化，导致报表错位 8 小时。重点是"TIMESTAMP 的时区隐式转换"，治本是改用 DATETIME 存业务时间。
 - **本案例（案例 31 时间格式使用错误）**：`created_at` 用 `VARCHAR` 存时间字符串，逼出 DATE_FORMAT 致索引失效、BETWEEN 漏数据、字符串比较语义脆弱三类问题。重点是"格式选择错误（VARCHAR 存时间）"这一设计层面反模式，治本是用 DATETIME 类型 + 闭开区间。
 
 简言之：案例 04 治"函数陷阱"，案例 30 治"时区陷阱"，本案例（31）治"类型选错"。三者叠加才完整覆盖时间字段的常见踩坑面。
