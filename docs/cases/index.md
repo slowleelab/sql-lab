@@ -1,8 +1,8 @@
 # 案例总览
 
-共 **102 个精选案例**，覆盖 MySQL + TiDB 优化的八大核心场景。每个案例都带真实数据，可一键复现。
+共 **107 个精选案例**，覆盖 MySQL + TiDB 优化的八大核心场景。每个案例都带真实数据，可一键复现。
 
-## 一、索引设计与失效（18 个）
+## 一、索引设计与失效（20 个）
 
 | # | 案例 | 难度 | 版本 |
 |---|------|:----:|:----:|
@@ -24,8 +24,10 @@
 | 16 | [索引跳跃扫描 Skip Scan](./indexing/16-skip-scan) | ⭐⭐ | 8.0+ |
 | 17 | [游标分页替代深分页](./indexing/17-cursor-pagination) | ⭐⭐ | 5.7 & 8.0 |
 | 18 | [全文索引 FULLTEXT 替代 LIKE](./indexing/18-fulltext-search) | ⭐⭐ | 5.7 & 8.0 |
+| 103 | [自适应哈希索引 AHI 调优](./indexing/103-adaptive-hash-index) | ⭐⭐⭐ | 5.7 & 8.0 |
+| 104 | [Change Buffer 二级索引写入加速](./indexing/104-change-buffer) | ⭐⭐⭐ | 5.7 & 8.0 |
 
-## 二、查询改写（14 个）
+## 二、查询改写（15 个）
 
 | # | 案例 | 难度 | 版本 |
 |---|------|:----:|:----:|
@@ -43,6 +45,7 @@
 | 30 | [时区与 TIMESTAMP vs DATETIME](./query-rewrite/30-timestamp-vs-datetime) | ⭐⭐ | 5.7 & 8.0 |
 | 31 | [时间格式使用错误与最佳实践](./query-rewrite/31-time-format-antipattern) | ⭐⭐ | 5.7 & 8.0 |
 | 32 | [SQL 反模式与正确写法量化对比](./query-rewrite/32-sql-antipatterns) | ⭐⭐ | 5.7 & 8.0 |
+| 106 | [EXPLAIN FORMAT=JSON 详细成本树解读](./query-rewrite/106-explain-format-json) | ⭐⭐⭐ | 5.7 & 8.0 |
 
 ## 三、JOIN 优化（9 个）
 
@@ -58,7 +61,7 @@
 | 40 | [STRAIGHT_JOIN 强制驱动顺序](./join/40-straight-join) | ⭐⭐⭐ | 5.7 & 8.0 |
 | 41 | [LEFT JOIN 改 INNER JOIN 释放优化器](./join/41-left-join-to-inner) | ⭐⭐ | 5.7 & 8.0 |
 
-## 四、DDL 与大表（10 个）
+## 四、DDL 与大表（11 个）
 
 | # | 案例 | 难度 | 版本 |
 |---|------|:----:|:----:|
@@ -72,8 +75,9 @@
 | 49 | [修改字段类型的锁行为差异](./ddl/49-modify-column-type) | ⭐⭐⭐ | 5.7 & 8.0 |
 | 50 | [大字段垂直拆表](./ddl/50-vertical-split-text) | ⭐⭐ | 5.7 & 8.0 |
 | 51 | [字段类型与长度选择最佳实践](./ddl/51-field-type-best-practice) | ⭐⭐ | 5.7 & 8.0 |
+| 105 | [SELECT INTO OUTFILE 大数据导出与安全](./ddl/105-select-into-outfile) | ⭐⭐ | 5.7 & 8.0 |
 
-## 五、架构级优化（11 个）
+## 五、架构级优化（12 个）
 
 | # | 案例 | 难度 | 版本 |
 |---|------|:----:|:----:|
@@ -88,6 +92,7 @@
 | 60 | [缓存穿透与布隆过滤器](./architecture/60-cache-penetration) | ⭐⭐⭐ | 5.7 & 8.0 |
 | 61 | [自增主键耗尽与分布式 ID](./architecture/61-auto-inc-exhaustion) | ⭐⭐⭐ | 5.7 & 8.0 |
 | 62 | [连接池与 max_connections 耗尽诊断](./architecture/62-connection-pool-exhaustion) | ⭐⭐ | 5.7 & 8.0 |
+| 107 | [HikariCP/Druid 连接池参数调优](./architecture/107-connection-pool-tuning) | ⭐⭐⭐ | 5.7 & 8.0 |
 
 ## 六、事务与锁（9 个）
 

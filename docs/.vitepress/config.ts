@@ -43,6 +43,8 @@ const sidebar = {
         { text: '16 · 索引跳跃扫描 Skip Scan', link: '/cases/indexing/16-skip-scan' },
         { text: '17 · 游标分页替代深分页', link: '/cases/indexing/17-cursor-pagination' },
         { text: '18 · 全文索引 FULLTEXT 替代 LIKE', link: '/cases/indexing/18-fulltext-search' },
+        { text: '103 · 自适应哈希索引 AHI 调优', link: '/cases/indexing/103-adaptive-hash-index' },
+        { text: '104 · Change Buffer 二级索引写入加速', link: '/cases/indexing/104-change-buffer' },
       ],
     },
     {
@@ -63,6 +65,7 @@ const sidebar = {
         { text: '30 · 时区与 TIMESTAMP vs DATETIME', link: '/cases/query-rewrite/30-timestamp-vs-datetime' },
         { text: '31 · 时间格式使用错误与最佳实践', link: '/cases/query-rewrite/31-time-format-antipattern' },
         { text: '32 · SQL 反模式与正确写法量化对比', link: '/cases/query-rewrite/32-sql-antipatterns' },
+        { text: '106 · EXPLAIN FORMAT=JSON 详细成本树', link: '/cases/query-rewrite/106-explain-format-json' },
       ],
     },
     {
@@ -94,6 +97,7 @@ const sidebar = {
         { text: '49 · 修改字段类型锁表', link: '/cases/ddl/49-modify-column-type' },
         { text: '50 · 大字段垂直拆表', link: '/cases/ddl/50-vertical-split-text' },
         { text: '51 · 字段类型与长度选择最佳实践', link: '/cases/ddl/51-field-type-best-practice' },
+        { text: '105 · SELECT INTO OUTFILE 大数据导出', link: '/cases/ddl/105-select-into-outfile' },
       ],
     },
     {
@@ -111,6 +115,7 @@ const sidebar = {
         { text: '60 · 缓存穿透与布隆过滤器', link: '/cases/architecture/60-cache-penetration' },
         { text: '61 · 自增主键耗尽与分布式 ID', link: '/cases/architecture/61-auto-inc-exhaustion' },
         { text: '62 · 连接池与 max_connections 耗尽诊断', link: '/cases/architecture/62-connection-pool-exhaustion' },
+        { text: '107 · HikariCP/Druid 连接池调优', link: '/cases/architecture/107-connection-pool-tuning' },
       ],
     },
     {

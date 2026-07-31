@@ -99,14 +99,14 @@ function pdfStr(s) {
 }
 
 const CATEGORIES = [
-  { dir: 'indexing',       name: '一、索引设计与失效',     start: 1,  end: 18  },
-  { dir: 'query-rewrite',  name: '二、查询改写',           start: 19, end: 32  },
-  { dir: 'join',           name: '三、JOIN 优化',          start: 33, end: 41  },
-  { dir: 'ddl',            name: '四、DDL 与大表',         start: 42, end: 51  },
-  { dir: 'architecture',   name: '五、架构级优化',         start: 52, end: 62  },
-  { dir: 'transaction',    name: '六、事务与锁',           start: 63, end: 71  },
-  { dir: 'optimizer',      name: '七、优化器与 8.0 新特性', start: 72, end: 80 },
-  { dir: 'tidb',           name: '八、TiDB 分布式优化',    start: 81, end: 102 },
+  { dir: 'indexing',       name: '一、索引设计与失效',     nums: [1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18, 103, 104] },
+  { dir: 'query-rewrite',  name: '二、查询改写',           nums: [19,20,21,22,23,24,25,26,27,28,29,30,31,32, 106] },
+  { dir: 'join',           name: '三、JOIN 优化',          nums: [33,34,35,36,37,38,39,40,41] },
+  { dir: 'ddl',            name: '四、DDL 与大表',         nums: [42,43,44,45,46,47,48,49,50,51, 105] },
+  { dir: 'architecture',   name: '五、架构级优化',         nums: [52,53,54,55,56,57,58,59,60,61,62, 107] },
+  { dir: 'transaction',    name: '六、事务与锁',           nums: [63,64,65,66,67,68,69,70,71] },
+  { dir: 'optimizer',      name: '七、优化器与 8.0 新特性', nums: [72,73,74,75,76,77,78,79,80] },
+  { dir: 'tidb',           name: '八、TiDB 分布式优化',    nums: [81,82,83,84,85,86,87,88,89,90,91,92,93,94,95,96,97,98,99,100,101,102] },
 ]
 
 function collect() {
@@ -123,12 +123,14 @@ function collect() {
       console.warn(`  ⚠️  分类目录不存在: ${cat.dir}`)
       continue
     }
+    // 用白名单集合过滤（支持每个 category 显式列举 num，不再依赖连续区间）
+    const allow = new Set(cat.nums)
     for (const f of readdirSync(dir).filter(x => x.endsWith('.html')).sort()) {
       const slug = f.replace('.html', '')
       const m = slug.match(/^(\d+)/)
       if (!m) continue
       const num = parseInt(m[1], 10)
-      if (num < cat.start || num > cat.end) continue
+      if (!allow.has(num)) continue
       if (seenNums.has(num)) {
         console.warn(`  ⚠️  重复的案例编号 #${num} (${slug})，已跳过`)
         continue
