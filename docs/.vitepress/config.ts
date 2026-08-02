@@ -116,6 +116,8 @@ const sidebar = {
         { text: '61 · 自增主键耗尽与分布式 ID', link: '/cases/architecture/61-auto-inc-exhaustion' },
         { text: '62 · 连接池与 max_connections 耗尽诊断', link: '/cases/architecture/62-connection-pool-exhaustion' },
         { text: '107 · HikariCP/Druid 连接池调优', link: '/cases/architecture/107-connection-pool-tuning' },
+        { text: '108 · InnoDB Buffer Pool 调优', link: '/cases/architecture/108-innodb-buffer-pool' },
+        { text: '110 · Buffer Pool 重启预热 (Warmup)', link: '/cases/architecture/110-buffer-pool-warmup' },
       ],
     },
     {
@@ -131,6 +133,8 @@ const sidebar = {
         { text: '69 · 唯一索引并发插入冲突', link: '/cases/transaction/69-unique-index-concurrent-insert' },
         { text: '70 · 长事务危害', link: '/cases/transaction/70-long-transaction-harm' },
         { text: '71 · RC vs RR 隔离级别', link: '/cases/transaction/71-rc-vs-rr-isolation' },
+        { text: '109 · undo 表空间膨胀与 Purge', link: '/cases/transaction/109-undo-tablespace' },
+        { text: '112 · 慢查询排查与锁等待定位', link: '/cases/transaction/112-slow-query-diagnosis' },
       ],
     },
     {
@@ -146,6 +150,7 @@ const sidebar = {
         { text: '78 · 派生条件下推（8.0）', link: '/cases/optimizer/78-derived-condition-pushdown' },
         { text: '79 · 大批量 UPDATE 分批优化', link: '/cases/optimizer/79-batch-update' },
         { text: '80 · 慢查询排查方法论', link: '/cases/optimizer/80-slow-query-diagnosis' },
+        { text: '111 · MySQL 8.0 并行查询', link: '/cases/optimizer/111-parallel-execution' },
       ],
     },
     {

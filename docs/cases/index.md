@@ -1,6 +1,6 @@
 # 案例总览
 
-共 **107 个精选案例**，覆盖 MySQL + TiDB 优化的八大核心场景。每个案例都带真实数据，可一键复现。
+共 **112 个精选案例**，覆盖 MySQL + TiDB 优化的八大核心场景。每个案例都带真实数据，可一键复现。
 
 ## 一、索引设计与失效（20 个）
 
@@ -77,7 +77,7 @@
 | 51 | [字段类型与长度选择最佳实践](./ddl/51-field-type-best-practice) | ⭐⭐ | 5.7 & 8.0 |
 | 105 | [SELECT INTO OUTFILE 大数据导出与安全](./ddl/105-select-into-outfile) | ⭐⭐ | 5.7 & 8.0 |
 
-## 五、架构级优化（12 个）
+## 五、架构级优化（14 个）
 
 | # | 案例 | 难度 | 版本 |
 |---|------|:----:|:----:|
@@ -93,8 +93,10 @@
 | 61 | [自增主键耗尽与分布式 ID](./architecture/61-auto-inc-exhaustion) | ⭐⭐⭐ | 5.7 & 8.0 |
 | 62 | [连接池与 max_connections 耗尽诊断](./architecture/62-connection-pool-exhaustion) | ⭐⭐ | 5.7 & 8.0 |
 | 107 | [HikariCP/Druid 连接池参数调优](./architecture/107-connection-pool-tuning) | ⭐⭐⭐ | 5.7 & 8.0 |
+| 108 | [InnoDB Buffer Pool 调优](./architecture/108-innodb-buffer-pool) | ⭐⭐⭐ | 5.7 & 8.0 |
+| 110 | [MySQL 重启后 Buffer Pool 冷启动预热](./architecture/110-buffer-pool-warmup) | ⭐⭐⭐ | 5.7 & 8.0 |
 
-## 六、事务与锁（9 个）
+## 六、事务与锁（11 个）
 
 | # | 案例 | 难度 | 版本 |
 |---|------|:----:|:----:|
@@ -107,8 +109,10 @@
 | 69 | [唯一索引并发插入冲突](./transaction/69-unique-index-concurrent-insert) | ⭐⭐ | 5.7 & 8.0 |
 | 70 | [长事务危害](./transaction/70-long-transaction-harm) | ⭐⭐ | 5.7 & 8.0 |
 | 71 | [RC vs RR 隔离级别锁行为差异](./transaction/71-rc-vs-rr-isolation) | ⭐⭐⭐ | 5.7 & 8.0 |
+| 109 | [undo 表空间膨胀与 Purge 调优](./transaction/109-undo-tablespace) | ⭐⭐⭐ | 5.7 & 8.0 |
+| 112 | [通用慢查询排查与锁等待定位](./transaction/112-slow-query-diagnosis) | ⭐⭐⭐ | 5.7 & 8.0 |
 
-## 七、优化器与 8.0 新特性（9 个）
+## 七、优化器与 8.0 新特性（10 个）
 
 | # | 案例 | 难度 | 版本 |
 |---|------|:----:|:----:|
@@ -121,6 +125,7 @@
 | 78 | [派生条件下推优化](./optimizer/78-derived-condition-pushdown) | ⭐⭐⭐ | 5.7 & 8.0 |
 | 79 | [大批量 UPDATE 分批优化](./optimizer/79-batch-update) | ⭐⭐ | 5.7 & 8.0 |
 | 80 | [慢查询排查方法论](./optimizer/80-slow-query-diagnosis) | ⭐⭐⭐ | 5.7 & 8.0 |
+| 111 | [MySQL 8.0 并行查询 (Parallel Execution)](./optimizer/111-parallel-execution) | ⭐⭐⭐ | 8.0.27+ |
 ## 八、TiDB 分布式优化（22 个）
 
 | # | 案例 | 难度 | 版本 |
