@@ -2,7 +2,7 @@
 
 <CaseMeta difficulty="⭐⭐⭐" category="TiDB 分布式优化" versions="TiDB" :tags="['事务', '乐观锁', '悲观锁', 'Write Conflict', '重试']" />
 
-## 9007重复：重复、余额不一致等数据问题
+## 迁移后偶发 Write conflict：tidb_txn_mode 没设置
 应用从 MySQL 迁移到 TiDB 后，偶发报错 `ERROR 9007 (HY000): Write conflict` 或 `Information schema is changed`，业务侧出现订单重复、余额不一致等数据问题。排查发现迁移后未设置 `tidb_txn_mode`，默认行为与预期不符——早期 TiDB 默认乐观事务，TiDB 6.0+ 默认悲观事务，中间版本升级可能导致行为突变。
 
 ```sql

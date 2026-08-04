@@ -2,7 +2,7 @@
 
 <CaseMeta difficulty="⭐⭐⭐" category="事务与锁" versions="5.7 & 8.0" :tags="['死锁', 'gap lock', 'next-key lock', '事务顺序']" />
 
-## 1213失败：导致部分订单处理失败、需要人工重试
+## 两个任务交叉更新订单：ERROR 1213 死锁频发
 电商系统的订单处理模块，两个定时任务并行处理同一批订单：任务A先更新订单1再更新订单2，任务B先更新订单2再更新订单1。在线上高峰期频繁出现 `ERROR 1213 (40001): Deadlock found when trying to get lock`，导致部分订单处理失败、需要人工重试。
 
 ```sql

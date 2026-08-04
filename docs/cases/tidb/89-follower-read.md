@@ -2,7 +2,7 @@
 
 <CaseMeta difficulty="⭐⭐" category="TiDB 分布式优化" versions="TiDB" :tags="['Follower Read', '读写分离', '副本', 'Stale Read']" />
 
-## 10：你打开 Grafana 监控面板
+## 数据均匀却单节点 CPU 90%：Follower Read 读倾斜
 你负责的 TiDB 集群跑着一套用户的报表系统，每天上午 10 点业务高峰期，大量 BI 查询同时涌入。你打开 Grafana 监控面板，发现一个令人困惑的现象：
 
 **3 个 TiKV 节点中，只有 1 个 CPU 飙到 90%+，另外 2 个 CPU 使用率不到 15%。**

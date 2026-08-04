@@ -2,7 +2,7 @@
 
 <CaseMeta difficulty="⭐⭐⭐" category="DDL" versions="5.7 & 8.0" :tags="['Online DDL', '加索引', 'ALGORITHM', 'LOCK', 'INSTANT']" />
 
-## 200 万慢：导致按用户查询慢到不可用
+## 200 万行加索引：一条 DDL 锁表到不可用
 线上有一张 200 万行的业务表，`user_id` 列没有索引，导致按用户查询慢到不可用。DBA 决定加索引，随手敲下：
 
 ```sql

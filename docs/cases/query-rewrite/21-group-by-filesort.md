@@ -2,7 +2,7 @@
 
 <CaseMeta difficulty="⭐⭐" category="查询改写" versions="5.7 & 8.0" :tags="['GROUP BY', 'Using temporary', '索引有序', '聚合']" />
 
-## 城市报表每次打开 2 秒
+## 城市维度销售报表每次打开 2 秒
 运营后台的城市维度销售报表，每次打开要等 2 秒：
 
 ```sql

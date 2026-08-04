@@ -2,7 +2,7 @@
 
 <CaseMeta difficulty="⭐⭐" category="优化器" versions="5.7 & 8.0" :tags="['USE INDEX', 'FORCE INDEX', 'IGNORE INDEX', '优化器选错索引']" />
 
-## 10 行变慢：某个查询突然变慢
+## 优化器突然换索引：2ms 飙到 800ms，HINT 强制纠正
 线上某个查询突然变慢，排查发现优化器换了一个索引。原本走 `idx_user_created`（10 行扫描）的查询，突然改走 `idx_status`（35 万行扫描），耗时从 2ms 飙到 800ms。数据分布变化导致统计信息偏差，优化器"聪明反被聪明误"。
 
 ```sql

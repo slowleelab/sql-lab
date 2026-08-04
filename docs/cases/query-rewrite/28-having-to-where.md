@@ -2,7 +2,7 @@
 
 <CaseMeta difficulty="⭐" category="查询改写" versions="5.7 & 8.0" :tags="['HAVING', 'WHERE', 'GROUP BY', '提前过滤']" />
 
-## 已支付订单数大于 5 的用户"
+## 统计已支付订单数大于 5 的用户：HAVING 用错位置
 运营后台需要统计"已支付订单数大于 5 的用户"，SQL 写成了这样：
 
 ```sql

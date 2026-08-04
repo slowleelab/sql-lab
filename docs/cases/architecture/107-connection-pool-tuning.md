@@ -2,7 +2,7 @@
 
 <CaseMeta difficulty="⭐⭐⭐" category="架构级优化" versions="5.7 & 8.0" :tags="['连接池', 'HikariCP', 'Druid', 'max_connections', 'wait_timeout', '应用层优化']" />
 
-## 2000失败：新连接申请失败
+## 连接数飙到 2000+ 超限：Too many connections 反复重启
 应用启动后运行正常，但**高峰时段**（如大促）数据库连接数飙到 2000+（超过 `max_connections=1000`），新连接申请失败，应用开始报 "Too many connections"。运维紧急重启后恢复，但几小时后再次发生。
 
 监控显示：

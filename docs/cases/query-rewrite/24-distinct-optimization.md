@@ -2,7 +2,7 @@
 
 <CaseMeta difficulty="⭐⭐" category="查询改写" versions="5.7 & 8.0" :tags="['DISTINCT', '临时表', '覆盖索引', '去重']" />
 
-## 20 万：约 90ms
+## DISTINCT 建临时表去重：20 万行花了 90ms
 访问日志表需要按 `user_id` 去重，查出某时间段内有访问记录的用户。看似简单的 `SELECT DISTINCT` 查询，EXPLAIN 却显示 `Using temporary`--MySQL 创建了临时表来做去重，20 万行数据耗时约 90ms。
 
 ```sql

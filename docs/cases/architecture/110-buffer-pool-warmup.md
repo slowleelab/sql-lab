@@ -2,7 +2,7 @@
 
 <CaseMeta difficulty="⭐⭐⭐" category="架构级优化" versions="5.7 & 8.0" :tags="['Buffer Pool', '重启预热', 'innodb_buffer_pool_dump', 'innodb_buffer_pool_load', '性能调优']" />
 
-## 30 分钟告警：磁盘 IO 100% util
+## 重启后 QPS 只剩 1/5：Buffer Pool 冷启动之痛
 生产数据库每周日凌晨例行重启（滚动升级或 `pt-online-schema-change` 后），重启后 30 分钟内 QPS 只有平时的 1/5，磁盘 IO 100% util，监控系统大量告警。明明数据都在磁盘上，MySQL 也启动了，但就是慢得离谱。
 
 ```sql

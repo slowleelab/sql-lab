@@ -2,7 +2,7 @@
 
 <CaseMeta difficulty="⭐⭐" category="索引" versions="8.0" :tags="['Skip Scan', '联合索引', '低基数列', '索引跳跃']" />
 
-## 跳号扫：低基数列也能用索引
+## gender 低基数列也能走索引：8.0 Skip Scan
 用户表有联合索引 `(gender, created_at)`，`gender` 只有 2 个值（M/F，低基数列）。现在需要查询 2026 年之后创建的用户：
 
 ```sql

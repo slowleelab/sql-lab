@@ -2,7 +2,7 @@
 
 <CaseMeta difficulty="⭐⭐" category="TiDB 分布式优化" versions="TiDB" :tags="['DDL', 'Online Schema Change', 'Schema Change', 'ingest']" />
 
-## 你习惯了这样的流程
+## pt-osc 流程在 TiDB 失效：在线 DDL 直接做
 你是一名从 MySQL 迁移到 TiDB 的 DBA。在 MySQL 中做 DDL，你习惯了这样的流程：
 
 1. 先用 `pt-online-schema-change` 或 `gh-ost` 评估风险

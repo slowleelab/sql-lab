@@ -2,7 +2,7 @@
 
 <CaseMeta difficulty="⭐⭐⭐" category="TiDB 分布式优化" versions="TiDB" :tags="['OOM', '内存', '溢出磁盘', 'HashAgg']" />
 
-## 你被监控告警吵醒,失败
+## 凌晨报表 SQL 失败：TiDB 内存 OOM 排查
 周一早上，你被监控告警吵醒——TiDB 集群昨晚凌晨的一条定时报表 SQL 执行失败，业务数仓的日汇总表没有更新。你快速登录数据库，检查慢日志：
 
 ```

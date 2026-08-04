@@ -2,7 +2,7 @@
 
 <CaseMeta difficulty="⭐⭐⭐" category="JOIN" versions="8.0+" :tags="['Hash Join', 'BNL', '8.0新特性']" />
 
-## 两张表 JOIN
+## 被驱动表无索引：5.7 BNL 慢如蜗牛，8.0 Hash Join 救场
 两张表 JOIN，被驱动表 JOIN 列没有索引。5.7 用 Block Nested Loop（BNL）性能极差，8.0 引入 Hash Join 改善了这种情况。
 
 ## 问题分析

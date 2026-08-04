@@ -2,7 +2,7 @@
 
 <CaseMeta difficulty="⭐⭐" category="TiDB 分布式优化" versions="TiDB" :tags="['Stale Read', 'AS OF TIMESTAMP', '历史读', 'MVCC', '快照读']" />
 
-## 拉一次销售汇总报表,飙升
+## 高峰报表和写入互相干扰：Stale Read 绕开 Leader
 白天高峰时段，订单写入和报表查询在同一个 TiDB 集群上互相干扰。运营团队需要每小时拉一次销售汇总报表，SQL 本身只是一个简单的 `SELECT COUNT(*), SUM(qty), SUM(qty * price) FROM t_stale`，但在大量订单写入同时执行时，报表查询经常因锁等待而超时，或者 Leader TiKV 节点 CPU 飙升导致写入延迟抖动。
 
 运维排查后发现：

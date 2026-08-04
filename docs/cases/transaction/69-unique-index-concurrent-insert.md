@@ -2,7 +2,7 @@
 
 <CaseMeta difficulty="⭐⭐" category="事务与锁" versions="5.7 & 8.0" :tags="['唯一索引', '并发插入', 'ON DUPLICATE KEY', '竞态条件']" />
 
-## 1062 冲突：先查后插的高并发雷区
+## 先查后插的高并发：1062 唯一键冲突
 用户注册或消息去重场景中，业务代码先 `SELECT` 检查某条记录是否存在，不存在则 `INSERT`。单线程下没问题，但高并发下两个请求同时检查到"不存在"，随后都执行 INSERT，第二个请求报 `ERROR 1062 (23000): Duplicate entry 'CODE_NEW' for key 'uk_code'`，唯一键冲突。
 
 ```sql

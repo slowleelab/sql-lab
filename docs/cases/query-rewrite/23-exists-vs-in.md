@@ -2,7 +2,7 @@
 
 <CaseMeta difficulty="⭐⭐" category="查询改写" versions="5.7 & 8.0" :tags="['EXISTS', 'IN', '子查询']" />
 
-## 查询"技术部门的所有员工"
+## 查技术部门员工：IN 和 EXISTS 到底选哪个
 查询"技术部门的所有员工"，有两种写法：`IN` 子查询和 `EXISTS` 相关子查询。选哪个？
 
 ## 问题分析

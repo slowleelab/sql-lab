@@ -2,7 +2,7 @@
 
 <CaseMeta difficulty="⭐⭐" category="DDL" versions="5.7 & 8.0" :tags="['字段类型', 'VARCHAR', 'CHAR', 'TINYINT', 'DECIMAL', '表设计']" />
 
-## 100 万行后字段类型集中爆发
+## 字段类型随手选：100 万行后集中爆发
 某团队在设计订单表时，字段类型随手选：状态用 `VARCHAR(20)` 存中文、金额用 `FLOAT`、手机号用 `VARCHAR(50)`、性别用 `VARCHAR(10)`、逻辑删除标记用 `VARCHAR(5)`。上线初期数据量小，一切正常。半年后表涨到 100 万行，问题集中爆发：
 
 - 金额对账时 `WHERE amount = 99.90` 查不到数据，但页面上明明显示 99.90

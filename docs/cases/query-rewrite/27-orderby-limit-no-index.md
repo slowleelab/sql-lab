@@ -2,7 +2,7 @@
 
 <CaseMeta difficulty="⭐⭐" category="查询改写" versions="5.7 & 8.0" :tags="['ORDER BY', 'LIMIT', 'filesort', '排序优化']" />
 
-## 10 条：浪费率 99.995%
+## 取最新 10 条却排序 20 万行：浪费率 99.995%
 消息表按 `created_at` 倒序取最新 10 条--再常见不过的查询。但 `created_at` 上没有索引，EXPLAIN 显示 `type=ALL` 全表扫描 + `Using filesort`。20 万行数据全部读入内存排序，最后只取 10 条，浪费率 99.995%。
 
 ```sql

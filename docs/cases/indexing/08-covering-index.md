@@ -2,7 +2,7 @@
 
 <CaseMeta difficulty="⭐⭐" category="索引" versions="5.7 & 8.0" :tags="['覆盖索引', '回表', 'Using index', 'SELECT *']" />
 
-## 100 条飙升
+## 列表页从 50ms 涨到 200ms：TEXT 回表是元凶
 商品列表页展示「分类下的商品价格列表」，每页 100 条。数据库 30 万商品，查询耗时 50ms 还算能接受，但随着 TEXT 类型的 `description` 字段越来越大（商品详情越来越长），耗时逐渐飙升到 200ms+。
 
 ```sql

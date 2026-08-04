@@ -2,7 +2,7 @@
 
 <CaseMeta difficulty="⭐⭐" category="TiDB 分布式优化" versions="TiDB" :tags="['Plan Cache', 'Prepared Statement', 'prepare', '缓存']" />
 
-## 40%飙升：你检查了慢查询日志
+## TiDB CPU 翻倍：拼接 SQL 让 Plan Cache 形同虚设
 你在负责一个高并发 OLTP 业务，某天运维告警显示 TiDB 集群的 CPU 使用率从 40% 飙升至 80%。查看 Grafana 监控面板，发现 TiDB Server 层的 CPU 消耗占了集群总 CPU 的 60% 以上。你检查了慢查询日志，并没有发现慢 SQL；进程列表中也没有锁等待或长事务。
 
 进一步分析发现：**你的应用代码中没有使用 Prepared Statement**。所有查询都是以拼接字符串的方式发送到 TiDB——即使查询模式完全相同（例如按用户 ID 查信息），因为 user_id 的常量值不同，每条 SQL 都被视为全新的语句：

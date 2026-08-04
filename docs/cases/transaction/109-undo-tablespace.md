@@ -2,7 +2,7 @@
 
 <CaseMeta difficulty="⭐⭐⭐" category="事务与锁" versions="5.7 & 8.0" :tags="['undo', 'purge', 'innodb_undo_tablespaces', 'innodb_undo_log_truncate', 'MVCC']" />
 
-## 30GB飙升：磁盘告警
+## undo 表空间各 30GB：history list 数十万，purge 跑满
 某天巡检发现 `undo_001` 和 `undo_002` 两个表空间文件各 30GB，磁盘告警。业务方反馈并没有大事务，但 DML 写入量很大。`SHOW ENGINE INNODB STATUS` 显示 history list length 飙升到数十万，purge 线程已经跑满 CPU。
 
 ```sql

@@ -2,7 +2,7 @@
 
 <CaseMeta difficulty="⭐⭐" category="DDL 与大表" versions="5.7 & 8.0" :tags="['SELECT INTO OUTFILE', 'mysqldump', '大数据导出', 'secure_file_priv', 'LOAD DATA INFILE']" />
 
-## 5000 万变慢
+## 导出 5000 万行：mysqldump 2 小时 vs OUTFILE 8 分钟
 需要把 5000 万行订单表导出给数据团队做离线分析。运维同学用 `mysqldump` 跑了 2 小时还没完成，磁盘 IO 跑满，业务查询变慢。改用 `SELECT INTO OUTFILE` 后 8 分钟完成，IO 平稳。
 
 ```sql

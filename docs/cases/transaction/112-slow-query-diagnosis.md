@@ -2,7 +2,7 @@
 
 <CaseMeta difficulty="⭐⭐⭐" category="事务与锁" versions="5.7 & 8.0" :tags="['performance_schema', 'sys.session', '锁等待', '慢查询', 'sys.schema']" />
 
-## 50%告警
+## QPS 掉一半："Waiting for lock" 却找不到是谁
 线上告警"数据库 QPS 下降 50%"，但没收到具体慢 SQL 邮件。`SHOW PROCESSLIST` 看到一堆 "Waiting for table metadata lock" 或 "Waiting for row lock"。DBA 拿不到是谁、哪个 SQL、锁了多久。
 
 ```sql

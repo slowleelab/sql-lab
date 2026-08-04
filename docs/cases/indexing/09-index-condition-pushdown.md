@@ -2,7 +2,7 @@
 
 <CaseMeta difficulty="⭐⭐⭐" category="索引" versions="5.6 & 5.7 & 8.0" :tags="['ICP', '索引下推', 'Using index condition', '回表']" />
 
-## 按手机号前缀 + 姓名模糊查询
+## 手机号前缀 + 姓名模糊：索引下推 ICP 提速
 用户搜索功能，按手机号前缀 + 姓名模糊查询：
 
 ```sql

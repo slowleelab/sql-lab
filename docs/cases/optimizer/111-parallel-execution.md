@@ -2,7 +2,7 @@
 
 <CaseMeta difficulty="⭐⭐⭐" category="优化器与 8.0 新特性" versions="8.0.27+" :tags="['parallel execution', '并行查询', '8.0新特性', 'innodb_parallel_read_threads', 'EXPLAIN FORMAT=JSON']" />
 
-## 5 亿：即使有索引也要 40 秒+
+## 5 亿行聚合 40 秒+：8.0 并行执行 3 秒跑完
 某 BI 系统跑大表聚合（`SELECT COUNT(*) FROM fact_table WHERE ...`），单表 5 亿行，即使有索引也要 40 秒+，CPU 只能跑到 30%。MySQL 8.0 之前是单线程执行，**CPU 多核完全浪费**。同样的 SQL 在 PostgreSQL 上 3 秒跑完，差距巨大。
 
 ```sql

@@ -2,7 +2,7 @@
 
 <CaseMeta difficulty="⭐⭐" category="索引" versions="5.7 & 8.0" :tags="['OR', 'index_merge', 'UNION改写']" />
 
-## 整个查询退化为全表扫描
+## OR 一侧无索引：整个查询退化为全表扫描
 用户查询 `WHERE phone='13800138000' OR city='北京'`，`phone` 有索引但 `city` 没有。OR 中只要一侧无索引，整个查询退化为全表扫描。
 
 ## 问题分析

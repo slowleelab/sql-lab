@@ -2,7 +2,7 @@
 
 <CaseMeta difficulty="⭐" category="索引" versions="5.7 & 8.0" :tags="['LIKE', '通配符', '索引失效']" />
 
-## 20 万：用户搜索框输入关键词
+## LIKE '%zhang%' 前导通配符：20 万行全表扫描
 用户搜索框输入关键词，后端用 `LIKE '%zhang%'` 模糊查询。`username` 字段有索引，但 20 万行全表扫描。
 
 ## 问题分析

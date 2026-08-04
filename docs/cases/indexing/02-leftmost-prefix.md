@@ -2,7 +2,7 @@
 
 <CaseMeta difficulty="⭐" category="索引" versions="5.7 & 8.0" :tags="['联合索引', '最左前缀', '索引失效']" />
 
-## 50 万行 2 秒：联合索引没传第一列
+## 联合索引没传第一列：50 万行全表扫描 2 秒
 订单表建了联合索引 `(user_id, status, created_at)`，但后台报表查询时只按 `status` 和 `created_at` 过滤，没有传 `user_id`。50 万行的表查询要 2 秒，明明有联合索引却走全表扫描。
 
 ## 问题分析

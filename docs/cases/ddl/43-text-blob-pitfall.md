@@ -2,7 +2,7 @@
 
 <CaseMeta difficulty="⭐⭐" category="DDL" versions="5.7 & 8.0" :tags="['TEXT', 'BLOB', '回表', 'SELECT *', '溢出页']" />
 
-## 100ms慢：只有 10 万行文章
+## 只有 10 万行却加载 100ms：TEXT/BLOB 的隐形开销
 内容管理系统的文章列表页，每次加载都要等 **100ms 以上**。表里只有 10 万行文章，查询走了索引，只取 20 条，看起来不该这么慢：
 
 ```sql

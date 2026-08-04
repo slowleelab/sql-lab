@@ -2,7 +2,7 @@
 
 <CaseMeta difficulty="⭐⭐" category="索引" versions="5.7 & 8.0" :tags="['index_merge', 'OR', 'UNION改写']" />
 
-## 状态为 1 或者城市为北京"的用户列表
+## 状态=1 OR 城市=北京：index_merge 合并陷阱
 用户表有 `idx_status` 和 `idx_city` 两个单列索引。运营后台需要查询"状态为 1 或者城市为北京"的用户列表：
 
 ```sql

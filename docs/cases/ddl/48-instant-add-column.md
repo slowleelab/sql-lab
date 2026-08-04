@@ -2,7 +2,7 @@
 
 <CaseMeta difficulty="⭐⭐" category="DDL" versions="5.7 & 8.0" :tags="['INSTANT', 'ADD COLUMN', 'Online DDL', '元数据变更', '锁表']" />
 
-## 500 万行加列：锁表几小时
+## 500 万行加列：INSTANT 秒级 vs 传统锁表几小时
 产品要求给订单表加一个"订单来源"字段，标记订单来自 web、App 还是小程序。表有 500 万行数据，DBA 在 MySQL 5.7 上执行：
 
 ```sql

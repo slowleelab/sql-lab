@@ -2,7 +2,7 @@
 
 <CaseMeta difficulty="⭐⭐" category="DDL" versions="5.7 & 8.0" :tags="['大表DELETE', '分批', '大事务', '主从延迟', 'binlog']" />
 
-## 70%堆积：日志表堆积了大量 DEBUG 级别数据
+## 70% 是 DEBUG 日志：一条 DELETE 引发的灾难
 日志表堆积了大量 DEBUG 级别数据，占了 70% 的空间。运维同学写了一条清理语句，想着一把删干净：
 
 ```sql

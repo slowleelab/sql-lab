@@ -2,7 +2,7 @@
 
 <CaseMeta difficulty="⭐⭐" category="TiDB 分布式优化" versions="TiDB" :tags="['EXPLAIN', '算子树', 'operator', '执行计划', 'TiDB']" />
 
-## 你是一名有多年 MySQL 经验的 DBA
+## MySQL DBA 接手 TiDB：EXPLAIN 树怎么读
 你是一名有多年 MySQL 经验的 DBA，刚接手公司的 TiDB 集群。某天你习惯性地敲下：
 
 ```sql

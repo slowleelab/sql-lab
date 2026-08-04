@@ -2,7 +2,7 @@
 
 <CaseMeta difficulty="⭐⭐⭐" category="索引设计与失效" versions="5.7 & 8.0" :tags="['AHI', 'innodb_adaptive_hash_index', '自适应哈希', '热数据', 'Buffer Pool']" />
 
-## 0.5ms 还嫌慢：热点用户想压到 0.1ms
+## 热点用户 0.5ms 等值查询还想再快：自适应哈希索引
 某订单表的 `idx_user_id` 上有大量等值查询 `WHERE user_id = ?`，已经走 `ref` 索引，单次查询约 0.5ms。但**热点用户**（如大客户、热门商家）的查询每秒上万次，监控显示 Buffer Pool 命中率从 99% 降到 95%——B+ 树索引在 buffer pool 中虽然命中，但每次仍要走 3~4 层树高（~4 次随机读）。业务方希望进一步压到 0.1ms 以内。
 
 ```sql

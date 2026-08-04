@@ -2,7 +2,7 @@
 
 <CaseMeta difficulty="⭐⭐" category="查询改写" versions="5.7 & 8.0" :tags="['COUNT', '汇总表', '物化视图']" />
 
-## 50 万：订单总数
+## 订单总数 COUNT(*) 每次刷新 400ms
 后台仪表盘显示订单总数，`SELECT COUNT(*) FROM t_order_count WHERE status=1` 在 50 万行表上要 400ms。每次刷新都卡。
 
 ## 问题分析

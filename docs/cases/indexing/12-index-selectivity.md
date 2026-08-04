@@ -2,7 +2,7 @@
 
 <CaseMeta difficulty="⭐⭐" category="索引设计与失效" versions="5.7 & 8.0" :tags="['选择性', '低基数列', '联合索引', 'cardinality']" />
 
-## 订单状态表按 status 查询
+## status 只有 3 个值：优化器为何不用索引
 订单状态表按 `status` 查询，`status` 只有 0/1/2 三个值（待付款/已付款/已关闭）。开发者给 `status` 建了索引 `idx_status`，以为查询 `WHERE status = 1` 能走索引加速。结果 EXPLAIN 显示 `type=ALL` 全表扫描--优化器明明知道有索引却不用。
 
 ```sql

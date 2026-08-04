@@ -2,7 +2,7 @@
 
 <CaseMeta difficulty="⭐⭐" category="TiDB 分布式优化" versions="TiDB" :tags="['AUTO_RANDOM', '写热点', 'Region', '分布式ID']" />
 
-## 写热点：单 TiKV 节点 CPU 100%
+## 单 TiKV 节点 CPU 100%：AUTO_INCREMENT 写热点
 你负责的业务刚从 MySQL 迁移到 TiDB，一开始跑得还不错。但随着流量增长，你发现在促销活动期间，写入 QPS 怎么也上不去——监控显示**某个 TiKV 节点的 CPU 一直是 100%**，而其他两个节点几乎空闲：
 
 ```

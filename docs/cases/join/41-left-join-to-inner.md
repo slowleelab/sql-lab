@@ -2,7 +2,7 @@
 
 <CaseMeta difficulty="⭐⭐" category="JOIN" versions="5.7 & 8.0" :tags="['LEFT JOIN', 'INNER JOIN', '驱动表', '优化器', 'JOIN 顺序']" />
 
-## LEFT JOIN 3 秒：100 万订单导出昵称
+## LEFT JOIN 导出 100 万订单：3 秒多的代价
 运营后台需要导出所有已支付订单及对应的用户昵称。订单表 100 万行，用户表 10 万行。开发同学习惯性地写下了 LEFT JOIN——"万一有的订单没有用户呢？"结果这条查询跑了 **3 秒多**：
 
 ```sql

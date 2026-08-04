@@ -2,7 +2,7 @@
 
 <CaseMeta difficulty="⭐⭐⭐" category="架构" versions="5.7 & 8.0" :tags="['AUTO_INCREMENT', 'INT 溢出', '雪花ID', '分布式ID', '主键设计']" />
 
-## 订单表突然无法写入
+## 运行 3 年后订单表突然写不进：自增 ID 耗尽
 某电商系统运行 3 年后，订单表突然无法写入，所有下单请求报错：
 
 ```

@@ -2,7 +2,7 @@
 
 <CaseMeta difficulty="⭐⭐" category="事务与锁" versions="5.7 & 8.0" :tags="['锁等待', '超时', '重试', 'innodb_lock_wait_timeout']" />
 
-## 50 秒堆积
+## 行锁等待 50 秒：一个慢操作引发的雪崩隐患
 高并发计数器场景中，事务A 更新计数器后因为执行了慢操作（远程调用、大查询、GC 停顿）迟迟不 COMMIT，长时间持有行锁。事务B 尝试更新同一行，等待行锁直到默认的 `innodb_lock_wait_timeout=50` 秒后才报 `ERROR 1205 (HY000): Lock wait timeout exceeded`。50 秒的等待期间连接池连接被占用，后续请求堆积，存在雪崩风险。
 
 ```sql

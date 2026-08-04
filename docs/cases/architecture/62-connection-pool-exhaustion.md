@@ -2,7 +2,7 @@
 
 <CaseMeta difficulty="⭐⭐" category="架构" versions="5.7 & 8.0" :tags="['max_connections', '连接池', 'Too many connections', 'Threads_connected', 'PROCESSLIST']" />
 
-## 10 分钟超时
+## 大促 10 分钟连接池打满：168 个线程卡同一条慢 SQL
 大促开始 10 分钟，监控红灯全亮：应用日志疯狂报错 `ERROR 1040 (HY000): Too many connections`，所有新连接被数据库拒绝，接口大面积超时，整个服务几乎不可用。DBA 登入排查发现 `max_connections=200` 已被占满，168 个线程同时在跑同一条慢 SQL。
 
 ```sql

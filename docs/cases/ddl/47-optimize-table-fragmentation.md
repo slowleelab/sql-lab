@@ -2,7 +2,7 @@
 
 <CaseMeta difficulty="⭐⭐" category="DDL与大表" versions="5.7 & 8.0" :tags="['碎片整理', 'OPTIMIZE TABLE', '空间回收', 'DELETE后']" />
 
-## 20 万变慢：表只剩 6 万行有效数据
+## 删掉 70% 数据磁盘没降：表碎片空洞 6.8MB
 订单表 `t_fragment_order` 插入 20 万行后，运维清理了 70% 的无效数据（status 为待付/发货/已取消的订单）。DELETE 完成后，表只剩 6 万行有效数据，但磁盘空间几乎没降--ibd 文件依然占着 14MB，其中 6.8MB 是碎片空洞。查询也变慢了：
 
 ```sql

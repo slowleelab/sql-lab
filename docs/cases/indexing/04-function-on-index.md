@@ -2,7 +2,7 @@
 
 <CaseMeta difficulty="⭐⭐" category="索引" versions="5.7 & 8.0" :tags="['函数索引', 'DATE', '索引失效']" />
 
-## 30 万：created_at 有索引
+## DATE() 包住 created_at：索引作废全表扫 30 万行
 运营后台按日期查订单，开发写了 `WHERE DATE(created_at) = '2026-07-01'`。`created_at` 有索引，但查询却全表扫描 30 万行。
 
 ## 问题分析
