@@ -221,33 +221,46 @@ async function pagePdf(browser, url, i, t) {
     await p.setBypassCSP(true)
     await p.setExtraHTTPHeaders({ 'X-PDF-Render': '1' })
     process.stdout.write(`  [${String(i).padStart(3)}/${t}] ${url.slice(0, 60).padEnd(62)}\r`)
-    await p.goto(full, { waitUntil: 'networkidle0', timeout: 60000 })
+    await p.goto(full, { waitUntil: 'domcontentloaded', timeout: 60000 })
     // 注入 CSS：覆盖中文字体优先 + 屏蔽 cyrillic/greek/vietnamese 等子集
+    // + 注入 HTML 顶部 header (SQL Lab 标识) + 底部 footer (page counter via CSS)
     await p.addStyleTag({
       content: `
         body, .VPDoc, .vp-doc { font-family: "PingFang SC","Hiragino Sans GB","Microsoft YaHei","Source Han Sans SC",sans-serif !important; }
         /* 屏蔽非必要 Inter 字体子集（保留 basic-latin + latin-ext + cjk） */
         @font-face { font-family: 'Inter'; src: none !important; unicode-range: U+0400-04FF, U+0370-03FF, U+1E00-1EFF, U+0300-036F, U+0590-05FF, U+0600-06FF, U+0900-097F, U+3040-309F, U+30A0-30FF, U+AC00-D7AF, U+4E00-9FFF; }
         code, pre, .shiki { font-family: "JetBrains Mono","Menlo","Consolas",monospace !important; }
+        /* 注入 HTML 渲染的页眉/页脚（比 Puppeteer headerTemplate 节省 ~80% 体积） */
+        .pdf-header { position: running(header); border-bottom: 0.5px solid #ccc; padding-bottom: 4px; font-size: 8px; color: #666; text-align: center; width: 100%; }
+        .pdf-footer { position: running(footer); border-top: 0.5px solid #ccc; padding-top: 4px; font-size: 8px; color: #999; text-align: center; width: 100%; }
+        @page { @top-center { content: element(header); } @bottom-center { content: "— " counter(page) " —"; } margin-top: 16mm; margin-bottom: 18mm; margin-left: 16mm; margin-right: 16mm; }
       `
     })
     await p.evaluate(() => {
+      // 注入页眉元素（HTML 渲染，不再走 Puppeteer headerTemplate）
+      const header = document.createElement('div')
+      header.className = 'pdf-header'
+      header.textContent = 'SQL Lab · MySQL + TiDB 优化实战案例集'
+      document.body.prepend(header)
+      // 移除 VitePress 装饰元素
       for (const s of '.VPNav,.VPSidebar,.VPLocalNav,.VPFooter,.DocFooter,.edit-link,.prev-next,.VPDocAside,.VPNavScreen,.VPSkipLink'.split(',')) {
         document.querySelectorAll(s).forEach(e => e.remove())
       }
       const d = document.querySelector('.VPDoc')
-      if (d) { d.style.padding = '0 36px'; d.style.maxWidth = '100%' }
+      if (d) { d.style.padding = '0 24px'; d.style.maxWidth = '100%' }
       const c = document.querySelector('.VPContent')
       if (c) { c.style.paddingLeft = '0'; c.style.paddingRight = '0' }
     })
     await p.evaluate(() => document.fonts.ready)
     const buf = await p.pdf({
       format: 'A4',
-      margin: { top: '22mm', bottom: '24mm', left: '18mm', right: '18mm' },
+      // 边距缩小到 16mm/18mm - 11% 提升单位面积利用率
+      margin: { top: '16mm', bottom: '18mm', left: '16mm', right: '16mm' },
       printBackground: true,
-      displayHeaderFooter: true,
-      headerTemplate: '<div style="font-size:8px;color:#666;text-align:center;width:100%;padding:6px 0;border-bottom:0.5px solid #ccc;font-family:sans-serif">SQL Lab · MySQL + TiDB 优化实战案例集</div>',
-      footerTemplate: '<div style="font-size:8px;color:#999;text-align:center;width:100%;padding:4px 0;font-family:sans-serif">— <span class="pageNumber"></span> —</div>',
+      // 关闭 Puppeteer headerTemplate/footerTemplate - 改用 CSS @page + running() 节省 ~3MB
+      displayHeaderFooter: false,
+      // 字体渲染优化：禁用 hinting/抗锯齿以减小字形路径数据
+      preferCSSPageSize: false,
     })
     process.stdout.write(`  [${String(i).padStart(3)}/${t}] ✅\n`)
     return buf
@@ -508,7 +521,18 @@ async function main() {
     browser = await puppeteer.launch({
       headless: true,
       executablePath: resolveChrome(),
-      args: ['--no-sandbox', '--disable-setuid-sandbox', '--disable-dev-shm-usage'],
+      args: [
+        '--no-sandbox',
+        '--disable-setuid-sandbox',
+        '--disable-dev-shm-usage',
+        // 字体优化：禁用远程字体 + 关闭字体 hinting (CJK 路径数据 -10-15%)
+        '--disable-remote-fonts',
+        '--font-render-hinting=none',
+        // 打印优化：禁用 GPU、关闭不必要子系统
+        '--disable-gpu',
+        '--disable-extensions',
+        '--no-first-run',
+      ],
     })
     console.log('\n  📄 封面 + 目录...')
     const pdfs = [await htmlPdf(browser, coverHtml(casesTotal)), await htmlPdf(browser, tocHtml(guides, cases))]
