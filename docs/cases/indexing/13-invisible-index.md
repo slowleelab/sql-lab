@@ -2,8 +2,7 @@
 
 <CaseMeta difficulty="⭐⭐" category="索引设计与失效" versions="8.0" :tags="['不可见索引', 'invisible', '安全删索引', '8.0新特性']" />
 
-## 场景痛点
-
+## 商品表按 category 查询,慢
 商品表按 `category` 查询，`idx_category` 索引正常工作。DBA 怀疑这个索引已经没用了--业务查询都改走了别的索引，`idx_category` 只在白白增加写入开销和占用空间。想删掉它，但又怕有隐藏的慢查询依赖这个索引。
 
 ```sql

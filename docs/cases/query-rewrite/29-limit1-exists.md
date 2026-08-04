@@ -2,8 +2,7 @@
 
 <CaseMeta difficulty="⭐⭐" category="查询改写" versions="5.7 & 8.0" :tags="['EXISTS', 'COUNT', 'LIMIT 1', '子查询优化']" />
 
-## 场景痛点
-
+## "有未支付订单的用户"
 风控系统需要筛选出"有未支付订单的用户"，SQL 写成了这样：
 
 ```sql

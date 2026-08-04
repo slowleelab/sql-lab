@@ -2,8 +2,7 @@
 
 <CaseMeta difficulty="⭐⭐" category="索引" versions="5.7 & 8.0" :tags="['范围查询', '联合索引', '索引列顺序']" />
 
-## 场景痛点
-
+## 范围之后：联合索引第三列失效
 联合索引 `(user_id, status, amount)`，查询 `WHERE user_id=1000 AND status>1 AND amount>500`。`status` 用了范围查询，导致后面的 `amount` 无法走索引。
 
 ## 问题分析

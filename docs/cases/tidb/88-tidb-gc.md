@@ -2,8 +2,7 @@
 
 <CaseMeta difficulty="⭐⭐⭐" category="TiDB 分布式优化" versions="TiDB" :tags="['GC', 'MVCC', '长事务', 'safe point', 'Lock View']" />
 
-## 场景痛点
-
+## 10 万：检查发现最近执行了一批清理任务
 DBA 发现 TiDB 集群的磁盘使用率持续上升，但业务并没有大量写入。检查发现最近执行了一批清理任务——对一张 10 万行的表做了 `DELETE FROM t WHERE status = 0`（约 1 万行），按理说磁盘应该释放空间，但实际上磁盘使用量不减反增。
 
 ```sql

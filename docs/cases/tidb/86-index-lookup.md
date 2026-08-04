@@ -2,8 +2,7 @@
 
 <CaseMeta difficulty="⭐⭐" category="TiDB 分布式优化" versions="TiDB" :tags="['IndexLookUp', '回表', '覆盖索引', 'IndexReader', 'Cluster Index', 'Build/Probe']" />
 
-## 场景痛点
-
+## 2 万飙升：间从 5ms 飙升到 30ms
 TiDB 管理后台的列表页突然变慢了。EXPLAIN 一看，执行计划里出现了 `IndexLookUp` 算子，`estRows` 显示扫描了 2 万行。运维凭 MySQL 经验判断"走了索引应该不慢"，但实际响应时间从 5ms 飙升到 30ms。
 
 ```sql

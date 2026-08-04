@@ -2,8 +2,7 @@
 
 <CaseMeta difficulty="⭐⭐⭐" category="TiDB 分布式优化" versions="TiDB" :tags="['Join', 'Hash Join', 'Index Join', 'Merge Join', 'Broadcast Join', 'IndexLookUpJoin', 'Index Hash Join', 'Index Merge Join']" />
 
-## 场景痛点
-
+## 200ms飙升
 一个从 MySQL 迁移到 TiDB 的报表系统，某个核心 JOIN 查询突然从 200ms 飙升到 5s。DBA 检查 EXPLAIN 后发现 TiDB 选择了 Hash Join，而同样的 SQL 在 MySQL 中走的是 Index Nested Loop Join。
 
 ```sql

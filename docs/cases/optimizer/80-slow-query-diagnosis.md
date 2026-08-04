@@ -2,8 +2,7 @@
 
 <CaseMeta difficulty="⭐⭐⭐" category="优化器" versions="5.7 & 8.0" :tags="['慢查询', 'slow log', 'pt-query-digest', 'performance_schema', '方法论']" />
 
-## 场景痛点
-
+## 90%飙升
 生产数据库 CPU 飙升到 90%，监控告警狂响。DBA 登录一看，慢查询数万条，根本看不出是哪条 SQL 导致的。改了半天一条 SQL，CPU 还是下不去--因为真正的"元凶"根本不是你改的那条。
 
 ```sql

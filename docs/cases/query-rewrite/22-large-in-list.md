@@ -2,8 +2,7 @@
 
 <CaseMeta difficulty="⭐⭐" category="查询改写" versions="5.7 & 8.0" :tags="['IN列表', '临时表', 'JOIN']" />
 
-## 场景痛点
-
+## 大 IN 列表：1000 个 ID 反而走错计划
 批量查询传入上千个 ID 的 IN 列表：`WHERE user_id IN (1,2,3,...,1000)`。IN 列表过长时优化器可能选择低效执行计划。
 
 ## 问题分析

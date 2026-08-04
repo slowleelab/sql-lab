@@ -2,8 +2,7 @@
 
 <CaseMeta difficulty="⭐⭐" category="DDL" versions="5.7 & 8.0" :tags="['TEXT', 'BLOB', '垂直拆分', 'Buffer Pool', '冷热分离']" />
 
-## 场景痛点
-
+## 5KB：列表页只需要标题和摘要
 内容管理系统的文章表，正文 `content TEXT`（平均 5KB）和标题、作者等元数据混在同一张表。列表页只需要标题和摘要，查询已走索引、也不查 `content` 字段，但响应仍要 **45ms**。
 
 ```sql

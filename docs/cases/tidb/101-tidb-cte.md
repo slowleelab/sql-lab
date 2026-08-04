@@ -2,8 +2,7 @@
 
 <CaseMeta difficulty="⭐⭐" category="TiDB 分布式优化" versions="TiDB" :tags="['CTE', 'WITH RECURSIVE', '临时表', 'Materialize', '递归查询']" />
 
-## 场景痛点
-
+## 你的做法是写死 N 层 LEFT JOIN
 你负责维护公司的组织架构系统，需要支持"查看某个员工的所有下属（任意层级）"。在 MySQL 5.7 时代，你的做法是写死 N 层 LEFT JOIN：
 
 ```sql

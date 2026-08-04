@@ -2,8 +2,7 @@
 
 <CaseMeta difficulty="⭐⭐" category="事务与锁" versions="5.7 & 8.0" :tags="['FOR UPDATE', '锁升级', '行锁', '表锁']" />
 
-## 场景痛点
-
+## 1205 阻塞：FOR UPDATE 锁全表
 商品库存管理系统中，后台对账脚本执行 `SELECT * FROM t_product WHERE category = '电子' FOR UPDATE` 锁定电子产品做盘点。此时整个商品表的更新全部卡住--连非电子产品（如食品类 id=1）的库存扣减也被阻塞，最终报 `ERROR 1205 Lock wait timeout exceeded`。
 
 ```sql

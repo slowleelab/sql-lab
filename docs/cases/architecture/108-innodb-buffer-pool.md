@@ -2,8 +2,7 @@
 
 <CaseMeta difficulty="⭐⭐⭐" category="架构级优化" versions="5.7 & 8.0" :tags="['innodb_buffer_pool_size', 'InnoDB', 'Buffer Pool', '内存调优', 'LRU']" />
 
-## 场景痛点
-
+## 100 万飙升
 应用刚上线时跑得好好的，半年后数据量从 100 万涨到 5000 万，磁盘 IO 飙升、`SHOW PROCESSLIST` 出现大量"Writing to net"和"Reading from net"，QPS 断崖式下跌。检查 `innodb_buffer_pool_size` 设置才发现——只给了 128M，但数据库服务器有 64G 内存。
 
 ```sql

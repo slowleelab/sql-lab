@@ -2,8 +2,7 @@
 
 <CaseMeta difficulty="⭐⭐⭐" category="事务" versions="5.7 & 8.0" :tags="['隔离级别', 'next-key lock', 'gap lock', '并发插入']" />
 
-## 场景痛点
-
+## 1205 阻塞：同一用户下单被卡住
 订单系统中，客服需要锁定某个用户的已支付订单进行对账。事务A执行 `SELECT ... WHERE user_id = 100 AND status = 1 FOR UPDATE` 锁定该用户的已支付订单。与此同时，事务B尝试为同一用户创建一笔新订单（`INSERT INTO t_order ... user_id = 100, status = 0`），结果被长时间阻塞，最终报 `ERROR 1205 (HY000): Lock wait timeout exceeded`。
 
 ```sql

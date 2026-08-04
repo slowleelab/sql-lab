@@ -2,8 +2,7 @@
 
 <CaseMeta difficulty="⭐⭐" category="索引设计与失效" versions="5.7 & 8.0" :tags="['前缀索引', 'VARCHAR', '索引空间', '选择性']" />
 
-## 场景痛点
-
+## 8mb变慢
 URL 日志表的 `url` 字段是 `VARCHAR(255)`，为了支持按 URL 等值查询，直接建了全列索引 `idx_url (url)`。查询确实走索引了，但 `key_len` 高达 1022 字节--`utf8mb4` 下每个字符最多 4 字节，255×4+2=1022。15 万行数据的索引体积约 150MB，buffer pool 被大索引挤占，热数据频繁被驱逐，写入也因为 B+ 树节点过大而变慢。
 
 ```sql

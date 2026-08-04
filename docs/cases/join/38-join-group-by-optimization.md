@@ -2,8 +2,7 @@
 
 <CaseMeta difficulty="⭐⭐⭐" category="JOIN优化" versions="5.7 & 8.0" :tags="['JOIN', 'GROUP BY', '聚合', '临时表', '先聚合后JOIN']" />
 
-## 场景痛点
-
+## JOIN+GROUP BY 2.7 秒：地区销售报表
 BI 报表系统需要统计各地区的订单数和总金额。订单表 100 万行，用户表 1 万行，用户分布在 10 个地区。统计 SQL 跑了 **2.7 秒**：
 
 ```sql

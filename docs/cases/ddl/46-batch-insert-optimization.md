@@ -2,8 +2,7 @@
 
 <CaseMeta difficulty="⭐⭐" category="DDL与大表" versions="5.7 & 8.0" :tags="['批量插入', 'INSERT优化', '事务提交', 'LOAD DATA']" />
 
-## 场景痛点
-
+## 10 万：跑了 85 秒还没完成
 数据迁移脚本需要导入 10 万行数据到 `t_batch_data` 表。开发同学用 ORM 框架的默认 `save()` 方法逐行插入，每行一个事务，跑了 **85 秒**还没完成：
 
 ```sql

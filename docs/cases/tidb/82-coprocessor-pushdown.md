@@ -2,8 +2,7 @@
 
 <CaseMeta difficulty="⭐⭐⭐" category="TiDB 分布式优化" versions="TiDB" :tags="['coprocessor', '下推', 'tikv', '数据传输']" />
 
-## 场景痛点
-
+## TiDB 查询变慢,失败
 TiDB 查询变慢，表象是索引没利用好，但实际症结往往在于**SELECT 的 WHERE 条件能否下推到 TiKV 协处理器执行**。下推失败时，几十万行数据全量从 TiKV 传输到 TiDB Server 再过滤，大量时间消耗在网络上。
 
 ```sql

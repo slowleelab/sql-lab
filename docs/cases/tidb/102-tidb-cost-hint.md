@@ -2,8 +2,7 @@
 
 <CaseMeta difficulty="⭐⭐⭐" category="TiDB 分布式优化" versions="TiDB" :tags="['Hint', '优化器', 'Cost Model', 'agg_push_down', 'limit_push_down', 'hint']" />
 
-## 场景痛点
-
+## 90%失败
 你负责一个用户行为分析平台，表 `t_hint_test` 存储用户的行为记录，其中 `status` 字段表示行为状态：0=失败、1=成功、2=处理中。由于业务特性，90% 的记录都是成功状态（status=1），数据分布严重倾斜。
 
 某天，产品经理需要导出"北京地区成功行为中 score 最高的 20 条记录"：

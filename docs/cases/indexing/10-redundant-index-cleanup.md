@@ -2,8 +2,7 @@
 
 <CaseMeta difficulty="⭐⭐" category="索引设计与失效" versions="5.7 & 8.0" :tags="['冗余索引', '索引清理', '写入开销']" />
 
-## 场景痛点
-
+## 12345：created_at) 两个索引
 订单索引表上同时存在 `idx_user (user_id)` 和 `idx_user_created (user_id, created_at)` 两个索引。查询 `WHERE user_id = 12345` 时 EXPLAIN 的 `possible_keys` 列出两个候选索引，优化器每次都要做成本比较来选择--这看起来无害，但背后是实打实的写入放大。
 
 ```sql

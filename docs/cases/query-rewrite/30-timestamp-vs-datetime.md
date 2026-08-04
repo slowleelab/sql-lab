@@ -2,8 +2,7 @@
 
 <CaseMeta difficulty="⭐⭐" category="查询改写" versions="5.7 & 8.0" :tags="['TIMESTAMP', 'DATETIME', '时区', 'time_zone', '数据类型']" />
 
-## 场景痛点
-
+## 时区陷阱：跨境订单对不上数
 跨境 SaaS 业务的订单表用 `TIMESTAMP` 存 `created_at`，数据录入时统一用 UTC。国内运营后台部署在东八区（+08:00），跑日报"统计 2026-07-01 当天订单数"时，发现和海外团队对不上——同一批订单，国内统计比 UTC 统计少了好几百单，高峰时段订单"消失"或"跑到次日"了。
 
 ```sql

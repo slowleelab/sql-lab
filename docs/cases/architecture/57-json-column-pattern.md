@@ -2,8 +2,7 @@
 
 <CaseMeta difficulty="⭐⭐" category="架构级优化" versions="8.0" :tags="['JSON', '虚拟列', '函数索引', '8.0新特性']" />
 
-## 场景痛点
-
+## 10 万慢：按颜色筛选商品却慢到 45ms
 商品属性灵活多变，团队用 JSON 字段 `attrs` 存储 `{"color":"red","size":"L","brand":"Nike"}` 这类属性。上线后商品表 10 万行，按颜色筛选商品却慢到 **45ms**：
 
 ```sql

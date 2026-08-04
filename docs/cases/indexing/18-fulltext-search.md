@@ -2,8 +2,7 @@
 
 <CaseMeta difficulty="⭐⭐" category="索引" versions="5.7 & 8.0" :tags="['FULLTEXT', 'ngram', '全文检索', 'LIKE', '中文搜索']" />
 
-## 场景痛点
-
+## 用户输入关键词搜索文章正文
 内容管理系统、知识库、论坛等场景中，用户输入关键词搜索文章正文。最常见的写法是用 `LIKE '%关键词%'`：
 
 ```sql

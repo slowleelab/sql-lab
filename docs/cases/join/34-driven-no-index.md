@@ -2,8 +2,7 @@
 
 <CaseMeta difficulty="⭐⭐" category="JOIN" versions="5.7 & 8.0" :tags="['JOIN', '被驱动表', '无索引', 'BNL']" />
 
-## 场景痛点
-
+## 被驱动表无索引：40 万行 JOIN 直接卡死
 订单主表 JOIN 订单明细表，明细表的 `order_id` 忘了建索引。10 万订单 + 30 万明细，查询直接卡死。
 
 ## 问题分析

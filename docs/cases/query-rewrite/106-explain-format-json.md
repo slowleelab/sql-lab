@@ -2,8 +2,7 @@
 
 <CaseMeta difficulty="⭐⭐⭐" category="查询改写" versions="5.7 & 8.0" :tags="['EXPLAIN FORMAT=JSON', '成本估算', 'query_block', 'optimizer_trace', '执行计划']" />
 
-## 场景痛点
-
+## 12 列 EXPLAIN 看不到优化器的决策过程
 经典的 `EXPLAIN`（12 列扁平表）只能看到最终选定的执行计划，**看不到优化器的决策过程**：
 - 为什么选 `range` 而不是 `ref`？
 - 为什么 `idx_a_b` 而不是 `idx_a`？

@@ -2,8 +2,7 @@
 
 <CaseMeta difficulty="⭐⭐⭐" category="DDL" versions="5.7 & 8.0" :tags="['MODIFY COLUMN', 'Online DDL', 'ALGORITHM', 'LOCK', '锁表']" />
 
-## 场景痛点
-
+## 100 万：实际手机号只有 11 位
 DBA 发现用户表的 `phone` 字段定义成了 `VARCHAR(50)`，实际手机号只有 11 位，需要改成 `VARCHAR(20)` 节省空间。表有 100 万行数据，他直接执行：
 
 ```sql

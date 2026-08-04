@@ -2,8 +2,7 @@
 
 <CaseMeta difficulty="⭐⭐⭐" category="事务与锁" versions="5.7 & 8.0" :tags="['间隙锁', 'RR隔离', '插入阻塞', '锁范围']" />
 
-## 场景痛点
-
+## 1205 阻塞：间隙锁把插入也卡死
 金融账户系统中，事务A执行范围查询 `SELECT ... WHERE id BETWEEN 10 AND 20 FOR UPDATE` 锁定一批账户进行对账。与此同时，事务B尝试向该范围插入一个新账户（id=15），结果被长时间阻塞，最终报 `ERROR 1205 (HY000): Lock wait timeout exceeded`。
 
 ```sql

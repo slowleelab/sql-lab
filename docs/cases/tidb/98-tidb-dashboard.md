@@ -2,8 +2,7 @@
 
 <CaseMeta difficulty="⭐⭐" category="TiDB 诊断工具" versions="TiDB" :tags="['Dashboard', 'TopSQL', 'Key Visualizer', '慢查询', '诊断', 'Statement Analysis']" />
 
-## 场景痛点
-
+## 35%飙升：P99 延迟从 50ms 飙升到 5.2 秒
 凌晨 2:15，你被 PagerDuty 告警吵醒。Grafana 显示 TiDB 集群的 CPU 使用率从平时的 35% 飙升至 92%，P99 延迟从 50ms 飙升到 5.2 秒。你 SSH 登录到跳板机，打开 TiDB Dashboard（`http://127.0.0.1:2379/dashboard`）。
 
 Dashboard 首页的 **Overview** 面板已经勾勒出问题轮廓：

@@ -2,8 +2,7 @@
 
 <CaseMeta difficulty="⭐⭐" category="JOIN" versions="5.7 & 8.0" :tags="['JOIN', '驱动表', 'Nested Loop', 'STRAIGHT_JOIN']" />
 
-## 场景痛点
-
+## 小表驱动大表：3 秒变 30ms
 促销活动页需要查询某活动关联的订单详情。活动关联表只有 5000 条记录，订单表有 100 万条。查询却跑了 3 秒：
 
 ```sql

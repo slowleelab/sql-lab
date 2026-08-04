@@ -2,8 +2,7 @@
 
 <CaseMeta difficulty="⭐⭐⭐" category="TiDB 分布式优化" versions="TiDB" :tags="['锁', 'FOR UPDATE', 'NOWAIT', 'SKIP LOCKED', 'LOCK VIEW', '悲观锁']" />
 
-## 场景痛点
-
+## 某电商平台在大促秒杀期间,耗尽
 某电商平台在大促秒杀期间，系统突然大面积卡死——用户页面长时间无响应，监控显示数据库连接池耗尽（Active Connections 打满），大量请求堆在队列中等待。DBA 登录数据库排查：
 
 ```sql

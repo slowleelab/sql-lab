@@ -2,8 +2,7 @@
 
 <CaseMeta difficulty="⭐⭐" category="TiDB 分布式优化" versions="TiDB" :tags="['EXPLAIN', '算子树', 'operator', '执行计划', 'TiDB']" />
 
-## 场景痛点
-
+## 你是一名有多年 MySQL 经验的 DBA
 你是一名有多年 MySQL 经验的 DBA，刚接手公司的 TiDB 集群。某天你习惯性地敲下：
 
 ```sql

@@ -2,8 +2,7 @@
 
 <CaseMeta difficulty="⭐⭐⭐" category="TiDB 分布式优化" versions="TiDB" :tags="['TiFlash', 'MPP', '列存', 'HTAP']" />
 
-## 场景痛点
-
+## 500 万慢：TiDB 的报表查询越来越慢
 TiDB 的报表查询越来越慢。业务跑在 TiKV 行存上，500 万行的 GROUP BY 聚合查询需要 10 秒以上，BI 团队抱怨"数据出不来"。表象是数据量大，但根因在于**行存（TiKV）不适合 OLAP 聚合查询** —— 每行数据包含所有列，聚合只需要 3-4 列却要传输全行，且单节点聚合无法利用分布式并行能力。
 
 ```sql

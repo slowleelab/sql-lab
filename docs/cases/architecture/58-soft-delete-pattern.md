@@ -2,8 +2,7 @@
 
 <CaseMeta difficulty="⭐⭐" category="架构级优化" versions="5.7 & 8.0" :tags="['软删除', 'deleted_at', '联合索引', '查询过滤']" />
 
-## 场景痛点
-
+## 10 万：20% 已软删除
 文档系统采用软删除--用 `deleted_at` 字段标记删除时间而非物理删除行，NULL 表示未删除。查询用户文档时需要带上 `WHERE deleted_at IS NULL` 过滤已删除数据。文档表 10 万行（其中 20% 已软删除），查询某作者的未删除文档却出现 filesort：
 
 ```sql

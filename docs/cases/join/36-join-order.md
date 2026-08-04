@@ -2,8 +2,7 @@
 
 <CaseMeta difficulty="⭐⭐⭐" category="JOIN" versions="5.7 & 8.0" :tags="['多表JOIN', 'STRAIGHT_JOIN', 'JOIN顺序']" />
 
-## 场景痛点
-
+## 1000 行：优化器偶尔选错 JOIN 顺序
 3 张表 JOIN（小表 1000 行、中表 5 万行、大表 20 万行），优化器偶尔选错 JOIN 顺序，先扫大表导致性能差。
 
 ## 问题分析

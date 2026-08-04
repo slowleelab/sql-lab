@@ -2,8 +2,7 @@
 
 <CaseMeta difficulty="⭐⭐" category="优化器与8.0新特性" versions="5.7 & 8.0" :tags="['降序索引', 'filesort', '8.0新特性', 'ORDER BY']" />
 
-## 场景痛点
-
+## 取最近 20 条：filesort 去不掉
 事件日志系统按事件类型过滤后，需要按时间倒序取最近 20 条记录。查询本身很简单，但 EXPLAIN 结果里始终挂着 `Using filesort`，即使 `event_type` 和 `created_at` 上已经建了联合索引。
 
 ```sql

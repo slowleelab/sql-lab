@@ -2,8 +2,7 @@
 
 <CaseMeta difficulty="⭐⭐⭐" category="TiDB 分布式优化" versions="TiDB ≥ 4.0" :tags="['Region', '热点调度', 'Split', 'PD调度', 'Hot Region', 'Scatter']" />
 
-## 场景痛点
-
+## 热点 Region：单节点 CPU 持续 100%
 某实时日志采集系统迁移到 TiDB 后，运维发现：白天业务高峰时段，某个 TiKV 节点的 CPU 持续 100%，但其他节点 CPU 使用率不到 30%。查看 PD Dashboard，发现一个 Region 承载了全集群 60% 的写入流量。
 
 ```sql

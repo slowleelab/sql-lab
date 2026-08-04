@@ -2,8 +2,7 @@
 
 <CaseMeta difficulty="⭐⭐⭐" category="索引设计与失效" versions="5.7 & 8.0" :tags="['Change Buffer', 'Insert Buffer', 'innodb_change_buffering', '写入优化', '二级索引']" />
 
-## 场景痛点
-
+## TPS 3000 卡在磁盘 IO：5 个二级索引拖垮 INSERT
 某订单明细表有 5 个二级索引（按 user_id、按 product_id、按 status 等），业务大量 INSERT 但很少按这些二级索引查询（都是按主键查）。监控显示 INSERT 吞吐受限，磁盘 IO 高，tps 仅有 3000。但磁盘 IOPS 还有富余，似乎不是磁盘瓶颈。
 
 ```sql

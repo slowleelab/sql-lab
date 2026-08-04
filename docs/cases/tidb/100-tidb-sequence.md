@@ -2,8 +2,7 @@
 
 <CaseMeta difficulty="⭐⭐" category="TiDB 分布式优化" versions="TiDB ≥ 4.0（Sequence CACHE 需 ≥ 4.0）" :tags="['Sequence', '分布式ID', 'AUTO_INCREMENT', 'AUTO_RANDOM', '自增', 'TSO']" />
 
-## 场景痛点
-
+## 从 MySQL 迁移到 TiDB 后
 你的业务需要生成全局唯一的订单号，而且要求**严格递增**以便按时间排序。从 MySQL 迁移到 TiDB 后，你习惯性地用 `AUTO_INCREMENT` 做订单 ID：
 
 ```sql

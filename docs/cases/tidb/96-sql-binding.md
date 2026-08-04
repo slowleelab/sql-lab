@@ -2,8 +2,7 @@
 
 <CaseMeta difficulty="⭐⭐⭐" category="TiDB 分布式优化" versions="TiDB" :tags="['SPM', 'SQL Binding', '执行计划', 'Baseline', 'Plan Management', 'Hint']" />
 
-## 场景痛点
-
+## 50ms飙升：运营同学突然反馈"订单列表页加载超时"
 你在负责一个电商系统的订单查询服务。大促期间，运营同学突然反馈"订单列表页加载超时"。你打开 Grafana 监控，发现一条核心查询的 P99 延迟从平时的 50ms 飙升至 3 秒。你迅速找到对应的 SQL：
 
 ```sql

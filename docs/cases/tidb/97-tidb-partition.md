@@ -2,8 +2,7 @@
 
 <CaseMeta difficulty="⭐⭐" category="TiDB 分布式优化" versions="TiDB" :tags="['分区表', 'Partition', 'Pruning', 'RANGE', 'HASH', 'LIST', '分区裁剪', 'Dynamic Pruning']" />
 
-## 场景痛点
-
+## 5 秒：MySQL 迁移到 TiDB 后
 某电商平台的订单查询系统从 MySQL 迁移到 TiDB 后，运营人员反馈了一个奇怪的现象：**跨年订单统计查询（例如 "2025 年全年订单汇总"）响应时间在 3-5 秒，但单月订单查询（例如 "2025 年 6 月订单"）只需要 0.3 秒**。相同的数据集、相同的 SQL 模式，只因为时间范围不同，性能差了 10 倍以上。
 
 运维排查后发现：
