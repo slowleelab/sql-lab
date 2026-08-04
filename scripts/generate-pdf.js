@@ -15,7 +15,7 @@ import { fileURLToPath } from 'url'
 import { createServer } from 'http'
 import { readFile } from 'fs/promises'
 import puppeteer from 'puppeteer'
-import { PDFDocument, PDFName, PDFString, PDFDict, PDFNumber } from 'pdf-lib'
+import { PDFDocument, PDFName, PDFString, PDFDict, PDFNumber, PDFArray, PDFHexString } from 'pdf-lib'
 
 const ROOT_DIR = resolve(dirname(fileURLToPath(import.meta.url)), '..')
 const DIST = resolve(ROOT_DIR, 'docs/.vitepress/dist')
@@ -24,6 +24,20 @@ const TMP = resolve(ROOT_DIR, 'docs/public/.sql-lab-cases-merged.pdf')
 const AUTHOR = '李强'
 const PORT = 4175
 const BASE_PREFIX = '/sql-lab/' // VitePress base，必须与 docs/.vitepress/config.ts 一致
+const CONCURRENCY = 6            // Puppeteer 并发渲染页面数（4-8 推荐，8GB 内存选 4，16GB+ 选 6-8）
+
+// 解析 Chrome 路径：CI 优先用环境变量，本地优先用系统 Chrome，否则用 puppeteer 自带 chromium
+function resolveChrome() {
+  if (process.env.CHROME_PATH) return process.env.CHROME_PATH
+  const candidates = [
+    '/Applications/Google Chrome.app/Contents/MacOS/Google Chrome',
+    '/usr/bin/google-chrome',
+    '/usr/bin/chromium-browser',
+    '/usr/bin/chromium',
+  ]
+  for (const p of candidates) if (existsSync(p)) return p
+  return undefined // 让 puppeteer 用自带的 chromium
+}
 
 // ─── 工具：MIME 类型 ─────────────────────────────────
 const MIME = {
@@ -203,8 +217,20 @@ async function pagePdf(browser, url, i, t) {
   const p = await browser.newPage()
   try {
     const full = `http://localhost:${PORT}${BASE_PREFIX}${url.replace(/^\//, '')}`
+    // 在 goto 前注入 CSS 屏蔽非必要 Inter 字体子集，减小 PDF 体积
+    await p.setBypassCSP(true)
+    await p.setExtraHTTPHeaders({ 'X-PDF-Render': '1' })
     process.stdout.write(`  [${String(i).padStart(3)}/${t}] ${url.slice(0, 60).padEnd(62)}\r`)
     await p.goto(full, { waitUntil: 'networkidle0', timeout: 60000 })
+    // 注入 CSS：覆盖中文字体优先 + 屏蔽 cyrillic/greek/vietnamese 等子集
+    await p.addStyleTag({
+      content: `
+        body, .VPDoc, .vp-doc { font-family: "PingFang SC","Hiragino Sans GB","Microsoft YaHei","Source Han Sans SC",sans-serif !important; }
+        /* 屏蔽非必要 Inter 字体子集（保留 basic-latin + latin-ext + cjk） */
+        @font-face { font-family: 'Inter'; src: none !important; unicode-range: U+0400-04FF, U+0370-03FF, U+1E00-1EFF, U+0300-036F, U+0590-05FF, U+0600-06FF, U+0900-097F, U+3040-309F, U+30A0-30FF, U+AC00-D7AF, U+4E00-9FFF; }
+        code, pre, .shiki { font-family: "JetBrains Mono","Menlo","Consolas",monospace !important; }
+      `
+    })
     await p.evaluate(() => {
       for (const s of '.VPNav,.VPSidebar,.VPLocalNav,.VPFooter,.DocFooter,.edit-link,.prev-next,.VPDocAside,.VPNavScreen,.VPSkipLink'.split(',')) {
         document.querySelectorAll(s).forEach(e => e.remove())
@@ -226,6 +252,49 @@ async function pagePdf(browser, url, i, t) {
     process.stdout.write(`  [${String(i).padStart(3)}/${t}] ✅\n`)
     return buf
   } finally { await p.close() }
+}
+
+/**
+ * 并发渲染多个页面，最大并发数 = CONCURRENCY
+ * - 进度条按完成顺序输出，避免乱序覆盖
+ * - 单个失败不阻塞整体（错误以 warn 形式记录，失败项返回 null）
+ */
+async function renderBatch(browser, items, concurrency = CONCURRENCY) {
+  const results = new Array(items.length)
+  let cursor = 0
+  let completed = 0
+  const total = items.length
+  const start = Date.now()
+  const inflight = new Set()
+
+  const worker = async () => {
+    while (true) {
+      const idx = cursor++
+      if (idx >= total) return
+      const it = items[idx]
+      try {
+        const buf = await pagePdf(browser, it.url, it.idx, total)
+        results[idx] = buf
+        completed++
+        const elapsed = ((Date.now() - start) / 1000).toFixed(1)
+        process.stdout.write(`  📊 进度: ${completed}/${total} 完成 (并发 ${inflight.size}, 耗时 ${elapsed}s)\n`)
+      } catch (err) {
+        completed++
+        console.warn(`  ⚠️  渲染失败: ${it.url} -> ${err.message}`)
+        results[idx] = null
+      } finally {
+        inflight.delete(worker)
+      }
+    }
+  }
+
+  for (let i = 0; i < Math.min(concurrency, total); i++) {
+    const w = worker()
+    inflight.add(w)
+    w.catch(() => {})
+  }
+  await Promise.all(inflight)
+  return results
 }
 
 function coverHtml(casesTotal) {
@@ -374,6 +443,55 @@ function addOutlines(doc, guides, cases, pageMap) {
   doc.catalog.set(PDFName.of('PageMode'), PDFName.of('UseOutlines'))
 }
 
+/**
+ * 为 PDF 添加 PageLabels，让 Acrobat/Reader 在状态栏和书签上显示有意义的页码
+ *
+ * 结构：
+ *   第 1 页        (cover)        - 空白或 "封面"
+ *   第 2 页        (toc)          - "目录"
+ *   第 3..2+guides (guides)       - "指南 1", "指南 2", ...
+ *   第 X+          (cases)        - "案例 1", "案例 2", ...
+ *
+ * PageLabels 数组是"区间"结构，每个元素描述一个连续区间：
+ *   { /S 'D' (decimal), /P '前缀', /St 起始值 }
+ */
+function addPageLabels(doc, guides, cases, pageMap) {
+  const ctx = doc.context
+  const nums = PDFArray.withContext(ctx)
+
+  // 1. 封面 + TOC 共享：prefix="" + style=decimal，编号为 1, 2
+  let entry = PDFDict.withContext(ctx)
+  entry.set(PDFName.of('S'), PDFName.of('D'))  // Decimal
+  entry.set(PDFName.of('P'), PDFHexString.fromText(''))
+  entry.set(PDFName.of('St'), PDFNumber.of(1))
+  nums.push(entry)
+
+  // 2. 指南区 - "指南 1", "指南 2", ...
+  if (guides.length > 0) {
+    entry = PDFDict.withContext(ctx)
+    entry.set(PDFName.of('S'), PDFName.of('D'))
+    entry.set(PDFName.of('P'), PDFHexString.fromText('指南 '))
+    entry.set(PDFName.of('St'), PDFNumber.of(1))
+    nums.push(entry)
+  }
+
+  // 3. 案例区 - "案例 1", "案例 2", ...
+  if (cases.length > 0) {
+    entry = PDFDict.withContext(ctx)
+    entry.set(PDFName.of('S'), PDFName.of('D'))
+    entry.set(PDFName.of('P'), PDFHexString.fromText('案例 '))
+    entry.set(PDFName.of('St'), PDFNumber.of(1))
+    nums.push(entry)
+  }
+
+  // 必须 ctx.register 拿到 PDFRef 再设入 catalog，pdf-lib 才会保留到 save 后的文件
+  const numsRef = ctx.register(nums)
+  const pageLabelsDict = PDFDict.withContext(ctx)
+  pageLabelsDict.set(PDFName.of('Nums'), numsRef)
+  const pageLabelsRef = ctx.register(pageLabelsDict)
+  doc.catalog.set(PDFName.of('PageLabels'), pageLabelsRef)
+}
+
 async function main() {
   console.log('📖 SQL Lab PDF 电子书 — 两轮生成\n')
   if (!existsSync(resolve(DIST, 'index.html'))) { console.error('❌ 请先 npm run docs:build'); process.exit(1) }
@@ -387,22 +505,39 @@ async function main() {
   console.log(`  📡 服务器 :${PORT}`)
   let browser
   try {
-    browser = await puppeteer.launch({ headless: true, executablePath: '/Applications/Google Chrome.app/Contents/MacOS/Google Chrome', args: ['--no-sandbox'] })
+    browser = await puppeteer.launch({
+      headless: true,
+      executablePath: resolveChrome(),
+      args: ['--no-sandbox', '--disable-setuid-sandbox', '--disable-dev-shm-usage'],
+    })
     console.log('\n  📄 封面 + 目录...')
     const pdfs = [await htmlPdf(browser, coverHtml(casesTotal)), await htmlPdf(browser, tocHtml(guides, cases))]
     const total = guides.length + casesTotal
-    console.log(`\n  📖 渲染 ${total} 页...\n`)
-    for (const g of guides) pdfs.push(await pagePdf(browser, g.url, pdfs.length - 1, total))
-    for (let i = 0; i < cases.length; i++) pdfs.push(await pagePdf(browser, cases[i].url, i + 1, total))
+    console.log(`\n  📖 并发渲染 ${total} 页 (并发=${CONCURRENCY})...\n`)
+    // 准备待渲染列表（idx 用于日志）
+    const items = []
+    for (let i = 0; i < guides.length; i++) {
+      items.push({ url: guides[i].url, idx: i + 1 })
+    }
+    for (let i = 0; i < cases.length; i++) {
+      items.push({ url: cases[i].url, idx: guides.length + i + 1 })
+    }
+    const renderStart = Date.now()
+    const rendered = await renderBatch(browser, items, CONCURRENCY)
+    for (const buf of rendered) pdfs.push(buf)
+    console.log(`  ⏱️  渲染总耗时 ${((Date.now() - renderStart) / 1000).toFixed(1)}s`)
 
     console.log('\n  🔗 合并...')
     const doc = await PDFDocument.create()
+    const now = new Date()
     doc.setTitle('SQL Lab · MySQL + TiDB 优化实战案例集')
     doc.setAuthor(AUTHOR)
     doc.setSubject(`${casesTotal} 个 MySQL + TiDB 优化实战案例 — Docker 一键复现，EXPLAIN 量化对比`)
     doc.setKeywords(['MySQL', 'TiDB', 'SQL优化', 'EXPLAIN', '索引', '事务', '分布式'])
     doc.setCreator(`SQL Lab (${AUTHOR})`)
     doc.setProducer('SQL Lab PDF Generator')
+    doc.setCreationDate(now)
+    doc.setModificationDate(now)
 
     // 计算每个 PDF 的页数（同时复制页面，合并两次为一次）
     // 顺序: cover, TOC, guide0..N-1, case0..M-1
@@ -449,6 +584,7 @@ async function main() {
       guidePageOffsets,
       casePageOffsets,
     })
+    addPageLabels(doc2, guides, cases)
 
     // 关键：useObjectStreams: true 去重字体和资源，减小 80MB → ~30MB
     // Outline 对象通过 PDFDict + ctx.assign 正确注册，pdf-lib 会保留它们

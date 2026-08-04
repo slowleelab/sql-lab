@@ -33,3 +33,6 @@ coverage/
 
 # SQL backup
 *.sql.bak
+
+# PDF generation intermediate files
+docs/public/.sql-lab-cases-merged.pdf

@@ -1,0 +1,114 @@
+name: PDF 体积检查
+
+on:
+  pull_request:
+    branches: [main, master]
+    paths:
+      - 'docs/cases/**'
+      - 'docs/.vitepress/**'
+      - 'docs/public/**'
+      - 'scripts/generate-pdf.js'
+      - 'package.json'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pull-requests: write
+
+# 体积告警阈值 (MB)
+# - WARN: 超过此值在 PR 中评论提醒，但不阻塞
+# - FAIL: 超过此值直接失败（防止 60+ MB 巨型 PDF 推入仓库）
+env:
+  WARN_MB: 50
+  FAIL_MB: 70
+
+jobs:
+  pdf-size:
+    name: 生成并检查 PDF 体积
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+
+      - name: 安装系统依赖 (Puppeteer Chromium)
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y \
+            libnss3 libatk1.0-0 libatk-bridge2.0-0 libdrm2 libxkbcommon0 \
+            libxcomposite1 libxdamage1 libxfixes3 libxrandr2 libgbm1 \
+            libasound2 libpango-1.0-0 libcairo2 libxshmfence1 fonts-noto-cjk
+          echo "✅ Chromium 系统依赖安装完成"
+
+      - name: 安装 Node 依赖
+        run: npm ci
+
+      - name: 构建 VitePress
+        run: npm run docs:build
+
+      - name: 生成 PDF
+        run: npm run docs:pdf
+        env:
+          CHROME_PATH: ''
+          # 减小并发，避免 CI 内存爆
+          CONCURRENCY: 4
+
+      - name: 检查 PDF 体积
+        id: size
+        run: |
+          SIZE_MB=$(stat -c%s docs/public/sql-lab-cases.pdf | awk '{printf "%.2f", $1/1024/1024}')
+          echo "size_mb=${SIZE_MB}" >> $GITHUB_OUTPUT
+          echo "📦 PDF 体积: ${SIZE_MB} MB (WARN=${WARN_MB} MB, FAIL=${FAIL_MB} MB)"
+
+          # 浮点比较
+          FAIL_COMPARE=$(echo "$SIZE_MB > $FAIL_MB" | bc -l)
+          WARN_COMPARE=$(echo "$SIZE_MB > $WARN_MB" | bc -l)
+
+          if [ "$FAIL_COMPARE" -eq 1 ]; then
+            echo "❌ PDF 体积超过 ${FAIL_MB} MB 阈值，部署会失败"
+            exit 1
+          elif [ "$WARN_COMPARE" -eq 1 ]; then
+            echo "⚠️ PDF 体积超过 ${WARN_MB} MB，建议优化"
+            echo "warn=true" >> $GITHUB_OUTPUT
+          else
+            echo "✅ PDF 体积健康"
+          fi
+
+      - name: 评论 PR (warn)
+        if: steps.size.outputs.warn == 'true' && github.event_name == 'pull_request'
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const sizeMb = '${{ steps.size.outputs.size_mb }}';
+            const warnMb = '${{ env.WARN_MB }}';
+            const body = [
+              '## ⚠️ PDF 体积告警',
+              '',
+              `当前 PDF 体积: **${sizeMb} MB** > 阈值 **${warnMb} MB**`,
+              '',
+              '### 建议排查',
+              '- 字体子集是否合理（屏蔽非必要 Inter 子集）',
+              '- 案例 markdown 中是否有重复的 SQL 块',
+              '- 是否引入了大图片（建议用 SVG 替代 PNG）',
+              '- `generate-pdf.js` 的 `CONCURRENCY` 是否过高导致内存压力',
+              '',
+              '查看 [generate-pdf.js 优化记录](https://github.com/slowleelab/sql-lab/commits/main/scripts/generate-pdf.js)',
+            ].join('\n');
+            await github.rest.issues.createComment({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              issue_number: context.issue.number,
+              body,
+            });
+
+      - name: 上传 PDF 产物
+        uses: actions/upload-artifact@v4
+        with:
+          name: sql-lab-cases-pdf
+          path: docs/public/sql-lab-cases.pdf
+          retention-days: 14

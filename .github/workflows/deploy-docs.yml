@@ -33,6 +33,12 @@ jobs:
       - name: 构建 VitePress
         run: npm run docs:build
 
+      - name: 生成 PDF (并发渲染)
+        run: npm run docs:pdf
+        env:
+          # CI 环境用 puppeteer 自带 chromium，跳过 system Chrome 检测
+          CHROME_PATH: ''
+
       - name: 添加 .nojekyll
         run: touch docs/.vitepress/dist/.nojekyll
 

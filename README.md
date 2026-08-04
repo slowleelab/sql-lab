@@ -8,10 +8,10 @@
 [![TiDB](https://img.shields.io/badge/TiDB-v7.5.1-purple.svg)](https://pingcap.com/)
 [![CI](https://github.com/slowleelab/sql-lab/actions/workflows/validate-sql.yml/badge.svg)](https://github.com/slowleelab/sql-lab/actions)
 [![PRs Welcome](https://img.shields.io/badge/PRs-welcome-brightgreen.svg)](CONTRIBUTING.md)
-[![Cases](https://img.shields.io/badge/cases-102-orange.svg)](docs/cases/)
+[![Cases](https://img.shields.io/badge/cases-112-orange.svg)](docs/cases/)
 
 📖 **在线文档**：[https://slowleelab.github.io/sql-lab/](https://slowleelab.github.io/sql-lab/)  
-📥 **PDF 下载**：[sql-lab-cases.pdf](https://slowleelab.github.io/sql-lab/sql-lab-cases.pdf) (88 MB, 173 页)  
+📥 **PDF 下载**：[sql-lab-cases.pdf](https://slowleelab.github.io/sql-lab/sql-lab-cases.pdf) (~52 MB, 820+ 页, 118 书签)  
 🤖 **AI 对话**：接入 DeepWiki，可直接与仓库对话提问
 
 > 如果这个项目对你有帮助，欢迎 ⭐ Star 支持！你的 Star 是持续更新的动力。
