@@ -1,6 +1,6 @@
 # 案例总览
 
-共 **113 个精选案例**，覆盖 MySQL + TiDB 优化的八大核心场景。每个案例都带真实数据，可一键复现。
+共 **114 个精选案例**，覆盖 MySQL + TiDB 优化的八大核心场景。每个案例都带真实数据，可一键复现。
 
 ## 一、索引设计与失效（20 个）
 
@@ -78,7 +78,7 @@
 | 51 | [字段类型与长度选择最佳实践](./ddl/51-field-type-best-practice) | ⭐⭐ | 5.7 & 8.0 |
 | 105 | [SELECT INTO OUTFILE 大数据导出与安全](./ddl/105-select-into-outfile) | ⭐⭐ | 5.7 & 8.0 |
 
-## 五、架构级优化（14 个）
+## 五、架构级优化（15 个）
 
 | # | 案例 | 难度 | 版本 |
 |---|------|:----:|:----:|
@@ -92,6 +92,7 @@
 | 59 | [分库分表路由策略](./architecture/59-sharding-route) | ⭐⭐⭐ | 5.7 & 8.0 |
 | 60 | [缓存穿透与布隆过滤器](./architecture/60-cache-penetration) | ⭐⭐⭐ | 5.7 & 8.0 |
 | 61 | [自增主键耗尽与分布式 ID](./architecture/61-auto-inc-exhaustion) | ⭐⭐⭐ | 5.7 & 8.0 |
+| 114 | [自增序列 8 个坑全景手册](./architecture/114-auto-increment-pitfalls) | ⭐⭐⭐ | 5.7 & 8.0 |
 | 62 | [连接池与 max_connections 耗尽诊断](./architecture/62-connection-pool-exhaustion) | ⭐⭐ | 5.7 & 8.0 |
 | 107 | [HikariCP/Druid 连接池参数调优](./architecture/107-connection-pool-tuning) | ⭐⭐⭐ | 5.7 & 8.0 |
 | 108 | [InnoDB Buffer Pool 调优](./architecture/108-innodb-buffer-pool) | ⭐⭐⭐ | 5.7 & 8.0 |

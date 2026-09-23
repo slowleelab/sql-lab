@@ -8,7 +8,7 @@
 [![TiDB](https://img.shields.io/badge/TiDB-v7.5.1-purple.svg)](https://pingcap.com/)
 [![CI](https://github.com/slowleelab/sql-lab/actions/workflows/validate-sql.yml/badge.svg)](https://github.com/slowleelab/sql-lab/actions)
 [![PRs Welcome](https://img.shields.io/badge/PRs-welcome-brightgreen.svg)](CONTRIBUTING.md)
-[![Cases](https://img.shields.io/badge/cases-113-orange.svg)](docs/cases/)
+[![Cases](https://img.shields.io/badge/cases-114-orange.svg)](docs/cases/)
 
 📖 **在线文档**：[https://slowleelab.github.io/sql-lab/](https://slowleelab.github.io/sql-lab/)  
 📥 **PDF 下载**：[sql-lab-cases.pdf](https://slowleelab.github.io/sql-lab/sql-lab-cases.pdf) (~52 MB, 820+ 页, 118 书签)  
@@ -132,7 +132,7 @@ type: ref    rows: 12    Extra: Using index
 | 50 | [大字段垂直拆表](docs/cases/ddl/50-vertical-split-text.md) | ⭐⭐ | 5.7 & 8.0 |
 | 51 | [字段类型与长度选择最佳实践](docs/cases/ddl/51-field-type-best-practice.md) | ⭐⭐ | 5.7 & 8.0 |
 
-### 五、架构级优化（11 个）
+### 五、架构级优化（12 个）
 | # | 案例 | 难度 | 版本 |
 |---|------|------|------|
 | 52 | [多条件动态筛选索引设计](docs/cases/architecture/52-dynamic-filter.md) | ⭐⭐⭐ | 5.7 & 8.0 |
@@ -145,6 +145,7 @@ type: ref    rows: 12    Extra: Using index
 | 59 | [分库分表路由策略](docs/cases/architecture/59-sharding-route.md) | ⭐⭐⭐ | 5.7 & 8.0 |
 | 60 | [缓存穿透与布隆过滤器](docs/cases/architecture/60-cache-penetration.md) | ⭐⭐⭐ | 5.7 & 8.0 |
 | 61 | [自增主键耗尽与分布式 ID](docs/cases/architecture/61-auto-inc-exhaustion.md) | ⭐⭐⭐ | 5.7 & 8.0 |
+| 114 | [自增序列 8 个坑全景手册](docs/cases/architecture/114-auto-increment-pitfalls.md) | ⭐⭐⭐ | 5.7 & 8.0 |
 | 62 | [连接池与 max_connections 耗尽诊断](docs/cases/architecture/62-connection-pool-exhaustion.md) | ⭐⭐ | 5.7 & 8.0 |
 
 ### 六、事务与锁（9 个）

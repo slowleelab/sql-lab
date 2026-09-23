@@ -115,6 +115,7 @@ const sidebar = {
         { text: '59 · 分库分表路由策略', link: '/cases/architecture/59-sharding-route' },
         { text: '60 · 缓存穿透与布隆过滤器', link: '/cases/architecture/60-cache-penetration' },
         { text: '61 · 自增主键耗尽与分布式 ID', link: '/cases/architecture/61-auto-inc-exhaustion' },
+        { text: '114 · 自增序列 8 个坑全景手册', link: '/cases/architecture/114-auto-increment-pitfalls' },
         { text: '62 · 连接池与 max_connections 耗尽诊断', link: '/cases/architecture/62-connection-pool-exhaustion' },
         { text: '107 · HikariCP/Druid 连接池调优', link: '/cases/architecture/107-connection-pool-tuning' },
         { text: '108 · InnoDB Buffer Pool 调优', link: '/cases/architecture/108-innodb-buffer-pool' },
