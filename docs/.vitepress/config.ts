@@ -98,6 +98,7 @@ const sidebar = {
         { text: '49 · 修改字段类型锁表', link: '/cases/ddl/49-modify-column-type' },
         { text: '50 · 大字段垂直拆表', link: '/cases/ddl/50-vertical-split-text' },
         { text: '51 · 字段类型与长度选择最佳实践', link: '/cases/ddl/51-field-type-best-practice' },
+        { text: '115 · 数据建模方法论与建表清单', link: '/cases/ddl/115-data-modeling-guide' },
         { text: '105 · SELECT INTO OUTFILE 大数据导出', link: '/cases/ddl/105-select-into-outfile' },
       ],
     },

@@ -8,7 +8,7 @@
 [![TiDB](https://img.shields.io/badge/TiDB-v7.5.1-purple.svg)](https://pingcap.com/)
 [![CI](https://github.com/slowleelab/sql-lab/actions/workflows/validate-sql.yml/badge.svg)](https://github.com/slowleelab/sql-lab/actions)
 [![PRs Welcome](https://img.shields.io/badge/PRs-welcome-brightgreen.svg)](CONTRIBUTING.md)
-[![Cases](https://img.shields.io/badge/cases-114-orange.svg)](docs/cases/)
+[![Cases](https://img.shields.io/badge/cases-115-orange.svg)](docs/cases/)
 
 📖 **在线文档**：[https://slowleelab.github.io/sql-lab/](https://slowleelab.github.io/sql-lab/)  
 📥 **PDF 下载**：[sql-lab-cases.pdf](https://slowleelab.github.io/sql-lab/sql-lab-cases.pdf) (~52 MB, 820+ 页, 118 书签)  
@@ -62,7 +62,7 @@ type: ref    rows: 12    Extra: Using index
 
 ## 📚 案例总览
 
-共 **102 个精选案例**，覆盖 MySQL + TiDB 优化的八大核心场景：
+共 **115 个精选案例**，覆盖 MySQL + TiDB 优化的八大核心场景：
 
 ### 一、索引设计与失效（18 个）
 | # | 案例 | 难度 | 版本 |
@@ -117,7 +117,7 @@ type: ref    rows: 12    Extra: Using index
 | 40 | [STRAIGHT_JOIN 强制驱动顺序](docs/cases/join/40-straight-join.md) | ⭐⭐⭐ | 5.7 & 8.0 |
 | 41 | [LEFT JOIN 改 INNER JOIN 释放优化器](docs/cases/join/41-left-join-to-inner.md) | ⭐⭐ | 5.7 & 8.0 |
 
-### 四、DDL 与大表（11 个）
+### 四、DDL 与大表（12 个）
 | # | 案例 | 难度 | 版本 |
 |---|------|------|------|
 | 42 | [大表加索引 Online DDL](docs/cases/ddl/42-online-ddl.md) | ⭐⭐⭐ | 5.7 & 8.0 |
@@ -131,6 +131,7 @@ type: ref    rows: 12    Extra: Using index
 | 49 | [修改字段类型的锁行为差异](docs/cases/ddl/49-modify-column-type.md) | ⭐⭐⭐ | 5.7 & 8.0 |
 | 50 | [大字段垂直拆表](docs/cases/ddl/50-vertical-split-text.md) | ⭐⭐ | 5.7 & 8.0 |
 | 51 | [字段类型与长度选择最佳实践](docs/cases/ddl/51-field-type-best-practice.md) | ⭐⭐ | 5.7 & 8.0 |
+| 115 | [数据建模方法论与建表清单](docs/cases/ddl/115-data-modeling-guide.md) | ⭐⭐⭐ | 5.7 & 8.0 |
 
 ### 五、架构级优化（12 个）
 | # | 案例 | 难度 | 版本 |
