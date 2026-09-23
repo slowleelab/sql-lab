@@ -88,6 +88,7 @@ const sidebar = {
       collapsed: false,
       items: [
         { text: '42 · 大表加索引 Online DDL', link: '/cases/ddl/42-online-ddl' },
+        { text: '113 · 大表增删列 INSTANT 操作全解', link: '/cases/ddl/113-large-table-add-drop-column' },
         { text: '43 · TEXT/BLOB 字段陷阱', link: '/cases/ddl/43-text-blob-pitfall' },
         { text: '44 · 大表 DELETE 分批', link: '/cases/ddl/44-batch-delete' },
         { text: '45 · 分区表 RANGE 分区优化', link: '/cases/ddl/45-partition-range' },

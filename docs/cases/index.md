@@ -1,6 +1,6 @@
 # 案例总览
 
-共 **112 个精选案例**，覆盖 MySQL + TiDB 优化的八大核心场景。每个案例都带真实数据，可一键复现。
+共 **113 个精选案例**，覆盖 MySQL + TiDB 优化的八大核心场景。每个案例都带真实数据，可一键复现。
 
 ## 一、索引设计与失效（20 个）
 
@@ -61,11 +61,12 @@
 | 40 | [STRAIGHT_JOIN 强制驱动顺序](./join/40-straight-join) | ⭐⭐⭐ | 5.7 & 8.0 |
 | 41 | [LEFT JOIN 改 INNER JOIN 释放优化器](./join/41-left-join-to-inner) | ⭐⭐ | 5.7 & 8.0 |
 
-## 四、DDL 与大表（11 个）
+## 四、DDL 与大表（12 个）
 
 | # | 案例 | 难度 | 版本 |
 |---|------|:----:|:----:|
 | 42 | [大表加索引 Online DDL](./ddl/42-online-ddl) | ⭐⭐⭐ | 5.7 & 8.0 |
+| 113 | [大表增删列 INSTANT 操作全解](./ddl/113-large-table-add-drop-column) | ⭐⭐⭐ | 5.7 & 8.0 |
 | 43 | [TEXT/BLOB 字段性能陷阱](./ddl/43-text-blob-pitfall) | ⭐⭐ | 5.7 & 8.0 |
 | 44 | [大表 DELETE 分批](./ddl/44-batch-delete) | ⭐⭐ | 5.7 & 8.0 |
 | 45 | [分区表 RANGE 分区优化](./ddl/45-partition-range) | ⭐⭐⭐ | 5.7 & 8.0 |

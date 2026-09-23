@@ -8,7 +8,7 @@
 [![TiDB](https://img.shields.io/badge/TiDB-v7.5.1-purple.svg)](https://pingcap.com/)
 [![CI](https://github.com/slowleelab/sql-lab/actions/workflows/validate-sql.yml/badge.svg)](https://github.com/slowleelab/sql-lab/actions)
 [![PRs Welcome](https://img.shields.io/badge/PRs-welcome-brightgreen.svg)](CONTRIBUTING.md)
-[![Cases](https://img.shields.io/badge/cases-112-orange.svg)](docs/cases/)
+[![Cases](https://img.shields.io/badge/cases-113-orange.svg)](docs/cases/)
 
 📖 **在线文档**：[https://slowleelab.github.io/sql-lab/](https://slowleelab.github.io/sql-lab/)  
 📥 **PDF 下载**：[sql-lab-cases.pdf](https://slowleelab.github.io/sql-lab/sql-lab-cases.pdf) (~52 MB, 820+ 页, 118 书签)  
@@ -117,10 +117,11 @@ type: ref    rows: 12    Extra: Using index
 | 40 | [STRAIGHT_JOIN 强制驱动顺序](docs/cases/join/40-straight-join.md) | ⭐⭐⭐ | 5.7 & 8.0 |
 | 41 | [LEFT JOIN 改 INNER JOIN 释放优化器](docs/cases/join/41-left-join-to-inner.md) | ⭐⭐ | 5.7 & 8.0 |
 
-### 四、DDL 与大表（10 个）
+### 四、DDL 与大表（11 个）
 | # | 案例 | 难度 | 版本 |
 |---|------|------|------|
 | 42 | [大表加索引 Online DDL](docs/cases/ddl/42-online-ddl.md) | ⭐⭐⭐ | 5.7 & 8.0 |
+| 113 | [大表增删列 INSTANT 操作全解](docs/cases/ddl/113-large-table-add-drop-column.md) | ⭐⭐⭐ | 5.7 & 8.0 |
 | 43 | [TEXT/BLOB 字段性能陷阱](docs/cases/ddl/43-text-blob-pitfall.md) | ⭐⭐ | 5.7 & 8.0 |
 | 44 | [大表 DELETE 分批](docs/cases/ddl/44-batch-delete.md) | ⭐⭐ | 5.7 & 8.0 |
 | 45 | [分区表 RANGE 分区优化](docs/cases/ddl/45-partition-range.md) | ⭐⭐⭐ | 5.7 & 8.0 |
