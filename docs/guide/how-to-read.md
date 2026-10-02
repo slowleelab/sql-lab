@@ -58,7 +58,7 @@
 每个案例的文档右侧都有对应的 SQL 文件路径，例如：
 
 ```
-sql/cases/01-deep-pagination/
+sql/cases/1-deep-pagination/
 ├── schema.sql   # 建表
 ├── seed.sql     # 造数据
 ├── bad.sql      # 问题 SQL

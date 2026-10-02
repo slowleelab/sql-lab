@@ -9,8 +9,8 @@
 #   ./scripts/run-case.sh <case-dir> --no-seed    # 跳过造数据（数据已存在）
 #
 # 示例:
-#   ./scripts/run-case.sh 01-deep-pagination
-#   ./scripts/run-case.sh 01-deep-pagination --ver 5.7
+#   ./scripts/run-case.sh 1-deep-pagination
+#   ./scripts/run-case.sh 1-deep-pagination --ver 5.7
 #
 set -euo pipefail
 

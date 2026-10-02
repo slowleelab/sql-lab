@@ -208,7 +208,7 @@ SET SESSION innodb_autoinc_lock_mode = 2;
 :::
 
 ::: tip 延伸阅读
-本篇是"跳号与自增锁"的专题深挖；案例 114 [自增序列 8 个坑全景手册](../architecture/114-auto-increment-pitfalls) 把跳号与重启复用 ID、INT 耗尽、计数器不回缩、对外编号泄露、分布式冲突串成了全景图，案例 61 [自增主键耗尽与分布式 ID](../architecture/61-auto-inc-exhaustion) 则是耗尽事故的完整复盘。
+本篇是"跳号与自增锁"的专题深挖；案例69 [自增序列 8 个坑全景手册](../architecture/69-auto-increment-pitfalls) 把跳号与重启复用 ID、INT 耗尽、计数器不回缩、对外编号泄露、分布式冲突串成了全景图，案例68 [自增主键耗尽与分布式 ID](../architecture/68-auto-inc-exhaustion) 则是耗尽事故的完整复盘。
 :::
 
 ## 本地复现

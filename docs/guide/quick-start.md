@@ -51,11 +51,11 @@ ls sql/cases/ | head -5
 
 预期输出：
 ```
-01-deep-pagination
-02-leftmost-prefix
-03-implicit-type-conversion
-04-function-on-index
-05-like-leading-wildcard
+1-deep-pagination
+2-leftmost-prefix
+3-implicit-type-conversion
+4-function-on-index
+5-like-leading-wildcard
 ```
 
 ---
@@ -104,7 +104,7 @@ lsof -i :3307 -i :3308
 以「深度分页」为例，默认在 MySQL 8.0 上运行：
 
 ```bash
-./scripts/run-case.sh 01-deep-pagination
+./scripts/run-case.sh 1-deep-pagination
 ```
 
 ::: tip 如果提示 Permission denied
@@ -120,7 +120,7 @@ chmod +x scripts/run-case.sh
 ═══════════════════════════════════════════════════════════
   SQL Lab · 案例运行器
 ═══════════════════════════════════════════════════════════
-  案例:   01-deep-pagination
+  案例:   1-deep-pagination
   版本:   MySQL 8.0  (端口 3308)
   容器:   sql-treasure-mysql80
 
@@ -162,15 +162,15 @@ type: ref    rows: 12    Extra: Using index
 输出：
 ```
 可用案例:
-  - 01-deep-pagination
-  - 02-leftmost-prefix
-  - 03-implicit-type-conversion
-  - 04-function-on-index
-  - 05-like-leading-wildcard
-  - 06-or-condition
-  - 07-range-after-index
-  - 08-covering-index
-  - 09-index-condition-pushdown
+  - 1-deep-pagination
+  - 2-leftmost-prefix
+  - 3-implicit-type-conversion
+  - 4-function-on-index
+  - 5-like-leading-wildcard
+  - 6-or-condition
+  - 7-range-after-index
+  - 8-covering-index
+  - 9-index-condition-pushdown
   - 15-subquery-to-join
   ...（共 102 个）
 ```
@@ -179,10 +179,10 @@ type: ref    rows: 12    Extra: Using index
 
 ```bash
 # 运行第 3 个案例（隐式类型转换）
-./scripts/run-case.sh 03-implicit-type-conversion
+./scripts/run-case.sh 3-implicit-type-conversion
 
 # 运行第 24 个案例（小表驱动大表）
-./scripts/run-case.sh 24-small-drive-large
+./scripts/run-case.sh 26-small-drive-large
 ```
 
 ::: tip 案例名怎么找
@@ -197,10 +197,10 @@ type: ref    rows: 12    Extra: Using index
 
 ```bash
 # 在 MySQL 5.7 上运行（端口 3307）
-./scripts/run-case.sh 01-deep-pagination --ver 5.7
+./scripts/run-case.sh 1-deep-pagination --ver 5.7
 
 # 在 MySQL 8.0 上运行（默认，端口 3308）
-./scripts/run-case.sh 01-deep-pagination --ver 8.0
+./scripts/run-case.sh 1-deep-pagination --ver 8.0
 ```
 
 ### 跳过造数据（快速重跑）
@@ -208,17 +208,17 @@ type: ref    rows: 12    Extra: Using index
 数据已经造好后，跳过造数据步骤，秒出 EXPLAIN 对比：
 
 ```bash
-./scripts/run-case.sh 01-deep-pagination --no-seed
+./scripts/run-case.sh 1-deep-pagination --no-seed
 ```
 
 ### 对比 5.7 和 8.0 的差异
 
 ```bash
 # 先跑 5.7
-./scripts/run-case.sh 09-index-condition-pushdown --ver 5.7
+./scripts/run-case.sh 9-index-condition-pushdown --ver 5.7
 
 # 再跑 8.0
-./scripts/run-case.sh 09-index-condition-pushdown --ver 8.0
+./scripts/run-case.sh 9-index-condition-pushdown --ver 8.0
 ```
 
 观察 EXPLAIN 输出中 `Extra` 列的差异（如 ICP 在 8.0 中默认开启）。
@@ -322,4 +322,4 @@ docker compose ps   # 确认 STATUS 为 healthy
 
 - [如何阅读案例](./how-to-read) — 了解每个案例的标准结构
 - [案例总览](../cases/) — 浏览全部 102 个案例
-- [深度分页案例](../cases/indexing/01-deep-pagination) — 从第一个案例开始深入
+- [深度分页案例](../cases/indexing/1-deep-pagination) — 从第一个案例开始深入

@@ -113,14 +113,14 @@ function pdfStr(s) {
 }
 
 const CATEGORIES = [
-  { dir: 'indexing',       name: '一、索引设计与失效',     nums: [1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18, 103, 104] },
-  { dir: 'query-rewrite',  name: '二、查询改写',           nums: [19,20,21,22,23,24,25,26,27,28,29,30,31,32, 106] },
-  { dir: 'join',           name: '三、JOIN 优化',          nums: [33,34,35,36,37,38,39,40,41] },
-  { dir: 'ddl',            name: '四、DDL 与大表',         nums: [42,43,44,45,46,47,48,49,50,51, 105, 113, 115] },
-  { dir: 'architecture',   name: '五、架构级优化',         nums: [52,53,54,55,56,57,58,59,60,61,62, 107, 108, 110, 114] },
-  { dir: 'transaction',    name: '六、事务与锁',           nums: [63,64,65,66,67,68,69,70,71, 109, 112] },
-  { dir: 'optimizer',      name: '七、优化器与 8.0 新特性', nums: [72,73,74,75,76,77,78,79,80, 111] },
-  { dir: 'tidb',           name: '八、TiDB 分布式优化',    nums: [81,82,83,84,85,86,87,88,89,90,91,92,93,94,95,96,97,98,99,100,101,102] },
+  { dir: 'indexing',       name: '一、索引设计与失效',     nums: Array.from({length:20},(_,i)=>i+1) },
+  { dir: 'query-rewrite',  name: '二、查询改写',           nums: Array.from({length:15},(_,i)=>i+21) },
+  { dir: 'join',           name: '三、JOIN 优化',          nums: Array.from({length:9},(_,i)=>i+36) },
+  { dir: 'ddl',            name: '四、DDL 与大表',         nums: Array.from({length:14},(_,i)=>i+45) },
+  { dir: 'architecture',   name: '五、架构级优化',         nums: Array.from({length:15},(_,i)=>i+59) },
+  { dir: 'transaction',    name: '六、事务与锁',           nums: Array.from({length:11},(_,i)=>i+74) },
+  { dir: 'optimizer',      name: '七、优化器与 8.0 新特性', nums: Array.from({length:10},(_,i)=>i+85) },
+  { dir: 'tidb',           name: '八、TiDB 分布式优化',    nums: Array.from({length:22},(_,i)=>i+95) },
 ]
 
 function collect() {
@@ -463,7 +463,7 @@ function addOutlines(doc, guides, cases, pageMap) {
  *   第 1 页        (cover)        - 空白或 "封面"
  *   第 2 页        (toc)          - "目录"
  *   第 3..2+guides (guides)       - "指南 1", "指南 2", ...
- *   第 X+          (cases)        - "案例 1", "案例 2", ...
+ *   第 X+          (cases)        - "案例1", "案例2", ...
  *
  * PageLabels 数组是"区间"结构，每个元素描述一个连续区间：
  *   { /S 'D' (decimal), /P '前缀', /St 起始值 }
@@ -488,7 +488,7 @@ function addPageLabels(doc, guides, cases, pageMap) {
     nums.push(entry)
   }
 
-  // 3. 案例区 - "案例 1", "案例 2", ...
+  // 3. 案例区 - "案例1", "案例2", ...
   if (cases.length > 0) {
     entry = PDFDict.withContext(ctx)
     entry.set(PDFName.of('S'), PDFName.of('D'))

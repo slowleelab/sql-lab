@@ -2,7 +2,7 @@
 # ============================================================
 # new-case.sh - 快速创建新案例骨架
 # 用法: ./scripts/new-case.sh <编号-英文短名> <分类目录>
-# 示例: ./scripts/new-case.sh 56-my-case indexing
+# 示例: ./scripts/new-case.sh 63-my-case indexing
 # 分类: indexing / query-rewrite / join / ddl / architecture / transaction / optimizer / tidb
 # ============================================================
 set -euo pipefail
@@ -15,7 +15,7 @@ NC='\033[0m'
 
 if [[ $# -lt 2 ]]; then
   echo -e "${RED}用法: $0 <编号-英文短名> <分类目录>${NC}"
-  echo -e "示例: $0 56-my-case indexing"
+  echo -e "示例: $0 63-my-case indexing"
   echo -e "分类: indexing / query-rewrite / join / ddl / architecture / transaction / optimizer"
   exit 1
 fi

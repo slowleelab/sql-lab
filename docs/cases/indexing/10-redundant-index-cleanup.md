@@ -141,7 +141,7 @@ ALTER TABLE t_order_index DROP INDEX idx_user;
 ::: tip 冗余索引清理建议
 - 用 `sys.schema_redundant_indexes` 定期巡检
 - 用 `sys.schema_unused_indexes` 找长期未使用的索引
-- 删除前可先用 8.0 的 INVISIBLE 索引做灰度验证（见案例 13）
+- 删除前可先用 8.0 的 INVISIBLE 索引做灰度验证（见案例13）
 :::
 
 ## 本地复现
