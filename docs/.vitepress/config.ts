@@ -99,6 +99,7 @@ const sidebar = {
         { text: '54 · 大字段垂直拆表', link: '/cases/ddl/54-vertical-split-text' },
         { text: '55 · 字段类型与长度选择最佳实践', link: '/cases/ddl/55-field-type-best-practice' },
         { text: '56 · 数据建模方法论与建表清单', link: '/cases/ddl/56-data-modeling-guide' },
+        { text: '57 · 设计决策背后的理论依据', link: '/cases/ddl/57-design-decisions-theory' },
         { text: '58 · SELECT INTO OUTFILE 大数据导出', link: '/cases/ddl/58-select-into-outfile' },
       ],
     },
